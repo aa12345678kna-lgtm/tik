@@ -22,8 +22,8 @@ footer{text-align:center;color:#68778e;font-size:12px;margin-top:30px}
 </style>
 </head>
 <body><main class="wrap">
-<header class="top"><div class="brand"><div class="logo">4K</div><div><div class="eyebrow">IBRAHIM LOCAL LAB</div><h1>IBRAHIM STUDIO · 4K</h1></div></div><div class="pill">● المعالجة المحلية</div></header>
-<h2>تحسين الفيديو</h2><p class="intro">اختر مقطعك، حدّد طريقة التجهيز، ثم نزّل الملف الجاهز. الأوضاع المحلية لا ترفع الفيديو إلى خادم الموقع. وضع Anti Lag هنا تحويل محلي وليس خدمة خادم.</p>
+<header class="top"><div class="brand"><div class="logo">4K</div><div><div class="eyebrow">IBRAHIM STUDIO · LOCAL LAB</div><h1>استوديو تحسين الفيديو</h1></div></div><div class="pill">● المعالجة المحلية</div></header>
+<h2>جهّز مقاطعك لتيك توك</h2><p class="intro">اختر الفيديو، افحص تفاصيله، حدّد طريقة التجهيز، ثم نزّل النسخة الناتجة. تتم المعالجة على جهازك؛ الرفع إلى خادم غير مستخدم في هذه النسخة.</p>
 <div class="steps"><div class="step"><b>1</b> اختر الفيديو</div><div class="step"><b>2</b> طريقة التجهيز</div><div class="step"><b>3</b> التنزيل</div></div>
 <section class="card"><h3>① اختر الفيديو</h3><p class="sub">اختر ملفاً من جهازك أو جرّب رابطاً مباشراً إذا كان المصدر يسمح بالوصول من المتصفح.</p>
 <label class="drop" id="drop"><input id="file" type="file" accept="video/*"><span class="uploadIcon">＋</span><strong>اضغط لاختيار فيديو أو اسحب الملف هنا</strong><small>MP4 · MOV · WEBM · MKV (حسب دعم المتصفح)</small></label>
@@ -31,12 +31,12 @@ footer{text-align:center;color:#68778e;font-size:12px;margin-top:30px}
 <p class="note">ملاحظة: بعض الروابط الخارجية تمنع القراءة بسبب إعدادات CORS؛ عندها نزّل الفيديو إلى جهازك ثم اختره من الأعلى.</p>
 <div id="videoInfo" class="hidden"><div class="preview"><video id="preview" controls playsinline></video><div><div class="meta" id="meta"></div><div class="actions"><button id="copyInfo" class="quiet">نسخ التفاصيل</button><button id="changeFile" class="quiet">تغيير الفيديو</button></div></div></div></div>
 </section>
-<section class="card"><h3>② اختر طريقة التجهيز</h3><p class="sub">LITE وCLASSIC ينسخان مسارات المصدر دون إعادة ترميز. MAX يتحقق من HEVC ووجود الصوت قبل النسخ. Anti Lag المحلي يعيد ترميز الفيديو؛ خدمة HandBrake الخادمية غير متاحة على GitHub Pages.</p>
+<section class="card"><h3>② اختر طريقة التجهيز</h3><p class="sub">اختر الطريقة حسب ترميز الفيديو والنتيجة المطلوبة. أوضاع النسخ تحافظ على تدفق الصورة والصوت دون إعادة ترميز متى كانت الحاوية متوافقة.</p>
 <div class="modes">
-<label class="mode"><input type="radio" name="mode" value="lite" checked><span class="tag">الأسرع</span><strong>LITE · نسخ سريع</strong><small>نسخ سريع للصورة والصوت دون إعادة ترميز؛ يحافظ على أبعاد المصدر ولا يرفع الدقة أو الإطارات.</small></label>
-<label class="mode"><input type="radio" name="mode" value="classic"><strong>CLASSIC · SDR / HDR</strong><small>ينسخ مسارات الفيديو والصوت والبيانات الوصفية دون إعادة ترميز، إذا كانت الحاوية متوافقة.</small></label>
-<label class="mode"><input type="radio" name="mode" value="max"><span class="tag">لـ HEVC</span><strong>MAX HDR</strong><small>ينسخ مسار الفيديو والصوت دون إعادة ترميز. يُفضّل مصدر HEVC مع صوت؛ لا ينشئ HDR ولا يضمن أن TikTok سيعرضه في For You.</small></label>
-<label class="mode"><input type="radio" name="mode" value="antilag"><strong>Anti Lag · تحويل محلي</strong><small>تحويل محلي إلى MP4/H.264 حتى 1080p60. يخفّف الملف، لكنه ليس معالجة HandBrake الخادمية الموجودة في Wudooh.</small></label>
+<label class="mode"><input type="radio" name="mode" value="lite" checked><span class="tag">الأسرع</span><strong>LITE · 720p60</strong><small>ينسخ الصورة والصوت دون إعادة ترميز. لا يحوّل تلقائياً ملفاً أقل من 720p إلى دقة أعلى.</small></label>
+<label class="mode"><input type="radio" name="mode" value="classic" checked><span class="tag">موصى به</span><strong>CLASSIC · SDR / HDR</strong><small>يحافظ على الصورة والصوت الأصليين دون إعادة ترميز متى كانا متوافقين مع MP4.</small></label>
+<label class="mode"><input type="radio" name="mode" value="max"><span class="tag">لـ HEVC</span><strong>MAX · HEVC / HDR</strong><small>يحافظ على مسارات الفيديو والصوت دون إعادة ترميز. يحتاج ملفاً متوافقاً؛ لا ينشئ HDR إذا لم يكن موجوداً في المصدر.</small></label>
+<label class="mode"><input type="radio" name="mode" value="antilag"><strong>Anti Lag · MP4 حتى 1080p60</strong><small>يعيد ترميز الفيديو إلى H.264 محلياً لإنشاء ملف أخف. هذه ليست خدمة HandBrake الخادمية الموجودة في Wudooh.</small></label>
 <label class="mode"><input type="radio" name="mode" value="sdr"><strong>H.264 عالي الجودة · محلي</strong><small>إعادة ترميز فعلية إلى H.264 بجودة عالية، وقد تتغير ألوان HDR.</small></label>
 <label class="mode"><input type="radio" name="mode" value="mute"><strong>نسخ الفيديو بدون صوت</strong><small>يحفظ مسار الفيديو دون إعادة ترميز ويحذف الصوت.</small></label>
 </div>
@@ -48,7 +48,7 @@ footer{text-align:center;color:#68778e;font-size:12px;margin-top:30px}
 <div id="thumbPanel" class="hidden"><div class="coverBox"><canvas id="canvas" width="640" height="360"></canvas><div><label>اختر الإطار</label><input id="seek" class="range" type="range" min="0" max="100" value="0"><div class="status" id="seekTime">اختر فيديو أولاً</div><div class="actions"><button id="prevFrame" class="quiet">− 0.05 ثانية</button><button id="nextFrame" class="quiet">+ 0.05 ثانية</button></div><div class="actions"><button id="saveCover" class="primary" disabled>تنزيل JPG</button></div></div></div></div>
 </section>
 <section class="card hidden" id="result"><h3>✓ الفيديو جاهز</h3><p class="sub" id="resultText">اكتملت العملية.</p><div class="actions"><a id="download" download="ibrahim-studio.mp4"><button class="primary">تنزيل الفيديو</button></a><button id="again" class="quiet">تجهيز فيديو آخر</button></div></section>
-<footer>IBRAHIM STUDIO · تتم معالجة الفيديو محلياً داخل المتصفح متى أمكن</footer>
+<section class="card"><h3>قبل الرفع إلى TikTok</h3><p class="sub">استخدم TikTok Web بوضع سطح المكتب، ولا تقص الفيديو أو تضف مؤثرات بعد التجهيز. افتح الملف بعد التنزيل وتأكد من الصورة والصوت.</p><p class="sub">فحص رابط TikTok وظهوره في For You يحتاج خدمة خارجية وبيانات من TikTok؛ لا تعرض هذه النسخة نتيجة غير مؤكدة.</p></section><footer>IBRAHIM STUDIO · تتم معالجة الفيديو محلياً داخل المتصفح</footer>
 </main>
 <script>
 const $=id=>document.getElementById(id);let file=null,objectUrl=null,outputUrl=null,ffmpeg=null,working=false,videoDuration=0;
@@ -70,7 +70,7 @@ async function loadEngine(onProgress){if(window.IbrahimEngineInstance)return win
 class IbrahimEngine{
 constructor(){this.ffmpeg=new FFmpeg();this.loaded=false;this.busy=false;this.onProgress=onProgress;this.logs=[];this.ffmpeg.on('log',({message})=>{this.logs.push(message);if(this.logs.length>250)this.logs.shift()});this.ffmpeg.on('progress',({progress})=>{if(this.onProgress)this.onProgress(Math.min(.99,Math.max(.01,progress||0)))});}
 async load(){if(this.loaded)return;setStatus('تحميل محرك المعالجة لأول مرة؛ اترك الصفحة مفتوحة...',2);const base='https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';const classWorkerURL=new URL('assets/ffmpeg/worker.js',document.baseURI).href;await this.ffmpeg.load({classWorkerURL,coreURL:await toBlobURL(base+'/ffmpeg-core.js','text/javascript'),wasmURL:await toBlobURL(base+'/ffmpeg-core.wasm','application/wasm')});this.loaded=true;}
-async process(inputFile,method){if(this.busy)throw Error('المعالج مشغول حالياً');this.busy=true;const ext=(inputFile.name.match(/\.[^.]+$/)||['.mp4'])[0].toLowerCase();const input='input'+ext,output='output.mp4';let wrote=false;try{setStatus('تهيئة محرك الفيديو...',4);await this.load();setStatus('قراءة الفيديو داخل ذاكرة المعالجة المحلية...',7);await this.ffmpeg.writeFile(input,await fetchFile(inputFile));wrote=true;this.logs=[];setStatus('فحص ترميز الفيديو والصوت...',9);await this.ffmpeg.exec(['-hide_banner','-i',input]);const probe=this.logs.join('\\n');const videoLine=probe.split('\\n').find(x=>/Video:/i.test(x))||'';const hasAudio=/Audio:/i.test(probe);const isHevc=/hevc|h265/i.test(videoLine);if(method==='max'&&!isHevc)throw Error('وضع MAX يحتاج فيديو HEVC/H.265. ترميز الفيديو المكتشف: '+(videoLine||'غير معروف'));if(method==='max'&&!hasAudio)throw Error('وضع MAX يحتاج مساراً صوتياً في الفيديو.');let args;
+async process(inputFile,method){if(this.busy)throw Error('المعالج مشغول حالياً');this.busy=true;const ext=(inputFile.name.match(/\.[^.]+$/)||['.mp4'])[0].toLowerCase();const input='input'+ext,output='output.mp4';let wrote=false;try{setStatus('تهيئة محرك الفيديو...',4);await this.load();setStatus('قراءة الفيديو داخل ذاكرة المعالجة المحلية...',7);await this.ffmpeg.writeFile(input,await fetchFile(inputFile));wrote=true;this.logs=[];setStatus('تجهيز مسارات الفيديو والصوت...',9);let args;
 if(method==='preserve'||method==='lite'||method==='classic'){setStatus('نسخ مسارات الفيديو والصوت دون إعادة ترميز...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-map_chapters','0','-c','copy','-movflags','+faststart','-map_metadata','0',output]}
 else if(method==='max'){setStatus('MAX HDR: حفظ HEVC والصوت دون إعادة ترميز...',10);args=['-i',input,'-map','0:v:0','-map','0:a:0','-map_metadata','0','-map_chapters','0','-c','copy','-movflags','+faststart',output]}
 else if(method==='noaudio'){setStatus('نسخ مسار الفيديو وحذف الصوت...',10);args=['-i',input,'-map','0:v:0','-c:v','copy','-an','-movflags','+faststart',output]}
