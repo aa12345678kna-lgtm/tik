@@ -4,8 +4,37 @@
 <main class="wrap"><section class="hero"><h1>الدعم وفحص الجهاز</h1><p class="muted">الفحص يعمل محلياً داخل المتصفح ولا يرسل تقرير الجهاز تلقائياً.</p></section>
 <section class="card"><div id="state" class="status">جارٍ فحص المتصفح...</div><div id="details" class="grid" style="margin-top:12px"></div><p><button id="copy" class="button" type="button">نسخ التقرير</button> <button id="again" class="button" type="button">إعادة الفحص</button></p></section></main><footer class="wrap">التقرير لا يتضمن بيانات تعريف شخصية، وتبقى نتائجه على جهازك حتى تختار نسخها.</footer>
 <script type="module">
-import {detectRuntimeCapabilities,selectEngineMode} from "../assets/js/runtime-capabilities.js";
-const $=id=>document.getElementById(id);let report="";
-function scan(){const c=detectRuntimeCapabilities();const mode=selectEngineMode(c,{threadedBundleAvailable:false});const rows=[["HTTPS",c.secureContext?"متاح":"غير متاح"],["WebAssembly",c.wasm?"مدعوم":"غير مدعوم"],["SharedArrayBuffer",c.sharedArrayBuffer?"متاح":"غير متاح"],["COOP/COEP isolation",c.crossOriginIsolated?"مفعّل":"غير مفعّل"],["الذاكرة التقريبية",c.deviceMemoryGB?c.deviceMemoryGB+" GB":"غير متاحة"],["الأنوية المنطقية",c.hardwareConcurrency??"غير متاح"],["الشاشة",screen.width+" × "+screen.height+" · DPR "+devicePixelRatio],["خطة المحرك",mode],["المتصفح",c.userAgent]];report="تقرير Ibrahim Studio\n"+rows.map(r=>r.join(": ")).join("\n");$("state").textContent=c.secureContext&&c.wasm?"الفحص الأساسي ناجح. سيُستخدم Single-Thread حتى تتوفر حزمة متعددة الخيوط مختبرة.":"المتصفح يحتاج HTTPS وWebAssembly للمعالجة."; $("details").innerHTML=rows.map(([k,v])=>'<div class="item"><b>'+k+'</b><div class="muted">'+String(v).replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]))+'</div></div>').join("");}
-$("copy").onclick=async()=>{try{await navigator.clipboard.writeText(report);$("state").textContent="تم نسخ التقرير؛ أرسله للدعم إذا رغبت."}catch{$("state").textContent=report}};$("again").onclick=scan;scan();
+import {getEnginePlan} from "../assets/js/engine-loader.js";
+const $=id=>document.getElementById(id);
+const KEY="ibrahimStudioLastEngineReport";
+let report="";
+const esc=v=>String(v??"غير متاح").replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+function scan(){
+ const plan=getEnginePlan();
+ let last=null;try{last=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){}
+ const rows=[
+ ["HTTPS",window.isSecureContext?"متاح":"غير متاح"],
+ ["WebAssembly",typeof WebAssembly==="object"?"مدعوم":"غير مدعوم"],
+ ["SharedArrayBuffer",typeof SharedArrayBuffer!=="undefined"?"متاح":"غير متاح"],
+ ["COOP/COEP isolation",window.crossOriginIsolated?"مفعّل":"غير مفعّل"],
+ ["الذاكرة التقريبية",navigator.deviceMemory? navigator.deviceMemory+" GB":"غير متاحة"],
+ ["الأنوية المنطقية",navigator.hardwareConcurrency??"غير متاح"],
+ ["الشاشة",screen.width+" × "+screen.height+" · DPR "+devicePixelRatio],
+ ["خطة المحرك الحالية",plan.mode],
+ ["آخر محرك نفّذ تصديراً",last?.activeMode||"لم يُسجل تصدير بعد"],
+ ["خطة آخر تصدير",last?.plannedMode||"غير متاح"],
+ ["الرجوع التلقائي للاحتياطي",last?(last.fallbackUsed?"نعم":"لا"):"غير متاح"],
+ ["سبب الرجوع",last?.fallbackReason||"لا يوجد"],
+ ["مدة المعالجة الكلية",Number.isFinite(last?.processingSeconds)?last.processingSeconds.toFixed(2)+" ثانية":"غير متاح"],
+ ["مدة تنفيذ FFmpeg",Number.isFinite(last?.encodeSeconds)?last.encodeSeconds.toFixed(2)+" ثانية":"غير متاح"],
+ ["مدة تحميل المحرك",Number.isFinite(last?.loadSeconds)?last.loadSeconds.toFixed(2)+" ثانية":"غير متاح"],
+ ["سرعة المعالجة",Number.isFinite(last?.speedFactor)?last.speedFactor.toFixed(2)+"× من مدة الفيديو":"غير متاح"],
+ ["وقت آخر تصدير",last?.timestamp?new Date(last.timestamp).toLocaleString("ar-IQ"):"غير متاح"]
+ ];
+ report="تقرير Ibrahim Studio\n"+rows.map(r=>r.join(": ")).join("\n")+"\nلم يتم إرسال التقرير أو الفيديو إلى أي خادم.";
+ $("state").textContent=last?"تم العثور على تقرير آخر تصدير محفوظ محلياً على هذا الجهاز.":"الفحص الأساسي ناجح. نفّذ تصديراً من الاستوديو حتى يظهر المحرك الفعلي ووقت المعالجة هنا.";
+ $("details").innerHTML=rows.map(([k,v])=>'<div class="item"><b>'+esc(k)+'</b><div class="muted">'+esc(v)+'</div></div>').join("");
+}
+$("copy").onclick=async()=>{try{await navigator.clipboard.writeText(report);$("state").textContent="تم نسخ التقرير؛ أرسله للدعم إذا رغبت."}catch{$("state").textContent=report}};
+$("again").onclick=scan;scan();
 </script></body></html>
