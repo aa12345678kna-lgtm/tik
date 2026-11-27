@@ -36,41 +36,36 @@ button{font:inherit;cursor:pointer;border:0;border-radius:11px;padding:12px 17px
 .guide{display:grid;grid-template-columns:1fr 1fr;gap:10px}.guide article{background:#0b0f15;border:1px solid #252d39;border-radius:12px;padding:14px}.guide b{display:block;margin-bottom:7px}.guide p{color:var(--muted);font-size:12px;line-height:1.7;margin:0}
 footer{text-align:center;color:#687180;font-size:12px;margin-top:30px}
 @media(max-width:680px){.wrap{padding:0 12px 42px}.top{padding-top:15px}.card{padding:17px}.preview{grid-template-columns:1fr}.modes{grid-template-columns:1fr}.urlrow{flex-direction:column}.coverBox,.guide{grid-template-columns:1fr}.steps{gap:6px}.step{padding:9px 6px;font-size:11px;text-align:center}.step b{margin:0 0 5px}.pill{font-size:10px;padding:7px 9px}}
+
+/* واجهة مبسطة على نمط Wudooh */
+nav,#guide,#support,.urlrow,#videoInfo,.card:has(#thumbPanel){display:none!important}
+.wrap{max-width:850px}.top{margin-bottom:12px}.steps{margin:14px 0 18px}.card{padding:18px;margin:12px 0}.mode{min-height:105px;padding:13px}.modes{grid-template-columns:1fr 1fr}.intro{margin-bottom:14px}.drop{padding:26px 12px}.actions{margin-top:14px}
+@media(max-width:600px){.modes{grid-template-columns:1fr}.mode{min-height:unset}}
 </style>
 </head>
 <body><main class="wrap">
 <header class="top"><div class="brand"><div class="logo">4K</div><div><div class="eyebrow">IBRAHIM STUDIO · LOCAL LAB</div><h1>استوديو تحسين الفيديو</h1></div></div><div class="pill">● المعالجة المحلية</div></header>
-<nav><a href="#home">الرئيسية</a><a href="#studio">تحسين الفيديو</a><a href="#guide">الدليل</a><a href="#support">الدعم</a></nav>
+
 <div id="home"></div>
-<h2>تحسين الفيديو</h2><p class="intro">اختر مقطعك، افحص بياناته، حدّد طريقة التجهيز، ثم نزّل الملف الجاهز. المعالجة في هذه النسخة محلية داخل المتصفح ولا يتم رفع الفيديو إلى خادم.</p>
-<div class="steps"><div class="step"><b>1</b> اختر الفيديو</div><div class="step"><b>2</b> طريقة التجهيز</div><div class="step"><b>3</b> التنزيل</div></div>
-<section class="card" id="studio"><h3>① اختر الفيديو</h3><p class="sub">اختر ملفاً من جهازك أو جرّب رابطاً مباشراً إذا كان المصدر يسمح بالوصول من المتصفح.</p>
-<label class="drop" id="drop"><input id="file" type="file" accept="video/*"><span class="uploadIcon">＋</span><strong>اضغط لاختيار فيديو أو اسحب الملف هنا</strong><small>MP4 · MOV · WEBM · MKV (حسب دعم المتصفح)</small></label>
-<div class="urlrow"><input id="videoUrl" placeholder="رابط مباشر لملف فيديو MP4"><button id="useUrl" class="quiet">استخدام الرابط</button></div>
-<p class="note">ملاحظة: بعض الروابط الخارجية تمنع القراءة بسبب إعدادات CORS؛ عندها نزّل الفيديو إلى جهازك ثم اختره من الأعلى.</p>
-<div id="videoInfo" class="hidden"><div class="preview"><video id="preview" controls playsinline></video><div><div class="meta" id="meta"></div><div class="actions"><button id="copyInfo" class="quiet">نسخ التفاصيل</button><button id="changeFile" class="quiet">تغيير الفيديو</button></div></div></div></div>
+<h2>تحسين الفيديو</h2><p class="intro">اختر مقطعك، حدّد الطريقة المناسبة، ثم نزّل الملف الجاهز.</p>
+<div class="steps"><div class="step"><b>1</b> الفيديو</div><div class="step"><b>2</b> الطريقة</div><div class="step"><b>3</b> التنزيل</div></div>
+<section class="card" id="studio"><h3>1 · اختر الفيديو</h3><p class="sub">اختر فيديو من جهازك للبدء.</p>
+<label class="drop" id="drop"><input id="file" type="file" accept="video/*"><span class="uploadIcon">＋</span><strong>اختر فيديو أو اسحب الملف هنا</strong><small>MP4 · MOV · WEBM</small></label>
+<div id="videoInfo" class="hidden"><video id="preview" controls playsinline></video><div id="meta"></div><button id="copyInfo" class="hidden">نسخ</button><button id="changeFile" class="hidden">تغيير الفيديو</button></div>
+<div class="urlrow hidden"><input id="videoUrl"><button id="useUrl">استخدام الرابط</button></div>
 </section>
-<section class="card"><h3>② اختر طريقة التجهيز</h3><p class="sub">اختر الطريقة حسب ترميز الفيديو والنتيجة المطلوبة. أوضاع النسخ تحافظ على تدفق الصورة والصوت دون إعادة ترميز متى كانت الحاوية متوافقة.</p>
+<section class="card"><h3>2 · اختر الطريقة</h3><p class="sub">اختر النتيجة المناسبة لمقطعك.</p>
 <div class="modes">
 <label class="mode"><input type="radio" name="mode" value="lite"><span class="tag">الأسرع</span><strong>LITE · نسخ سريع</strong><small>ينسخ مسارات الصورة والصوت دون إعادة ترميز؛ أسرع خيار عندما يكون الملف متوافقاً.</small></label>
 <label class="mode"><input type="radio" name="mode" value="classic" checked><span class="tag">موصى به</span><strong>CLASSIC · SDR / HDR</strong><small>يحافظ على مسارات الصورة والصوت كما هي دون إعادة ترميز. لا يضيف HDR إلى فيديو SDR.</small></label>
 <label class="mode"><input type="radio" name="mode" value="max"><span class="tag">لـ HEVC</span><strong>MAX · HEVC / HDR</strong><small>للمقاطع المتوافقة مع HEVC/HDR. يحفظ مسار الصورة والصوت الأصليين دون إعادة ترميز؛ يحتاج وجود مسار صوت.</small></label>
-<label class="mode"><input type="radio" name="mode" value="antilag"><strong>Anti Lag · MP4 حتى 1080p60</strong><small>يعيد ترميز الفيديو محلياً إلى H.264 بملف أخف لتسهيل الرفع. يحتاج وقتاً وذاكرة بحسب قوة الجهاز.</small></label>
-<label class="mode"><input type="radio" name="mode" value="sdr"><strong>H.264 عالي الجودة · محلي</strong><small>إعادة ترميز فعلية إلى H.264 بجودة عالية، وقد تتغير ألوان HDR.</small></label>
-<label class="mode"><input type="radio" name="mode" value="mute"><strong>بدون صوت</strong><small>ينسخ مسار الفيديو الأصلي دون إعادة ترميز ويحذف مسار الصوت فقط.</small></label>
-<label class="mode"><input type="radio" name="mode" value="720"><strong>720p · الحفاظ على FPS المصدر</strong><small>يعيد الترميز إلى H.264 بدقة تصل إلى 720p ويحافظ على معدل إطارات المصدر دون تكرار إطارات اصطناعي.</small></label>
-<label class="mode"><input type="radio" name="mode" value="1080"><strong>1080p · الحفاظ على FPS المصدر</strong><small>إعادة ترميز محلية إلى H.264 حتى 1080p مع الحفاظ على معدل إطارات المصدر.</small></label>
-<label class="mode"><input type="radio" name="mode" value="4k60"><strong>عمودي 4K · FPS المصدر</strong><small>تصدير ثقيل إلى 2160×3840 مع الحفاظ على معدل إطارات المصدر؛ التكبير لا يضيف تفاصيل حقيقية وقد يستغرق وقتاً طويلاً.</small></label>
+<label class="mode"><input type="radio" name="mode" value="antilag"><strong>Anti Lag · MP4 حتى 1080p</strong><small>يعيد تجهيز الفيديو إلى MP4 بجودة مناسبة للرفع.</small></label>
 </div>
 <div class="actions"><button id="start" class="primary" disabled>ابدأ التجهيز</button><button id="cancel" class="danger hidden">إلغاء</button></div>
 <div id="progressWrap" class="hidden"><div class="progress"><div class="bar" id="bar"></div></div><div class="status" id="status">جارٍ التحضير...</div></div>
 </section>
-<section class="card"><h3>③ صورة مصغّرة اختيارية</h3><p class="sub">بعد تجهيز الفيديو، اختر إطاراً من المقطع واحفظه كصورة JPG منفصلة.</p>
-<div class="actions"><button id="thumbNo" class="quiet">لا، شكراً</button><button id="thumbYes" class="quiet">نعم، اختر إطاراً</button></div>
-<div id="thumbPanel" class="hidden"><div class="coverBox"><canvas id="canvas" width="640" height="360"></canvas><div><label>اختر الإطار</label><input id="seek" class="range" type="range" min="0" max="100" value="0"><div class="status" id="seekTime">اختر فيديو أولاً</div><div class="actions"><button id="prevFrame" class="quiet">− 0.05 ثانية</button><button id="nextFrame" class="quiet">+ 0.05 ثانية</button></div><div class="actions"><button id="saveCover" class="primary" disabled>تنزيل JPG</button></div></div></div></div>
-</section>
-<section class="card hidden" id="result"><h3>✓ الفيديو جاهز</h3><p class="sub" id="resultText">اكتملت العملية.</p><div class="actions"><a id="download" download="ibrahim-studio.mp4"><button class="primary">تنزيل الفيديو</button></a><button id="again" class="quiet">تجهيز فيديو آخر</button></div></section>
-<section class="card" id="guide"><h3>الدليل السريع</h3><p class="sub">طريقة استخدام الاستوديو وملاحظات اختيار وضع التجهيز.</p><div class="guide"><article><b>Wudooh MAX / CLASSIC</b><p>أوضاع نسخ تحفظ مسارات المصدر دون إعادة ترميز عندما تكون صيغة MP4 متوافقة. لا تنشئ HDR من فيديو SDR.</p></article><article><b>Anti Lag</b><p>يعيد ترميز الفيديو محلياً إلى H.264 حتى 1080p60 لتقليل الحجم. يحتاج ذاكرة ووقتاً حسب قوة الهاتف.</p></article><article><b>الصورة المصغّرة</b><p>اختر إطاراً من الفيديو واحفظه كصورة JPG منفصلة؛ لا يغيّر ملف الفيديو.</p></article><article><b>قبل النشر</b><p>افتح الملف الناتج وتأكد من الصورة والصوت. استخدم TikTok Web بوضع سطح المكتب إذا رغبت.</p></article></div></section><section class="card" id="support"><h3>فحص رابط TikTok</h3><p class="sub">يمكنك فتح الفيديو على TikTok لمراجعته. لا يستطيع هذا الموقع وحده معرفة إن كان الفيديو سيظهر في For You أو قراءة بيانات التوزيع الخاصة بحسابك.</p><div class="urlrow"><input id="tiktokCheckUrl" type="url" inputmode="url" placeholder="ألصق رابط فيديو TikTok هنا"><button id="openTikTok" class="primary" type="button">فتح الفيديو</button></div><p id="tiktokUrlMessage" class="status" aria-live="polite">الصق رابط الفيديو أولاً، ثم اضغط «فتح الفيديو».</p></section><footer>IBRAHIM STUDIO · معالجة الفيديو محلياً داخل المتصفح</footer>
+<section class="card hidden" id="result"><h3>3 · الفيديو جاهز</h3><p class="sub" id="resultText">اكتملت العملية.</p><div class="actions"><a id="download" download="ibrahim-studio.mp4"><button class="primary">تنزيل الفيديو</button></a><button id="again" class="quiet">تجهيز فيديو آخر</button></div></section>
+<footer>IBRAHIM STUDIO · معالجة الفيديو محلياً داخل المتصفح</footer>
 </main>
 <script>
 const $=id=>document.getElementById(id);let file=null,objectUrl=null,outputUrl=null,ffmpeg=null,working=false,videoDuration=0;
