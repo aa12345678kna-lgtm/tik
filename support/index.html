@@ -4,7 +4,7 @@
 <main class="wrap"><section class="hero"><h1>الدعم وفحص الجهاز</h1><p class="muted">الفحص يعمل محلياً داخل المتصفح ولا يرسل تقرير الجهاز تلقائياً.</p></section>
 <section class="card"><div id="state" class="status">جارٍ فحص المتصفح...</div><div id="details" class="grid" style="margin-top:12px"></div><p><button id="copy" class="button" type="button">نسخ التقرير</button> <button id="again" class="button" type="button">إعادة الفحص</button></p></section></main><footer class="wrap">التقرير لا يتضمن بيانات تعريف شخصية، وتبقى نتائجه على جهازك حتى تختار نسخها.</footer>
 <script type="module">
-import {getEnginePlan} from "../assets/js/engine-loader.js";
+import {getEnginePlan} from "../assets/js/engine-loader.js?v=20261127-mt-diagnostics-2";
 const $=id=>document.getElementById(id);
 const KEY="ibrahimStudioLastEngineReport";
 let report="";
@@ -21,9 +21,17 @@ function scan(){
  ["الأنوية المنطقية",navigator.hardwareConcurrency??"غير متاح"],
  ["الشاشة",screen.width+" × "+screen.height+" · DPR "+devicePixelRatio],
  ["خطة المحرك الحالية",plan.mode],
+ ["سبب اختيار الخطة",plan.reason],
+ ["حزمة Multi-thread",plan.threadedBundleAvailable?"مفعّلة":"غير مفعّلة"],
+ ["شرط HTTPS",plan.capabilities.secureContext?"متحقق":"غير متحقق"],
+ ["شرط WebAssembly",plan.capabilities.wasm?"متحقق":"غير متحقق"],
+ ["شرط SharedArrayBuffer",plan.capabilities.sharedArrayBuffer?"متحقق":"غير متحقق"],
+ ["شرط COOP/COEP",plan.capabilities.crossOriginIsolated?"متحقق":"غير متحقق"],
  ["آخر محرك نفّذ تصديراً",last?.activeMode||"لم يُسجل تصدير بعد"],
  ["وضع المعالجة",last?.processingMode||"غير متاح"],
  ["خطة آخر تصدير",last?.plannedMode||"غير متاح"],
+ ["سبب اختيار خطة آخر تصدير",last?.planReason||"غير متاح"],
+ ["COOP/COEP وقت آخر تصدير",last?.capabilities?.crossOriginIsolated?"مفعّل":"غير مفعّل أو غير معروف"],
  ["الرجوع التلقائي للاحتياطي",last?(last.fallbackUsed?"نعم":"لا"):"غير متاح"],
  ["سبب الرجوع",last?.fallbackReason||"لا يوجد"],
  ["مدة المعالجة الكلية",Number.isFinite(last?.processingSeconds)?last.processingSeconds.toFixed(2)+" ثانية":"غير متاح"],
