@@ -15,7 +15,6 @@ These headers enable cross-origin isolation only when all loaded resources satis
 
 ## Free project
 
-Ibrahim Studio is intended to be free to use. No activation code, subscription, account or trial counter is part of the product.
 
 ## Engine strategy
 
@@ -33,4 +32,3 @@ Ibrahim Studio is intended to be free to use. No activation code, subscription, 
 
 ## Local privacy
 
-The project is free and has no accounts, activation codes, subscriptions or free-trial counters. The browser diagnostic runs locally. No video upload or cloud HandBrake processing is implemented by these files.
