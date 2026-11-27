@@ -149,6 +149,104 @@ footer{padding:18px 0;color:#778394}
  #engineReport{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
+
+/* واجهة مبسطة ومنظمة — تغييرات عرض فقط */
+:root{
+  --bg:#090b10;
+  --line:#252b36;
+  --muted:#9da7b5;
+  --text:#f4f6fa;
+  --radius:14px;
+}
+body{background:radial-gradient(ellipse at 50% -18%,#1b2432 0%,#090b10 55%);color:var(--text)}
+.wrap{max-width:780px;padding:0 16px 48px}
+.top{padding:17px 0 13px;margin-bottom:16px;border-bottom:1px solid #252b36}
+.logo{width:40px;height:40px;border-radius:12px}
+.brand h1{font-size:16px;font-weight:750}
+.pill{font-size:11px;padding:7px 10px}
+h2{font-size:clamp(25px,5vw,32px);margin:2px 0 6px;letter-spacing:-.4px}
+.intro{font-size:13px;margin-bottom:14px;color:#aeb7c4}
+.steps{display:flex;gap:7px;margin:12px 0 15px}
+.step{flex:1;text-align:center;border-radius:9px;padding:8px 7px;background:#111722;border-color:#252e3b;font-size:11px;color:#d0d7e2}
+.step b{width:20px;height:20px;border-radius:7px;background:#38202b;color:#ff9bb0;margin-left:5px}
+.card{margin:10px 0;padding:17px;background:#10151e;border:1px solid #252e3b;border-radius:14px;box-shadow:0 8px 24px #0002}
+.card h3{font-size:16px;margin-bottom:6px}
+.sub{font-size:12px;line-height:1.75;margin-bottom:12px;color:#a5afbd}
+.drop{min-height:132px;padding:24px 14px;border:1.5px dashed #566276;border-radius:12px;background:#0b1018}
+.drop:hover,.drop.drag{border-color:#ff7894;background:#17131b}
+.uploadIcon{font-size:27px}
+.drop strong{font-size:14px;margin:6px 0}
+.drop small{font-size:11px;color:#9da8b7}
+.preview{max-height: min(58vh,430px);border-radius:12px;background:#05070b}
+.videoDetails,.meta{gap:7px}
+.metric{padding:10px;background:#0b111a;border-color:#273140;border-radius:10px}
+.metric span{font-size:10px;color:#9da8b7}
+.metric b{font-size:13px}
+.videoActions{gap:8px}
+.videoActions button,.deviceActions button{min-height:40px;padding:9px 13px}
+.modes{gap:8px}
+.mode{min-height:112px;padding:13px;background:#0b111a;border-color:#293342;border-radius:11px}
+.mode:has(input:checked){background:#1b141d;border-color:#ff718f;box-shadow:inset 0 0 0 1px #ff718f}
+.mode strong{font-size:13px;margin:7px 0 5px}
+.mode small{font-size:11px;line-height:1.65;color:#aab4c2}
+.tag{font-size:9px;padding:3px 6px}
+.modeHint{margin-top:10px;padding:10px 11px;background:#0d141e;border-color:#273342;font-size:11px}
+.actions{gap:8px;margin-top:12px}
+.actions button{min-height:43px;padding:10px 15px}
+.actions #start{min-width:150px}
+.primary{background:linear-gradient(110deg,#f04b76,#fa865d)}
+.quiet{background:#171e29;border-color:#303b4b}
+.danger{background:#43232c}
+.progress{height:9px;background:#252e3b}
+.bar{background:linear-gradient(90deg,#f04b76,#fa9a62)}
+.status{font-size:12px}
+.scanState{padding:10px 12px;background:#0c141e;border-color:#293747;font-size:11px}
+.scanChip,.scanItem{background:#0d141e;border-color:#293747}
+.scanChip{padding:9px}
+.scanChip span,.scanItem span{font-size:10px;color:#9da8b7}
+.scanChip b,.scanItem b{font-size:12px}
+.scanReport details{background:#0b111a;border-color:#293747}
+.scanReport summary{font-size:12px;padding:10px 12px}
+.deviceReport{padding:13px;margin:10px 0;background:#0e141d;border-color:#263241}
+.deviceReport h3{font-size:14px}
+.deviceReport .sub{font-size:11px;margin-bottom:8px}
+.deviceKeyIndicators{gap:6px}
+.deviceKey{padding:8px;background:#111a26;border-color:#293747}
+.deviceKey span{font-size:10px}
+.deviceKey b{font-size:11px}
+.deviceDetails summary{font-size:11px}
+.deviceRow{padding:8px;background:#111a26}
+.deviceRow span{font-size:10px}
+.deviceRow b{font-size:11px}
+.processIssue{border-radius:11px}
+#result{border-color:#3b4657}
+#result h4{font-size:14px;margin:14px 0 8px}
+#engineReport{gap:7px}
+footer{font-size:10px;color:#778293;padding-top:15px}
+@media(max-width:600px){
+ .wrap{padding-left:12px;padding-right:12px}
+ .top{padding-top:13px}
+ .card{padding:14px;margin:9px 0}
+ .steps{gap:5px;margin:9px 0 11px}
+ .step{font-size:10px;padding:7px 4px}
+ .step b{margin-left:0;margin-bottom:3px}
+ .modes{grid-template-columns:1fr 1fr;gap:7px}
+ .mode{min-height:118px;padding:10px}
+ .mode strong{font-size:12px}
+ .mode small{font-size:10px}
+ .videoDetails{grid-template-columns:1fr 1fr}
+ .deviceKeyIndicators{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .deviceKey{padding:7px 5px}
+ .deviceKey span{font-size:9px}
+ .deviceKey b{font-size:10px}
+ .actions #start,.actions #cancel{flex:1 1 100%}
+ .videoActions button,.deviceActions button{flex:1}
+}
+@media(max-width:360px){
+ .modes{grid-template-columns:1fr}
+ .pill{max-width:125px;white-space:nowrap}
+}
+
 </style>
 </head>
 <body><main class="wrap">
