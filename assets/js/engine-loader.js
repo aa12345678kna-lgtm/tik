@@ -27,7 +27,7 @@ export function getEnginePlan() {
   if (!capabilities.wasm) blockers.push("WebAssembly غير مدعوم");
   if (!capabilities.sharedArrayBuffer) blockers.push("SharedArrayBuffer غير متاح");
   if (!capabilities.crossOriginIsolated) blockers.push("عزل COOP/COEP غير مفعّل");
-  if (!ENGINE_CONFIG.threadedBundleAvailable) blockers.push("حزمة core-mt غير مفعّلة في الإعدادات");
+  if (!ENGINE_CONFIG.threadedBundleAvailable) blockers.push("دعم الوضع المتوازي غير مفعّل في الإعدادات");
   return {
     mode,
     capabilities,
