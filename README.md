@@ -18,9 +18,9 @@ These headers enable cross-origin isolation only when all loaded resources satis
 
 ## Engine strategy
 
-- The studio selects `@ffmpeg/core-mt@0.12.10` when HTTPS, WebAssembly, SharedArrayBuffer and cross-origin isolation are available.
+- The studio selects `@ffmpeg/core-mt@0.12.6` when HTTPS, WebAssembly, SharedArrayBuffer and cross-origin isolation are available.
 - The multi-thread core and its pthread worker are loaded from jsDelivr; the wrapper uses `@ffmpeg/ffmpeg@0.12.10`.
-- If the multi-thread core fails to load, the studio automatically falls back to `@ffmpeg/core@0.12.10` (single-thread).
+- If the multi-thread core fails to load, the studio automatically falls back to `@ffmpeg/core@0.12.6` (single-thread).
 - SharedArrayBuffer support alone does not turn a single-thread core into a multi-thread core; the matching core and worker are both required.
 - First load of the multi-thread core downloads a large WASM file (about 33 MB) and requires an internet connection.
 
