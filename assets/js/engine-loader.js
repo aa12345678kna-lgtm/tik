@@ -10,12 +10,12 @@ const ENGINE_CONFIG = Object.freeze({
   threadedBundleAvailable: true,
   singleThread: {
     package: "@ffmpeg/ffmpeg@0.12.10",
-    core: "@ffmpeg/core@0.12.10"
+    core: "@ffmpeg/core@0.12.6"
   },
   multiThread: {
     package: "@ffmpeg/ffmpeg@0.12.10",
-    core: "@ffmpeg/core-mt@0.12.10",
-    worker: "@ffmpeg/core-mt@0.12.10/dist/esm/ffmpeg-core.worker.js"
+    core: "@ffmpeg/core-mt@0.12.6",
+    worker: "@ffmpeg/core-mt@0.12.6/dist/esm/ffmpeg-core.worker.js"
   }
 });
 
