@@ -22,6 +22,7 @@ function scan(){
  ["الشاشة",screen.width+" × "+screen.height+" · DPR "+devicePixelRatio],
  ["خطة المحرك الحالية",plan.mode],
  ["آخر محرك نفّذ تصديراً",last?.activeMode||"لم يُسجل تصدير بعد"],
+ ["وضع المعالجة",last?.processingMode||"غير متاح"],
  ["خطة آخر تصدير",last?.plannedMode||"غير متاح"],
  ["الرجوع التلقائي للاحتياطي",last?(last.fallbackUsed?"نعم":"لا"):"غير متاح"],
  ["سبب الرجوع",last?.fallbackReason||"لا يوجد"],
