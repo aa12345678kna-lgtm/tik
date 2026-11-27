@@ -13,6 +13,10 @@ A matching `vercel.json` is included as an alternative.
 
 These headers enable cross-origin isolation only when all loaded resources satisfy the browser's CORS/CORP requirements. Verify in the deployed browser using `window.crossOriginIsolated` and `typeof SharedArrayBuffer`.
 
+## Free project
+
+Ibrahim Studio is intended to be free to use. No activation code, subscription, account or trial counter is part of the product.
+
 ## Engine strategy
 
 - Existing studio engine remains single-threaded.
@@ -26,8 +30,7 @@ These headers enable cross-origin isolation only when all loaded resources satis
 - `/docs/` — user guide.
 - `/tiktok/` — upload instructions.
 - `/support/` — local browser diagnostics.
-- `/account/` — activation page scaffold; backend not connected.
 
 ## Local privacy
 
-The browser diagnostic runs locally. The activation page is only a scaffold and does not collect codes. No video upload or cloud HandBrake processing is implemented by these files.
+The project is free and has no accounts, activation codes, subscriptions or free-trial counters. The browser diagnostic runs locally. No video upload or cloud HandBrake processing is implemented by these files.
