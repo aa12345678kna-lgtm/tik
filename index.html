@@ -205,7 +205,7 @@ function initializeEnginePlan(){
    return window.IbrahimEnginePlan;
   }).catch(error=>{
    const message=error?.message||String(error);
-   window.IbrahimEnginePlan={mode:"single-thread",requestedMode:"single-thread",capabilities:{secureContext:window.isSecureContext===true,wasm:typeof WebAssembly==="object",sharedArrayBuffer:typeof SharedArrayBuffer!=="undefined",crossOriginIsolated:window.crossOriginIsolated===true,hardwareConcurrency:navigator.hardwareConcurrency??null},threadedBundleAvailable:false,reason:"تعذّر تحميل مخطط المحرك: "+message,fallbackUsed:false,fallbackReason:""};
+   window.IbrahimEnginePlan={mode:"single-thread",requestedMode:"single-thread",capabilities:{secureContext:window.isSecureContext===true,wasm:typeof WebAssembly==="object",sharedArrayBuffer:typeof SharedArrayBuffer!=="undefined",crossOriginIsolated:window.crossOriginIsolated===true,hardwareConcurrency:navigator.hardwareConcurrency??null},threadedBundleAvailable:false,reason:"تعذّر إعداد خطة المعالجة: "+message,fallbackUsed:false,fallbackReason:""};
    return window.IbrahimEnginePlan;
   });
  }
@@ -216,7 +216,8 @@ const time=s=>{if(!Number.isFinite(s))return '—';return Math.floor(s/60)+':'+S
 const ENGINE_REPORT_KEY='ibrahimStudioLastEngineReport';
 function getLastEngineReport(){try{return JSON.parse(localStorage.getItem(ENGINE_REPORT_KEY)||'null')}catch(e){return null}}
 function saveEngineReport(report){try{localStorage.setItem(ENGINE_REPORT_KEY,JSON.stringify(report))}catch(e){console.warn('تعذّر حفظ تقرير المحرك محلياً',e)}}
-function engineReportRows(report){if(!report)return [];const speed=Number.isFinite(report.speedFactor)?report.speedFactor.toFixed(2)+'× من مدة الفيديو':'غير متاح';return [['وضع التنفيذ الفعلي',report.activeMode||'غير متاح'],['وضع المعالجة',report.processingMode||'غير متاح'],['خطة التنفيذ قبل البدء',report.plannedMode||'غير متاح'],['سبب اختيار وضع المعالجة',report.planReason||'غير متاح'],['HTTPS في وقت الاختيار',report.capabilities?.secureContext?'نعم':'لا'],['WebAssembly في وقت الاختيار',report.capabilities?.wasm?'نعم':'لا'],['SharedArrayBuffer في وقت الاختيار',report.capabilities?.sharedArrayBuffer?'نعم':'لا'],['COOP/COEP في وقت الاختيار',report.capabilities?.crossOriginIsolated?'مفعّل':'غير مفعّل'],['عدد الأنوية المنطقية',report.capabilities?.hardwareConcurrency??'غير متاح'],['الرجوع التلقائي للاحتياطي',report.fallbackUsed?'نعم':'لا'],['سبب الرجوع',report.fallbackReason||'لا يوجد'],['مدة المعالجة الكلية',Number.isFinite(report.processingSeconds)?report.processingSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة تنفيذ FFmpeg',Number.isFinite(report.encodeSeconds)?report.encodeSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة تهيئة المعالجة',Number.isFinite(report.loadSeconds)?report.loadSeconds.toFixed(2)+' ثانية':'غير متاح'],['سرعة المعالجة',speed]]}
+function executionModeLabel(mode){return mode==='multi-thread'?'متعدد الخيوط':mode==='single-thread'?'خيط واحد':mode||'غير متاح'}
+function engineReportRows(report){if(!report)return [];const speed=Number.isFinite(report.speedFactor)?report.speedFactor.toFixed(2)+'× من مدة الفيديو':'غير متاح';return [['وضع التنفيذ الفعلي',executionModeLabel(report.activeMode)],['وضع المعالجة',report.processingMode||'غير متاح'],['خطة التنفيذ قبل البدء',executionModeLabel(report.plannedMode)],['سبب اختيار وضع المعالجة',report.planReason||'غير متاح'],['HTTPS في وقت الاختيار',report.capabilities?.secureContext?'نعم':'لا'],['WebAssembly في وقت الاختيار',report.capabilities?.wasm?'نعم':'لا'],['SharedArrayBuffer في وقت الاختيار',report.capabilities?.sharedArrayBuffer?'نعم':'لا'],['COOP/COEP في وقت الاختيار',report.capabilities?.crossOriginIsolated?'مفعّل':'غير مفعّل'],['عدد الأنوية المنطقية',report.capabilities?.hardwareConcurrency??'غير متاح'],['الرجوع التلقائي للاحتياطي',report.fallbackUsed?'نعم':'لا'],['سبب الرجوع',report.fallbackReason||'لا يوجد'],['مدة المعالجة الكلية',Number.isFinite(report.processingSeconds)?report.processingSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة تنفيذ FFmpeg',Number.isFinite(report.encodeSeconds)?report.encodeSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة تهيئة المعالجة',Number.isFinite(report.loadSeconds)?report.loadSeconds.toFixed(2)+' ثانية':'غير متاح'],['سرعة المعالجة',speed]]}
 function renderEngineReport(report){const target=$('engineReport');if(!target||!report)return;target.innerHTML=engineReportRows(report).map(([k,v])=>'<div class="scanChip"><span>'+esc(k)+'</span><b>'+esc(v)+'</b></div>').join('')}
 
 function setStatus(t,p){$('status').textContent=t;if(p!==undefined)$('bar').style.width=Math.max(0,Math.min(100,p))+'%'}
@@ -242,7 +243,7 @@ function runDeviceCheck(){
   ['سبب اختيار وضع المعالجة',window.IbrahimEnginePlan?.reason||'لم يتم إعداد خطة المعالجة بعد',null],
   ['شرط COOP/COEP وقت الاختيار',window.IbrahimEnginePlan?.capabilities?.crossOriginIsolated?'مفعّل':'غير مفعّل أو غير معروف',null],
   ['دعم المعالجة متعددة الخيوط',window.IbrahimEnginePlan?.threadedBundleAvailable?'مفعّلة':'غير مفعّلة أو غير معروفة',null],
-  ['آخر وضع تنفيذ فعلي',lastEngineReport?.activeMode||'لم يُسجل تصدير بعد',null],
+  ['آخر وضع تنفيذ فعلي',executionModeLabel(lastEngineReport?.activeMode)||'لم يُسجل تصدير بعد',null],
   ['الرجوع للاحتياطي في آخر تصدير',lastEngineReport?(lastEngineReport.fallbackUsed?'نعم':'لا'):'غير متاح',null],
   ['مدة آخر معالجة',lastEngineReport&&Number.isFinite(lastEngineReport.processingSeconds)?lastEngineReport.processingSeconds.toFixed(2)+' ثانية':'غير متاح',null],
   ['سرعة آخر معالجة',lastEngineReport&&Number.isFinite(lastEngineReport.speedFactor)?lastEngineReport.speedFactor.toFixed(2)+'×':'غير متاح',null]
@@ -251,9 +252,9 @@ function runDeviceCheck(){
  $('deviceRows').innerHTML=rows.map(([k,v,ok])=>'<div class="deviceRow"><span>'+esc(k)+'</span><b>'+esc(v)+(ok===true?' ✓':ok===false?' ✕':'')+'</b></div>').join('');
  const mtReady=sab&&isolated&&!!window.IbrahimEnginePlan?.threadedBundleAvailable;
  $('deviceKeyIndicators').innerHTML=[
-  ['Multi-thread',mtReady?'جاهز':'غير جاهز',mtReady],
+  ['المعالجة المتوازية',mtReady?'جاهزة':'غير جاهزة',mtReady],
   ['COOP / COEP',isolated?'مفعّل':'غير مفعّل',isolated],
-  ['نمط التنفيذ',window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode||'قيد التهيئة',null]
+  ['نمط التنفيذ',executionModeLabel(window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode)||'قيد التهيئة',null]
  ].map(([k,v,ok])=>'<div class="deviceKey"><span>'+esc(k)+'</span><b class="'+(ok===true?'good':ok===false?'warn':'')+'">'+esc(v)+'</b></div>').join('');
  const canProcess=secure&&wasm;
  $('deviceStatus').textContent=canProcess?'✓ المتصفح يوفّر المتطلبات الأساسية للمعالجة المحلية. '+(!sab?'المعالجة متعددة الخيوط غير متاحة، وسيعمل الوضع الحالي بخيط واحد.':'دعم SharedArrayBuffer متاح.'):'لا يمكن بدء المعالجة: يلزم اتصال HTTPS ودعم WebAssembly.';
