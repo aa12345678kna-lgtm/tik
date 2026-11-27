@@ -231,6 +231,9 @@ async def create_job(request: Request, file: UploadFile = File(...)):
     except Exception as exc:
         shutil.rmtree(folder, ignore_errors=True)
         raise HTTPException(400, str(exc)[:300])
+    except BaseException:
+        shutil.rmtree(folder, ignore_errors=True)
+        raise
     finally:
         await file.close()
 
