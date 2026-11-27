@@ -301,10 +301,11 @@ footer{font-size:10px;color:#778293;padding-top:15px}
 <label class="mode"><input type="radio" name="mode" value="lite"><span class="tag">الأسرع</span><strong>LITE · 720p / 60 FPS</strong><small>ينسخ مسارات الصورة والصوت دون إعادة ترميز؛ أسرع خيار عندما يكون الملف متوافقاً.</small></label>
 <label class="mode"><input type="radio" name="mode" value="classic" checked><span class="tag">موصى به</span><strong>CLASSIC · SDR / HDR</strong><small>يحافظ على مسارات الصورة والصوت كما هي دون إعادة ترميز. لا يضيف HDR إلى فيديو SDR.</small></label>
 <label class="mode"><input type="radio" name="mode" value="max"><span class="tag">لـ HEVC</span><strong>MAX · HEVC / HDR</strong><small>للمقاطع المتوافقة مع HEVC/HDR. يحفظ مسار الصورة والصوت الأصليين دون إعادة ترميز؛ يحتاج وجود مسار صوت.</small></label>
-<label class="mode"><input type="radio" name="mode" value="antilag"><strong>Anti Lag · MP4 حتى 1080p60</strong><small>يعيد تجهيز الفيديو إلى MP4 بجودة مناسبة للرفع.</small></label>
+<label class="mode"><input type="radio" name="mode" value="antilag"><strong>Anti Lag · MP4 حتى 1080p60</strong><small>يعيد تجهيز الفيديو محلياً داخل المتصفح.</small></label>
+<label class="mode"><input type="radio" name="mode" value="handbrake"><span class="tag">خادم مؤقت</span><strong>HandBrake · حتى 1080p</strong><small>يرفع الفيديو مؤقتاً لإعادة ترميزه على الخادم، ثم تُحذف الملفات المؤقتة بعد التنزيل.</small></label>
 </div>
 <div id="modeHint" class="modeHint">افحص الفيديو أولاً حتى نتحقق من توافق طريقة التجهيز.</div><div class="actions"><button id="start" class="primary" disabled>ابدأ التجهيز</button><button id="cancel" class="danger hidden">إلغاء</button></div>
-<div id="progressWrap" class="hidden"><div class="progress"><div class="bar" id="bar"></div></div><div class="status" id="status">جارٍ التحضير...</div></div><div id="processIssue" class="processIssue hidden" role="status"><strong id="processIssueTitle"></strong><p id="processIssueMessage"></p><details><summary>سجل FFmpeg الأخير</summary><pre id="ffmpegLog"></pre></details><div class="actions"><button id="copyFfmpegLog" class="quiet" type="button">نسخ السجل</button></div></div>
+<div id="progressWrap" class="hidden"><div class="progress"><div class="bar" id="bar"></div></div><div class="status" id="status">جارٍ التحضير...</div></div><div id="processIssue" class="processIssue hidden" role="status"><strong id="processIssueTitle"></strong><p id="processIssueMessage"></p><details><summary>سجل المعالجة الأخير</summary><pre id="ffmpegLog"></pre></details><div class="actions"><button id="copyFfmpegLog" class="quiet" type="button">نسخ السجل</button></div></div>
 </section>
 <section class="card hidden" id="result"><h3>3 · الفيديو جاهز</h3><p class="sub" id="resultText">اكتملت العملية.</p><h4>تقرير التنفيذ الفعلي</h4><div id="engineReport" class="scanSummary"></div><div class="actions"><a id="download" download="ibrahim-studio.mp4"><button class="primary">تنزيل الفيديو</button></a><button id="again" class="quiet">تجهيز فيديو آخر</button></div></section>
 <section class="card coverCard" id="coverTools"><h3>صورة مصغّرة اختيارية</h3><p class="sub">اختر إطاراً من الفيديو واحفظه كصورة JPG منفصلة؛ لن تتغير بيانات الفيديو.</p><div class="actions coverChoices"><button id="thumbNo" class="quiet" type="button">لا، شكراً</button><button id="thumbYes" class="quiet" type="button">نعم، اختر إطاراً</button></div><div id="thumbPanel" class="hidden"><div class="coverBox"><canvas id="canvas" width="640" height="360"></canvas><div><div id="seekTime" class="status">اختر إطاراً من الفيديو</div><input id="seek" class="range" type="range" min="0" max="0" step="0.05" value="0"><div class="actions"><button id="prevFrame" class="quiet" type="button">− 0.05 ثانية</button><button id="nextFrame" class="quiet" type="button">+ 0.05 ثانية</button><button id="saveCover" class="primary" type="button" disabled>تنزيل JPG</button></div></div></div></div></section>
@@ -313,6 +314,8 @@ footer{font-size:10px;color:#778293;padding-top:15px}
 <script>
 const $=id=>document.getElementById(id);let file=null,objectUrl=null,outputUrl=null,ffmpeg=null,working=false,videoDuration=0,mediaInfoData=null,scanGeneration=0,mediaInfoFactoryPromise=null;
 const ENGINE_PLAN_MODULE_URL="./assets/js/engine-loader.js?v=20261128-public-labels-1";
+const HANDBRAKE_API_BASE=(window.IBRAHIM_HANDBRAKE_API||'').replace(/\\/$/,'');
+window.handbrakeJobId=null;window.handbrakeAbortController=null;window.handbrakeLogs=[];
 let enginePlanPromise=null;
 function initializeEnginePlan(){
  if(!enginePlanPromise){
@@ -431,6 +434,7 @@ function modeCompatibility(mode){
  if(!mediaInfoData)return {ok:false,reason:'انتظر اكتمال فحص الفيديو.'};
  const d=mediaInfoData,video=d.video,audio=d.audios.length>0;
  if(!d.videos.length)return {ok:false,reason:'لم يتم العثور على مسار فيديو.'};
+ if(mode==='handbrake')return HANDBRAKE_API_BASE?{ok:true,reason:'سيُرفع الفيديو مؤقتاً إلى خادم HandBrake لإعادة ترميزه حتى 1080p، ثم يُحذف بعد التنزيل.'}:{ok:false,reason:'خدمة HandBrake لم تُربط بعد؛ نحتاج نشر الخادم أولاً.'};
  if(mode==='lite'){
   if(!Number.isFinite(d.fps))return {ok:false,reason:'تعذّر قراءة FPS؛ لا يمكن تأكيد توافق LITE 720p60.'};
   if(d.width>1280||d.height>1280||Math.max(d.width,d.height)>1280||Math.min(d.width,d.height)>720)return {ok:false,reason:'LITE ينسخ دون إعادة ترميز، لذلك لا يمكنه تحويل هذا الفيديو إلى 720p. اختر Anti Lag إذا أردت تصغيره.'};
@@ -447,7 +451,7 @@ function modeCompatibility(mode){
  return {ok:true,reason:'سيعاد ترميز الفيديو محلياً إلى MP4 بحد أقصى 1080p و60 FPS. قد تكون المعالجة ثقيلة على الهاتف.'};
 }
 function updateModeHint(){
- const selected=document.querySelector('input[name="mode"]:checked')?.value||'classic',check=modeCompatibility(selected);const deviceOK=deviceReportData?deviceReportData.secure&&deviceReportData.wasm:(window.isSecureContext===true&&typeof WebAssembly==='object');
+ const selected=document.querySelector('input[name="mode"]:checked')?.value||'classic',check=modeCompatibility(selected);const deviceOK=selected==='handbrake'?Boolean(HANDBRAKE_API_BASE):(deviceReportData?deviceReportData.secure&&deviceReportData.wasm:(window.isSecureContext===true&&typeof WebAssembly==='object'));
  $('modeHint').textContent=check.reason;$('modeHint').style.border='1px solid '+(check.ok?'#31514f':'#65404a');$('modeHint').style.color=check.ok?'#a5f4e8':'#ffc0c8';$('start').disabled=!check.ok||!deviceOK||working;
 }
 
@@ -484,13 +488,93 @@ const encodeStarted=performance.now();await this.ffmpeg.exec(args);encodeSeconds
 }catch(error){this.lastErrorReport={cancelled:this.cancelRequested===true,message:error?.message||String(error),name:error?.name||'Error',logs:this.logs.slice(-50),processingMode:method,activeMode:this.activeMode||window.IbrahimEnginePlan?.mode||'غير متاح',timestamp:new Date().toISOString()};throw error;}finally{this.busy=false;}}
 }
 const instance=new IbrahimEngine();window.IbrahimEngine=IbrahimEngine;window.IbrahimEngineInstance=instance;return instance;}
-$('start').onclick=async()=>{if(!file||working)return;$('processIssue').classList.add('hidden');$('cancel').disabled=false;$('cancel').textContent='إلغاء';const selected=document.querySelector('input[name="mode"]:checked').value;await initializeEnginePlan();runDeviceCheck();const deviceOK=runDeviceCheck();if(!deviceOK){alert('المتصفح يحتاج اتصال HTTPS ودعم WebAssembly قبل المعالجة.');return;}const compatibility=modeCompatibility(selected);if(!compatibility.ok){updateModeHint();alert(compatibility.reason);return;}working=true;let engine=null;$('start').disabled=true;$('cancel').classList.remove('hidden');$('progressWrap').classList.remove('hidden');$('result').classList.add('hidden');try{if(outputUrl)URL.revokeObjectURL(outputUrl);
-const sourceInfo={width:$('preview').videoWidth,height:$('preview').videoHeight,duration:$('preview').duration,size:file.size,name:file.name};engine=await loadEngine(p=>setStatus('جاري تنفيذ المعالجة المحلية...',Math.round(p*100)));const method=selected==='lite'?'lite':selected==='classic'?'classic':selected==='max'?'max':selected==='mute'?'noaudio':selected==='sdr'?'sdr':selected==='720'?'720':selected==='1080'?'1080':selected==='4k60'?'4k60':'antilag';const blob=await engine.process(file,method);await finish(blob,file.name.replace(/\.[^.]+$/,'')+'_ibrahim.mp4',sourceInfo,method,engine.lastRunReport);
-}catch(e){console.error(e);const report=engine?.lastErrorReport||{cancelled:false,message:e?.message||String(e),logs:engine?.logs?.slice(-50)||[]};showProcessIssue(report);setStatus(report.cancelled?'تم إلغاء المعالجة يدوياً.':'فشلت المعالجة؛ راجع سجل FFmpeg لمعرفة السبب.',0)}finally{working=false;$('cancel').classList.add('hidden');updateModeHint()}};
-async function finish(blob,name,sourceInfo,method,engineReport){renderEngineReport(engineReport);runDeviceCheck();outputUrl=URL.createObjectURL(blob);$('download').href=outputUrl;$('download').download=name;$('resultText').textContent='جارٍ فحص أبعاد الملف الناتج...';$('result').classList.remove('hidden');$('cancel').classList.add('hidden');$('thumbPanel').classList.remove('hidden');const checkVideo=document.createElement('video');checkVideo.preload='metadata';checkVideo.muted=true;checkVideo.src=outputUrl;try{await new Promise((resolve,reject)=>{checkVideo.onloadedmetadata=resolve;checkVideo.onerror=()=>reject(Error('تعذّر قراءة بيانات الملف الناتج في المتصفح'))});const same=checkVideo.videoWidth===sourceInfo.width&&checkVideo.videoHeight===sourceInfo.height;const lines=['اكتملت المعالجة المحلية.','الأصل: '+sourceInfo.width+'×'+sourceInfo.height+' · الناتج: '+checkVideo.videoWidth+'×'+checkVideo.videoHeight,'حجم الأصل: '+fmt(sourceInfo.size)+' · حجم الناتج: '+fmt(blob.size),'مدة الناتج: '+time(checkVideo.duration)];if(['lite','classic','max'].includes(method)){lines.push(same?'✓ أبعاد الصورة محفوظة.':'⚠ تغيّرت أبعاد الصورة؛ تحقق من الملف قبل رفعه.');lines.push('وضع النسخ لا يعيد ضغط الصورة، لكن فحص المتصفح لا يثبت وحده نوع الترميز أو HDR أو ظهور الفيديو في For You.')}else{lines.push('هذا الوضع أعاد ترميز الفيديو؛ قد تختلف الجودة والألوان عن الأصل.');if(method==='4k60')lines.push('تم إنشاء إطار 2160×3840 مع الحفاظ على FPS المصدر؛ التكبير لا يستعيد تفاصيل غير موجودة في المصدر.');} $('resultText').textContent=lines.join(' | ');setStatus(same?'اكتمل التجهيز وفُحصت أبعاد الفيديو':'اكتمل التجهيز؛ الأبعاد مختلفة عن الأصل',100)}catch(e){$('resultText').textContent='اكتملت المعالجة، لكن تعذّر فحص بيانات الناتج: '+e.message;setStatus('اكتمل إنشاء الملف؛ تعذّر التحقق من أبعاده',100)}finally{checkVideo.removeAttribute('src');checkVideo.load()}}
+async function runHandBrakeJob(inputFile){
+ if(!HANDBRAKE_API_BASE)throw Error('خدمة HandBrake لم تُنشر أو لم يُضف رابطها بعد.');
+ const controller=new AbortController();window.handbrakeAbortController=controller;window.handbrakeLogs=[];
+ const form=new FormData();form.append('file',inputFile,inputFile.name);
+ setStatus('رفع الفيديو مؤقتاً إلى خادم HandBrake...',5);
+ const created=await fetch(HANDBRAKE_API_BASE+'/api/jobs',{method:'POST',body:form,signal:controller.signal});
+ const createdData=await created.json().catch(()=>({}));
+ if(!created.ok)throw Error(createdData.detail||'تعذّر رفع الفيديو إلى خادم المعالجة.');
+ const jobId=createdData.id;window.handbrakeJobId=jobId;
+ const started=Date.now();
+ while(true){
+  if(controller.signal.aborted)throw new DOMException('تم إلغاء العملية.','AbortError');
+  const response=await fetch(HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(jobId),{cache:'no-store',signal:controller.signal});
+  const state=await response.json().catch(()=>({}));
+  if(!response.ok)throw Error(state.detail||'تعذّر قراءة حالة المعالجة.');
+  window.handbrakeLogs=state.logs||[];
+  const labels={queued:'الفيديو في قائمة الانتظار على الخادم...',processing:'HandBrake يعيد ترميز الفيديو على الخادم...',completed:'اكتمل الترميز؛ جارٍ استلام الفيديو...',failed:'فشلت معالجة HandBrake.',cancelled:'تم إلغاء المعالجة.'};
+  setStatus(labels[state.status]||'جارٍ تنفيذ المعالجة على الخادم...',Math.min(92,8+Math.round((state.progress||0)*.78)));
+  if(state.status==='failed')throw Error(state.error||'فشل HandBrake في إنشاء الملف.');
+  if(state.status==='cancelled')throw new DOMException('تم إلغاء العملية.','AbortError');
+  if(state.status==='completed'){
+   setStatus('استلام الفيديو الناتج من الخادم...',96);
+   const download=await fetch(HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(jobId)+'/download',{cache:'no-store',signal:controller.signal});
+   if(!download.ok)throw Error('اكتملت المعالجة لكن تعذّر تنزيل الملف الناتج.');
+   const blob=await download.blob();
+   const report=state.report||{};
+   report.capabilities={};report.speedFactor=null;
+   report.sourceDurationSeconds=report.sourceDurationSeconds||Number($('preview').duration)||0;
+   window.handbrakeJobId=null;
+   const sourceInfo={width:$('preview').videoWidth,height:$('preview').videoHeight,duration:$('preview').duration,size:inputFile.size,name:inputFile.name};
+   await finish(blob,inputFile.name.replace(/\.[^.]+$/,'')+'_handbrake.mp4',sourceInfo,'handbrake',report);
+   return;
+  }
+  if(Date.now()-started>15*60*1000)throw Error('انتهت مهلة انتظار خادم المعالجة.');
+  await new Promise(resolve=>setTimeout(resolve,1300));
+ }
+}
+$('start').onclick=async()=>{
+ if(!file||working)return;
+ $('processIssue').classList.add('hidden');$('cancel').disabled=false;$('cancel').textContent='إلغاء';
+ const selected=document.querySelector('input[name="mode"]:checked').value;
+ if(selected==='handbrake'){
+  if(!HANDBRAKE_API_BASE){alert('خادم HandBrake لم يُنشر بعد.');return;}
+  const compatibility=modeCompatibility(selected);if(!compatibility.ok){alert(compatibility.reason);return;}
+  working=true;$('start').disabled=true;$('cancel').classList.remove('hidden');$('progressWrap').classList.remove('hidden');$('result').classList.add('hidden');
+  try{await runHandBrakeJob(file)}
+  catch(e){
+   const cancelled=e?.name==='AbortError';
+   showProcessIssue({cancelled,message:e?.message||String(e),logs:window.handbrakeLogs||[]});
+   setStatus(cancelled?'تم إلغاء المعالجة يدوياً.':'فشلت معالجة HandBrake؛ راجع سجل المعالجة.',0);
+  }
+  finally{working=false;window.handbrakeAbortController=null;$('cancel').classList.add('hidden');updateModeHint()}
+  return;
+ }
+ await initializeEnginePlan();runDeviceCheck();const deviceOK=runDeviceCheck();
+ if(!deviceOK){alert('المتصفح يحتاج اتصال HTTPS ودعم WebAssembly قبل المعالجة.');return;}
+ const compatibility=modeCompatibility(selected);if(!compatibility.ok){updateModeHint();alert(compatibility.reason);return;}
+ working=true;let engine=null;$('start').disabled=true;$('cancel').classList.remove('hidden');$('progressWrap').classList.remove('hidden');$('result').classList.add('hidden');
+ try{
+  if(outputUrl)URL.revokeObjectURL(outputUrl);
+  const sourceInfo={width:$('preview').videoWidth,height:$('preview').videoHeight,duration:$('preview').duration,size:file.size,name:file.name};
+  engine=await loadEngine(p=>setStatus('جاري تنفيذ المعالجة المحلية...',Math.round(p*100)));
+  const method=selected==='lite'?'lite':selected==='classic'?'classic':selected==='max'?'max':selected==='mute'?'noaudio':selected==='sdr'?'sdr':selected==='720'?'720':selected==='1080'?'1080':selected==='4k60'?'4k60':'antilag';
+  const blob=await engine.process(file,method);
+  await finish(blob,file.name.replace(/\.[^.]+$/,'')+'_ibrahim.mp4',sourceInfo,method,engine.lastRunReport);
+ }catch(e){
+  console.error(e);const report=engine?.lastErrorReport||{cancelled:false,message:e?.message||String(e),logs:engine?.logs?.slice(-50)||[]};
+  showProcessIssue(report);setStatus(report.cancelled?'تم إلغاء المعالجة يدوياً.':'فشلت المعالجة؛ راجع سجل FFmpeg لمعرفة السبب.',0)
+ }finally{working=false;$('cancel').classList.add('hidden');updateModeHint()}
+};
+async function finish(blob,name,sourceInfo,method,engineReport){renderEngineReport(engineReport);runDeviceCheck();outputUrl=URL.createObjectURL(blob);$('download').href=outputUrl;$('download').download=name;$('resultText').textContent='جارٍ فحص أبعاد الملف الناتج...';$('result').classList.remove('hidden');$('cancel').classList.add('hidden');$('thumbPanel').classList.remove('hidden');const checkVideo=document.createElement('video');checkVideo.preload='metadata';checkVideo.muted=true;checkVideo.src=outputUrl;try{await new Promise((resolve,reject)=>{checkVideo.onloadedmetadata=resolve;checkVideo.onerror=()=>reject(Error('تعذّر قراءة بيانات الملف الناتج في المتصفح'))});const same=checkVideo.videoWidth===sourceInfo.width&&checkVideo.videoHeight===sourceInfo.height;const lines=['اكتملت المعالجة المحلية.','الأصل: '+sourceInfo.width+'×'+sourceInfo.height+' · الناتج: '+checkVideo.videoWidth+'×'+checkVideo.videoHeight,'حجم الأصل: '+fmt(sourceInfo.size)+' · حجم الناتج: '+fmt(blob.size),'مدة الناتج: '+time(checkVideo.duration)];if(['lite','classic','max'].includes(method)){lines.push(same?'✓ أبعاد الصورة محفوظة.':'⚠ تغيّرت أبعاد الصورة؛ تحقق من الملف قبل رفعه.');lines.push('وضع النسخ لا يعيد ضغط الصورة، لكن فحص المتصفح لا يثبت وحده نوع الترميز أو HDR أو ظهور الفيديو في For You.')}else if(method==='handbrake'){lines.push('أُعيد ترميز الفيديو فعلياً باستخدام HandBrakeCLI على الخادم.');lines.push('تم رفع الملف مؤقتاً، ويُحذف ملف الخادم بعد التنزيل أو انتهاء المهلة.');lines.push('الحد الأقصى للدقة 1080p؛ افحص الناتج قبل رفعه إلى TikTok.')}else{lines.push('هذا الوضع أعاد ترميز الفيديو؛ قد تختلف الجودة والألوان عن الأصل.');if(method==='4k60')lines.push('تم إنشاء إطار 2160×3840 مع الحفاظ على FPS المصدر؛ التكبير لا يستعيد تفاصيل غير موجودة في المصدر.');} $('resultText').textContent=lines.join(' | ');setStatus(same?'اكتمل التجهيز وفُحصت أبعاد الفيديو':'اكتمل التجهيز؛ الأبعاد مختلفة عن الأصل',100)}catch(e){$('resultText').textContent='اكتملت المعالجة، لكن تعذّر فحص بيانات الناتج: '+e.message;setStatus('اكتمل إنشاء الملف؛ تعذّر التحقق من أبعاده',100)}finally{checkVideo.removeAttribute('src');checkVideo.load()}}
 function showProcessIssue(report){const box=$('processIssue');if(!box)return;const cancelled=report?.cancelled===true;box.classList.remove('hidden');box.classList.toggle('cancelled',cancelled);$('processIssueTitle').textContent=cancelled?'تم الإلغاء يدوياً':'فشل فعلي في المعالجة';$('processIssueMessage').textContent=(report?.message||'لا توجد رسالة خطأ إضافية.')+(cancelled?' — هذا الإنهاء ناتج عن طلب الإلغاء، وليس دليلاً بحد ذاته على عطل في الترميز أو الذاكرة.':' — لم يتم افتراض أن الذاكرة هي السبب.');$('ffmpegLog').textContent=(report?.logs||[]).slice(-50).join('\n')||'لم تصل رسائل سجل من FFmpeg قبل توقف العملية.';const logDetails=box.querySelector('details');if(logDetails)logDetails.open=true;box.scrollIntoView({behavior:'smooth',block:'nearest'});}
 $('copyFfmpegLog').onclick=()=>{const value=$('ffmpegLog').textContent||'';if(navigator.clipboard?.writeText)navigator.clipboard.writeText(value).then(()=>alert('تم نسخ سجل FFmpeg')).catch(()=>alert(value));else alert(value)};
-$('cancel').onclick=()=>{const active=window.IbrahimEngineInstance;if(active){active.cancelRequested=true;active.lastErrorReport={cancelled:true,message:'طلب المستخدم إيقاف المعالجة.',name:'AbortError',logs:active.logs.slice(-50),processingMode:document.querySelector('input[name="mode"]:checked')?.value||'غير معروف',activeMode:active.activeMode||window.IbrahimEnginePlan?.mode||'غير متاح',timestamp:new Date().toISOString()};try{active.ffmpeg.terminate()}catch(e){}window.IbrahimEngineInstance=null}$('cancel').disabled=true;$('cancel').textContent='جارٍ الإلغاء...';setStatus('جارٍ إيقاف المعالجة بناءً على طلبك...',0)};
+$('cancel').onclick=()=>{
+ if(window.handbrakeJobId){
+  const id=window.handbrakeJobId;window.handbrakeJobId=null;
+  if(HANDBRAKE_API_BASE)fetch(HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(id),{method:'DELETE'}).catch(()=>{});
+  if(window.handbrakeAbortController)window.handbrakeAbortController.abort();
+  $('cancel').disabled=true;$('cancel').textContent='جارٍ الإلغاء...';setStatus('جارٍ إلغاء مهمة HandBrake على الخادم...',0);return;
+ }
+ if(window.handbrakeAbortController){
+  window.handbrakeAbortController.abort();$('cancel').disabled=true;$('cancel').textContent='جارٍ الإلغاء...';setStatus('جارٍ إلغاء رفع الفيديو أو المعالجة...',0);return;
+ }
+ const active=window.IbrahimEngineInstance;
+ if(active){active.cancelRequested=true;active.lastErrorReport={cancelled:true,message:'طلب المستخدم إيقاف المعالجة.',name:'AbortError',logs:active.logs.slice(-50),processingMode:document.querySelector('input[name="mode"]:checked')?.value||'غير معروف',activeMode:active.activeMode||window.IbrahimEnginePlan?.mode||'غير متاح',timestamp:new Date().toISOString()};try{active.ffmpeg.terminate()}catch(e){}window.IbrahimEngineInstance=null}
+ $('cancel').disabled=true;$('cancel').textContent='جارٍ الإلغاء...';setStatus('جارٍ إيقاف المعالجة بناءً على طلبك...',0)
+};
 $('again').onclick=()=>{$('result').classList.add('hidden');$('file').value='';$('videoInfo').classList.add('hidden');$('drop').classList.remove('hidden');$('start').disabled=true;mediaInfoData=null;scanGeneration++;$('scanState').textContent='اختر فيديو لبدء الفحص المحلي.';$('scanSummary').classList.add('hidden');$('scanReport').classList.add('hidden');file=null;if(objectUrl)URL.revokeObjectURL(objectUrl);$('preview').removeAttribute('src');$('meta').innerHTML='';$('saveCover').disabled=true;$('canvas').getContext('2d').clearRect(0,0,640,360);};
 </script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}</script>
