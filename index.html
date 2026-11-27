@@ -167,7 +167,7 @@ footer{padding:18px 0;color:#778394}
  <details class="deviceDetails"><summary>التفاصيل الفنية وفحص الجهاز</summary>
   <div id="deviceRows" class="deviceRows"></div>
   <div class="deviceActions"><button id="copyDeviceReport" class="quiet" type="button">نسخ تقرير الجهاز</button><button id="recheckDevice" class="quiet" type="button">إعادة الفحص</button></div>
-  <p class="note">SharedArrayBuffer وعزل COOP/COEP من متطلبات المحرك متعدد الخيوط. يوضح التقرير المحرك الذي نفّذ آخر تصدير فعلياً، ووقت المعالجة، وهل حدث رجوع تلقائي إلى Single-Thread. الذاكرة المعروضة تقديرية وقد يخفيها المتصفح.</p>
+  <p class="note">SharedArrayBuffer وعزل COOP/COEP من متطلبات وضع المعالجة المتوازي. يوضح التقرير وضع التنفيذ الفعلي ووقت المعالجة، وهل حدث رجوع تلقائي إلى الوضع القياسي. الذاكرة المعروضة تقديرية وقد يخفيها المتصفح.</p>
  </details>
 </section>
 
@@ -186,7 +186,7 @@ footer{padding:18px 0;color:#778394}
 <div id="modeHint" class="modeHint">افحص الفيديو أولاً حتى نتحقق من توافق طريقة التجهيز.</div><div class="actions"><button id="start" class="primary" disabled>ابدأ التجهيز</button><button id="cancel" class="danger hidden">إلغاء</button></div>
 <div id="progressWrap" class="hidden"><div class="progress"><div class="bar" id="bar"></div></div><div class="status" id="status">جارٍ التحضير...</div></div><div id="processIssue" class="processIssue hidden" role="status"><strong id="processIssueTitle"></strong><p id="processIssueMessage"></p><details><summary>سجل FFmpeg الأخير</summary><pre id="ffmpegLog"></pre></details><div class="actions"><button id="copyFfmpegLog" class="quiet" type="button">نسخ السجل</button></div></div>
 </section>
-<section class="card hidden" id="result"><h3>3 · الفيديو جاهز</h3><p class="sub" id="resultText">اكتملت العملية.</p><h4>تقرير المحرك الفعلي</h4><div id="engineReport" class="scanSummary"></div><div class="actions"><a id="download" download="ibrahim-studio.mp4"><button class="primary">تنزيل الفيديو</button></a><button id="again" class="quiet">تجهيز فيديو آخر</button></div></section>
+<section class="card hidden" id="result"><h3>3 · الفيديو جاهز</h3><p class="sub" id="resultText">اكتملت العملية.</p><h4>تقرير التنفيذ الفعلي</h4><div id="engineReport" class="scanSummary"></div><div class="actions"><a id="download" download="ibrahim-studio.mp4"><button class="primary">تنزيل الفيديو</button></a><button id="again" class="quiet">تجهيز فيديو آخر</button></div></section>
 <div id="legacyTools" class="hidden" aria-hidden="true">
 <button id="thumbYes"></button><button id="thumbNo"></button>
 <div id="thumbPanel"><canvas id="canvas" width="640" height="360"></canvas><input id="seek" type="range"><span id="seekTime"></span><button id="prevFrame"></button><button id="nextFrame"></button><button id="saveCover"></button></div>
@@ -216,7 +216,7 @@ const time=s=>{if(!Number.isFinite(s))return '—';return Math.floor(s/60)+':'+S
 const ENGINE_REPORT_KEY='ibrahimStudioLastEngineReport';
 function getLastEngineReport(){try{return JSON.parse(localStorage.getItem(ENGINE_REPORT_KEY)||'null')}catch(e){return null}}
 function saveEngineReport(report){try{localStorage.setItem(ENGINE_REPORT_KEY,JSON.stringify(report))}catch(e){console.warn('تعذّر حفظ تقرير المحرك محلياً',e)}}
-function engineReportRows(report){if(!report)return [];const speed=Number.isFinite(report.speedFactor)?report.speedFactor.toFixed(2)+'× من مدة الفيديو':'غير متاح';return [['المحرك الذي نفّذ التصدير',report.activeMode||'غير متاح'],['وضع المعالجة',report.processingMode||'غير متاح'],['الخطة قبل التحميل',report.plannedMode||'غير متاح'],['سبب اختيار الخطة',report.planReason||'غير متاح'],['HTTPS في وقت الاختيار',report.capabilities?.secureContext?'نعم':'لا'],['WebAssembly في وقت الاختيار',report.capabilities?.wasm?'نعم':'لا'],['SharedArrayBuffer في وقت الاختيار',report.capabilities?.sharedArrayBuffer?'نعم':'لا'],['COOP/COEP في وقت الاختيار',report.capabilities?.crossOriginIsolated?'مفعّل':'غير مفعّل'],['عدد الأنوية المنطقية',report.capabilities?.hardwareConcurrency??'غير متاح'],['الرجوع التلقائي للاحتياطي',report.fallbackUsed?'نعم':'لا'],['سبب الرجوع',report.fallbackReason||'لا يوجد'],['مدة المعالجة الكلية',Number.isFinite(report.processingSeconds)?report.processingSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة تنفيذ FFmpeg',Number.isFinite(report.encodeSeconds)?report.encodeSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة تحميل المحرك',Number.isFinite(report.loadSeconds)?report.loadSeconds.toFixed(2)+' ثانية':'غير متاح'],['سرعة المعالجة',speed]]}
+function engineReportRows(report){if(!report)return [];const speed=Number.isFinite(report.speedFactor)?report.speedFactor.toFixed(2)+'× من مدة الفيديو':'غير متاح';return [['وضع التنفيذ الفعلي',report.activeMode||'غير متاح'],['وضع المعالجة',report.processingMode||'غير متاح'],['خطة التنفيذ قبل البدء',report.plannedMode||'غير متاح'],['سبب اختيار وضع المعالجة',report.planReason||'غير متاح'],['HTTPS في وقت الاختيار',report.capabilities?.secureContext?'نعم':'لا'],['WebAssembly في وقت الاختيار',report.capabilities?.wasm?'نعم':'لا'],['SharedArrayBuffer في وقت الاختيار',report.capabilities?.sharedArrayBuffer?'نعم':'لا'],['COOP/COEP في وقت الاختيار',report.capabilities?.crossOriginIsolated?'مفعّل':'غير مفعّل'],['عدد الأنوية المنطقية',report.capabilities?.hardwareConcurrency??'غير متاح'],['الرجوع التلقائي للاحتياطي',report.fallbackUsed?'نعم':'لا'],['سبب الرجوع',report.fallbackReason||'لا يوجد'],['مدة المعالجة الكلية',Number.isFinite(report.processingSeconds)?report.processingSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة تنفيذ FFmpeg',Number.isFinite(report.encodeSeconds)?report.encodeSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة تهيئة المعالجة',Number.isFinite(report.loadSeconds)?report.loadSeconds.toFixed(2)+' ثانية':'غير متاح'],['سرعة المعالجة',speed]]}
 function renderEngineReport(report){const target=$('engineReport');if(!target||!report)return;target.innerHTML=engineReportRows(report).map(([k,v])=>'<div class="scanChip"><span>'+esc(k)+'</span><b>'+esc(v)+'</b></div>').join('')}
 
 function setStatus(t,p){$('status').textContent=t;if(p!==undefined)$('bar').style.width=Math.max(0,Math.min(100,p))+'%'}
@@ -238,11 +238,11 @@ function runDeviceCheck(){
   ['أبعاد الشاشة',screenSize,null],
   ['المتصفح',nav.userAgent||'غير متاح',null],
   ['لغة الجهاز',nav.language||'غير متاح',null],
-  ['خطة المحرك الحالية',window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode||'لم يبدأ التحميل بعد',null],
-  ['سبب اختيار الخطة',window.IbrahimEnginePlan?.reason||'لم يتم تحميل مخطط المحرك بعد',null],
+  ['خطة المعالجة الحالية',window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode||'لم يبدأ التحميل بعد',null],
+  ['سبب اختيار وضع المعالجة',window.IbrahimEnginePlan?.reason||'لم يتم تحميل مخطط المحرك بعد',null],
   ['شرط COOP/COEP وقت الاختيار',window.IbrahimEnginePlan?.capabilities?.crossOriginIsolated?'مفعّل':'غير مفعّل أو غير معروف',null],
-  ['حزمة Multi-thread',window.IbrahimEnginePlan?.threadedBundleAvailable?'مفعّلة':'غير مفعّلة أو غير معروفة',null],
-  ['آخر محرك نفّذ تصديراً',lastEngineReport?.activeMode||'لم يُسجل تصدير بعد',null],
+  ['دعم المعالجة متعددة الخيوط',window.IbrahimEnginePlan?.threadedBundleAvailable?'مفعّلة':'غير مفعّلة أو غير معروفة',null],
+  ['آخر وضع تنفيذ فعلي',lastEngineReport?.activeMode||'لم يُسجل تصدير بعد',null],
   ['الرجوع للاحتياطي في آخر تصدير',lastEngineReport?(lastEngineReport.fallbackUsed?'نعم':'لا'):'غير متاح',null],
   ['مدة آخر معالجة',lastEngineReport&&Number.isFinite(lastEngineReport.processingSeconds)?lastEngineReport.processingSeconds.toFixed(2)+' ثانية':'غير متاح',null],
   ['سرعة آخر معالجة',lastEngineReport&&Number.isFinite(lastEngineReport.speedFactor)?lastEngineReport.speedFactor.toFixed(2)+'×':'غير متاح',null]
@@ -253,10 +253,10 @@ function runDeviceCheck(){
  $('deviceKeyIndicators').innerHTML=[
   ['Multi-thread',mtReady?'جاهز':'غير جاهز',mtReady],
   ['COOP / COEP',isolated?'مفعّل':'غير مفعّل',isolated],
-  ['المحرك',window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode||'قيد التهيئة',null]
+  ['نمط التنفيذ',window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode||'قيد التهيئة',null]
  ].map(([k,v,ok])=>'<div class="deviceKey"><span>'+esc(k)+'</span><b class="'+(ok===true?'good':ok===false?'warn':'')+'">'+esc(v)+'</b></div>').join('');
  const canProcess=secure&&wasm;
- $('deviceStatus').textContent=canProcess?'✓ المتصفح يوفّر المتطلبات الأساسية للمعالجة المحلية. '+(!sab?'المعالجة متعددة الخيوط غير متاحة، وسيعمل المحرك الحالي بخيط واحد.':'دعم SharedArrayBuffer متاح.'):'لا يمكن بدء المعالجة: يلزم اتصال HTTPS ودعم WebAssembly.';
+ $('deviceStatus').textContent=canProcess?'✓ المتصفح يوفّر المتطلبات الأساسية للمعالجة المحلية. '+(!sab?'المعالجة متعددة الخيوط غير متاحة، وسيعمل الوضع الحالي بخيط واحد.':'دعم SharedArrayBuffer متاح.'):'لا يمكن بدء المعالجة: يلزم اتصال HTTPS ودعم WebAssembly.';
  $('deviceStatus').style.color=canProcess?'#9fe9d7':'#ffc0c8';
  updateModeHint();
  return canProcess;
@@ -353,7 +353,7 @@ class IbrahimEngine{
 constructor(){this.ffmpeg=new FFmpeg();this.loaded=false;this.busy=false;this.onProgress=onProgress;this.logs=[];this.cancelRequested=false;this.lastErrorReport=null;this.bindEvents();}
 bindEvents(){this.ffmpeg.on('log',({message})=>{this.logs.push(message);if(this.logs.length>250)this.logs.shift()});this.ffmpeg.on('progress',({progress})=>{if(this.onProgress)this.onProgress(Math.min(.99,Math.max(.01,progress||0)))});}
 async loadCore(multithread){const classWorkerURL=new URL('assets/ffmpeg/worker.js',document.baseURI).href;const base=multithread?'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.6/dist/esm':'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';const [coreURL,wasmURL]=await Promise.all([toBlobURL(base+'/ffmpeg-core.js','text/javascript'),toBlobURL(base+'/ffmpeg-core.wasm','application/wasm')]);const options={classWorkerURL,coreURL,wasmURL};if(multithread)options.workerURL=await toBlobURL(base+'/ffmpeg-core.worker.js','text/javascript');await this.ffmpeg.load(options);}
-async load(){if(this.loaded)return;const wantsMulti=window.IbrahimEnginePlan?.mode==='multi-thread';setStatus(wantsMulti?'تحميل محرك المعالجة متعدد الخيوط لأول مرة...':'تحميل محرك المعالجة لأول مرة؛ اترك الصفحة مفتوحة...',2);try{await this.loadCore(wantsMulti);this.loaded=true;this.activeMode=wantsMulti?'multi-thread':'single-thread';}catch(error){if(!wantsMulti)throw error;try{this.ffmpeg.terminate()}catch(e){}this.ffmpeg=new FFmpeg();this.bindEvents();window.IbrahimEnginePlan={...window.IbrahimEnginePlan,mode:'single-thread',fallbackUsed:true,fallbackReason:error?.message||String(error),reason:'تعذّر تحميل المحرك متعدد الخيوط؛ تم الرجوع تلقائياً إلى Single-Thread.'};setStatus('تعذّر تحميل المحرك المتعدد؛ جارٍ تشغيل النسخة الاحتياطية...',4);await this.loadCore(false);this.loaded=true;this.activeMode='single-thread';}}
+async load(){if(this.loaded)return;const wantsMulti=window.IbrahimEnginePlan?.mode==='multi-thread';setStatus(wantsMulti?'تهيئة المعالجة المتوازية لأول مرة...':'تهيئة نظام المعالجة لأول مرة؛ اترك الصفحة مفتوحة...',2);try{await this.loadCore(wantsMulti);this.loaded=true;this.activeMode=wantsMulti?'multi-thread':'single-thread';}catch(error){if(!wantsMulti)throw error;try{this.ffmpeg.terminate()}catch(e){}this.ffmpeg=new FFmpeg();this.bindEvents();window.IbrahimEnginePlan={...window.IbrahimEnginePlan,mode:'single-thread',fallbackUsed:true,fallbackReason:error?.message||String(error),reason:'تعذّرت تهيئة الوضع المتوازي؛ تم الرجوع تلقائياً إلى الوضع القياسي.'};setStatus('تعذّرت تهيئة الوضع المتوازي؛ جارٍ تشغيل الوضع الاحتياطي...',4);await this.loadCore(false);this.loaded=true;this.activeMode='single-thread';}}
 async process(inputFile,method){if(this.busy)throw Error('المعالج مشغول حالياً');this.busy=true;this.cancelRequested=false;this.lastErrorReport=null;const processStarted=performance.now();let loadSeconds=0,encodeSeconds=0;const ext=(inputFile.name.match(/\.[^.]+$/)||['.mp4'])[0].toLowerCase();const input='input'+ext,output='output.mp4';let wrote=false;try{setStatus('تهيئة محرك الفيديو...',4);const loadStarted=performance.now();await this.load();loadSeconds=(performance.now()-loadStarted)/1000;setStatus('قراءة الفيديو داخل ذاكرة المعالجة المحلية...',7);await this.ffmpeg.writeFile(input,await fetchFile(inputFile));wrote=true;this.logs=[];setStatus('تجهيز مسارات الفيديو والصوت...',9);let args;
 if(method==='preserve'||method==='lite'||method==='classic'){setStatus('نسخ مسارات الفيديو والصوت دون إعادة ترميز...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-map_chapters','0','-c','copy','-movflags','+faststart','-map_metadata','0',output]}
 else if(method==='max'){setStatus('MAX: حفظ مسار الفيديو والصوت والبيانات المتاحة دون إعادة ترميز...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-map_metadata','0','-map_chapters','0' ,'-c','copy','-movflags','+faststart',output]}
