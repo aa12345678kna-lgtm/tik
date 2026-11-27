@@ -74,6 +74,81 @@ nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
 @media(max-width:600px){.modes{grid-template-columns:1fr}.mode{min-height:unset}}
 
 /* تحسينات واجهة الجوال فقط — دون تغيير مسار المعالجة */\n.deviceKeyIndicators{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 2px}.deviceKey{min-width:0;padding:10px;border:1px solid #293746;border-radius:10px;background:#111925}.deviceKey span{display:block;color:#9da8b7;font-size:11px}.deviceKey b{display:block;margin-top:5px;font-size:12px;overflow-wrap:anywhere}.deviceKey .good{color:#9fe9d7}.deviceKey .warn{color:#ffc0c8}.deviceDetails{margin-top:10px;border-top:1px solid #293342;padding-top:9px}.deviceDetails summary{color:#cbd5e1;font-size:12px;cursor:pointer;padding:5px 0}.deviceDetails[open] summary{margin-bottom:9px}.deviceDetails .deviceRows{margin-top:8px}.steps{margin:10px 0 12px;gap:7px}.step{padding:8px 7px;font-size:12px}.card{padding:15px;margin:10px 0}.card h3{margin-top:0;margin-bottom:7px;font-size:16px}.card .sub{margin-top:0;margin-bottom:12px}.drop{padding:25px 14px;min-height:126px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}.drop strong{font-size:14px}.drop small{font-size:11px;color:#9da8b7}.preview{display:block;width:100%;max-height: min(56vh,440px);object-fit:contain;background:#05070b;border-radius:12px;margin:10px auto}.videoDetails{gap:7px!important;margin-top:10px!important}.videoDetails .metric{padding:9px!important}.mode{padding:13px!important;border-radius:12px}.mode strong{display:block;line-height:1.5}.mode small{display:block;line-height:1.65;margin-top:5px}.actions{gap:8px;margin-top:13px}.actions button{min-height:44px}.progress{height:10px;margin:12px 0}.status{font-size:13px;line-height:1.7}.processIssue{margin-top:12px}.processIssue pre{max-height:220px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:11px;line-height:1.55}.deviceStatus{margin:8px 0 10px}@media(max-width:600px){.wrap{padding-left:12px;padding-right:12px}.steps{margin:8px 0 10px}.step{font-size:11px;padding:7px 5px}.card{padding:14px;margin:9px 0}.deviceKeyIndicators{gap:6px}.deviceKey{padding:8px 7px}.deviceKey span{font-size:10px}.deviceKey b{font-size:11px}.deviceRows{grid-template-columns:1fr 1fr;gap:7px}.deviceRow{padding:8px}.drop{min-height:116px;padding:21px 10px}.videoDetails{grid-template-columns:1fr 1fr;gap:7px!important}.videoActions button,.deviceActions button{flex:1 1 auto;min-height:42px}.actions{display:flex}.actions #start{flex:1 1 100%}.actions #cancel{flex:1 1 100%}.modes{gap:9px}.mode{min-height:unset}.processIssue{padding:11px}.processIssue .actions button{width:100%}}@media(min-width:601px){.deviceKeyIndicators{max-width:620px}}
+
+/* UI-only refinement — no processing, FFmpeg, codec, engine, or report logic changes */
+:root{
+ --ui-surface:#101720;--ui-surface-2:#0b1119;--ui-border:#283443;
+ --ui-accent:#ff6687;--ui-accent-soft:#351b28;--ui-muted:#a8b3c2;
+}
+body{background:radial-gradient(ellipse at 50% -18%,#172231 0, #080c12 48%,#07090e 100%);line-height:1.55}
+.wrap{max-width:900px;padding-left:clamp(12px,3vw,22px);padding-right:clamp(12px,3vw,22px)}
+.top{padding:17px 0 15px;border-color:#26303c}
+.logo{box-shadow:0 5px 18px #ff477226}
+.brand h1{letter-spacing:.1px}
+.pill{white-space:nowrap}
+h2{letter-spacing:-.5px;line-height:1.2;margin-top:18px}
+.intro{max-width:650px;color:#b0bac8}
+.steps{gap:10px}
+.step{border-radius:12px;background:linear-gradient(145deg,#141d29,#0e141d);border-color:#2b3746;display:flex;align-items:center;min-height:48px}
+.step b{flex:0 0 24px;margin-left:9px}
+.card{background:linear-gradient(155deg,rgba(19,28,40,.97),rgba(11,16,24,.98));border-color:#293646;border-radius:15px;padding:clamp(15px,2.5vw,21px);box-shadow:0 12px 34px #0003}
+.card h3{font-size:17px;letter-spacing:.05px}
+.card .sub{color:var(--ui-muted)}
+.drop{border-color:#526174;background:linear-gradient(145deg,#0c131d,#0a0e15);border-radius:13px}
+.drop:hover,.drop.drag{border-color:var(--ui-accent);box-shadow:0 0 0 3px #ff668718}
+.videoDetails .metric,.metric{background:#0b121b;border-color:#2a3645;border-radius:10px}
+.videoDetails .metric b{font-size:13px}
+.mode{background:linear-gradient(150deg,#0d141e,#0a0f16);border-color:#2b3746;border-radius:13px;transition:border-color .16s,background .16s,transform .16s}
+.mode:hover{border-color:#596b80}
+.mode:has(input:checked){background:linear-gradient(145deg,#241521,#15121a);border-color:#ff6687;box-shadow:inset 0 0 0 1px #ff6687,0 8px 22px #ff668710}
+.mode strong{font-size:14px}
+.mode small{color:#aeb9c8}
+.tag{font-weight:750;letter-spacing:.15px}
+button{border-radius:10px;min-height:42px}
+.primary{box-shadow:0 6px 18px #f34e7626}
+.quiet{border-color:#344253}
+.actions{align-items:center}
+.progress{height:10px;background:#252f3d;border:1px solid #303b49}
+.bar{background:linear-gradient(90deg,#f34e76,#ff9b54)}
+.status{padding:2px 1px;color:#c5d0de}
+.scanState{background:#0d1621;border-color:#2d3c4d;border-radius:11px}
+.scanChip,.scanItem,.deviceRow,.deviceKey{background:#0d1520;border-color:#2a3747;border-radius:10px}
+.scanChip b,.scanItem b,.deviceRow b{line-height:1.55}
+.scanReport details,.deviceDetails{border-color:#2b3949;border-radius:11px}
+.scanReport summary,.deviceDetails summary{padding:13px;color:#e2e8f0}
+.processIssue{border-radius:12px;padding:14px}
+.processIssue pre{max-height:300px;border-color:#344254;border-radius:10px}
+#result{border-color:#3b4657}
+#result h4{margin:18px 0 10px;font-size:14px}
+#engineReport{gap:9px}
+#result .actions{margin-top:16px}
+#download{display:inline-flex;text-decoration:none}
+footer{padding:18px 0;color:#778394}
+:focus-visible{outline:2px solid #ff8aa4;outline-offset:3px}
+@media(max-width:600px){
+ .wrap{padding-left:11px;padding-right:11px}
+ .top{gap:9px}
+ .brand{gap:9px}
+ .brand h1{font-size:15px}
+ .logo{width:39px;height:39px}
+ .steps{gap:6px}
+ .step{justify-content:center;min-height:47px;font-size:11px}
+ .step b{margin-left:0}
+ .card{border-radius:13px;padding:14px}
+ .modes{grid-template-columns:1fr}
+ .mode{padding:13px!important}
+ .videoDetails{gap:7px!important}
+ .videoDetails .metric{padding:9px!important}
+ .deviceKeyIndicators{gap:6px}
+ .deviceKey{padding:9px 7px}
+ #engineReport{grid-template-columns:1fr 1fr}
+ .processIssue pre{max-height:240px}
+}
+@media(min-width:601px){
+ .modes{grid-template-columns:1fr 1fr}
+ #engineReport{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
 </style>
 </head>
 <body><main class="wrap">
