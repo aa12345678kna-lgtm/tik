@@ -314,7 +314,7 @@ footer{font-size:10px;color:#778293;padding-top:15px}
 <script>
 const $=id=>document.getElementById(id);let file=null,objectUrl=null,outputUrl=null,ffmpeg=null,working=false,videoDuration=0,mediaInfoData=null,scanGeneration=0,mediaInfoFactoryPromise=null;
 const ENGINE_PLAN_MODULE_URL="./assets/js/engine-loader.js?v=20261128-public-labels-1";
-const HANDBRAKE_API_BASE=(window.IBRAHIM_HANDBRAKE_API||'').replace(/\\/$/,'');
+const HANDBRAKE_API_BASE=(window.IBRAHIM_HANDBRAKE_API||'').replace(/\/+$/,'');
 window.handbrakeJobId=null;window.handbrakeAbortController=null;window.handbrakeLogs=[];
 let enginePlanPromise=null;
 function initializeEnginePlan(){
