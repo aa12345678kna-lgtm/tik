@@ -72,7 +72,7 @@ nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
 @media(max-width:600px){.videoDetails{grid-template-columns:1fr 1fr}}
 .wrap{max-width:850px}.top{margin-bottom:12px}.steps{margin:14px 0 18px}.card{padding:18px;margin:12px 0}.mode{min-height:105px;padding:13px}.modes{grid-template-columns:1fr 1fr}.intro{margin-bottom:14px}.drop{padding:26px 12px}.actions{margin-top:14px}
 @media(max-width:600px){.modes{grid-template-columns:1fr}.mode{min-height:unset}}
-</style>
+\n/* تحسينات واجهة الجوال فقط — دون تغيير مسار المعالجة */\n.deviceKeyIndicators{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 2px}.deviceKey{min-width:0;padding:10px;border:1px solid #293746;border-radius:10px;background:#111925}.deviceKey span{display:block;color:#9da8b7;font-size:11px}.deviceKey b{display:block;margin-top:5px;font-size:12px;overflow-wrap:anywhere}.deviceKey .good{color:#9fe9d7}.deviceKey .warn{color:#ffc0c8}.deviceDetails{margin-top:10px;border-top:1px solid #293342;padding-top:9px}.deviceDetails summary{color:#cbd5e1;font-size:12px;cursor:pointer;padding:5px 0}.deviceDetails[open] summary{margin-bottom:9px}.deviceDetails .deviceRows{margin-top:8px}.steps{margin:10px 0 12px;gap:7px}.step{padding:8px 7px;font-size:12px}.card{padding:15px;margin:10px 0}.card h3{margin-top:0;margin-bottom:7px;font-size:16px}.card .sub{margin-top:0;margin-bottom:12px}.drop{padding:25px 14px;min-height:126px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}.drop strong{font-size:14px}.drop small{font-size:11px;color:#9da8b7}.preview{display:block;width:100%;max-height: min(56vh,440px);object-fit:contain;background:#05070b;border-radius:12px;margin:10px auto}.videoDetails{gap:7px!important;margin-top:10px!important}.videoDetails .metric{padding:9px!important}.mode{padding:13px!important;border-radius:12px}.mode strong{display:block;line-height:1.5}.mode small{display:block;line-height:1.65;margin-top:5px}.actions{gap:8px;margin-top:13px}.actions button{min-height:44px}.progress{height:10px;margin:12px 0}.status{font-size:13px;line-height:1.7}.processIssue{margin-top:12px}.processIssue pre{max-height:220px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:11px;line-height:1.55}.deviceStatus{margin:8px 0 10px}@media(max-width:600px){.wrap{padding-left:12px;padding-right:12px}.steps{margin:8px 0 10px}.step{font-size:11px;padding:7px 5px}.card{padding:14px;margin:9px 0}.deviceKeyIndicators{gap:6px}.deviceKey{padding:8px 7px}.deviceKey span{font-size:10px}.deviceKey b{font-size:11px}.deviceRows{grid-template-columns:1fr 1fr;gap:7px}.deviceRow{padding:8px}.drop{min-height:116px;padding:21px 10px}.videoDetails{grid-template-columns:1fr 1fr;gap:7px!important}.videoActions button,.deviceActions button{flex:1 1 auto;min-height:42px}.actions{display:flex}.actions #start{flex:1 1 100%}.actions #cancel{flex:1 1 100%}.modes{gap:9px}.mode{min-height:unset}.processIssue{padding:11px}.processIssue .actions button{width:100%}}@media(min-width:601px){.deviceKeyIndicators{max-width:620px}}\n</style>
 </head>
 <body><main class="wrap">
 <header class="top"><div class="brand"><div class="logo">4K</div><div><div class="eyebrow">IBRAHIM STUDIO · LOCAL LAB</div><h1>استوديو تحسين الفيديو</h1></div></div><div class="pill">● المعالجة المحلية</div></header>
@@ -86,17 +86,20 @@ nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
  <h3>فحص الجهاز والمتصفح</h3>
  <p class="sub">اختبار تلقائي قبل المعالجة المحلية. النتائج تُعرض على جهازك ولا تُرسل إلى أي خادم.</p>
  <div id="deviceStatus" class="deviceStatus">جارٍ فحص إمكانيات المتصفح...</div>
- <div id="deviceRows" class="deviceRows"></div>
- <div class="deviceActions"><button id="copyDeviceReport" class="quiet" type="button">نسخ تقرير الجهاز</button><button id="recheckDevice" class="quiet" type="button">إعادة الفحص</button></div>
- <p class="note">SharedArrayBuffer وعزل COOP/COEP من متطلبات المحرك متعدد الخيوط. يوضح التقرير المحرك الذي نفّذ آخر تصدير فعلياً، ووقت المعالجة، وهل حدث رجوع تلقائي إلى Single-Thread. الذاكرة المعروضة تقديرية وقد يخفيها المتصفح.</p>
+ <div id="deviceKeyIndicators" class="deviceKeyIndicators" aria-live="polite"></div>
+ <details class="deviceDetails"><summary>التفاصيل الفنية وفحص الجهاز</summary>
+  <div id="deviceRows" class="deviceRows"></div>
+  <div class="deviceActions"><button id="copyDeviceReport" class="quiet" type="button">نسخ تقرير الجهاز</button><button id="recheckDevice" class="quiet" type="button">إعادة الفحص</button></div>
+  <p class="note">SharedArrayBuffer وعزل COOP/COEP من متطلبات المحرك متعدد الخيوط. يوضح التقرير المحرك الذي نفّذ آخر تصدير فعلياً، ووقت المعالجة، وهل حدث رجوع تلقائي إلى Single-Thread. الذاكرة المعروضة تقديرية وقد يخفيها المتصفح.</p>
+ </details>
 </section>
 
-<section class="card" id="studio"><h3>1 · اختر الفيديو</h3><p class="sub">اختر فيديو من جهازك للبدء.</p>
+<section class="card" id="studio"><h3>اختر الفيديو</h3><p class="sub">اختر فيديو من جهازك للبدء.</p>
 <label class="drop" id="drop"><input id="file" type="file" accept="video/*"><span class="uploadIcon">＋</span><strong>اختر فيديو أو اسحب الملف هنا</strong><small>MP4 · MOV · WEBM</small></label>
 <div id="videoInfo" class="hidden"><video id="preview" class="preview" controls playsinline></video><h4 style="margin:14px 0 4px">تفاصيل المقطع</h4><p class="sub">تُقرأ مباشرة من الملف الموجود على جهازك.</p><div id="meta" class="videoDetails"></div><div id="scanState" class="scanState">اختر فيديو لبدء الفحص المحلي.</div><div id="scanSummary" class="scanSummary hidden"></div><div id="scanReport" class="scanReport hidden"></div><div class="videoActions"><button id="copyInfo" class="quiet">نسخ التفاصيل</button><button id="changeFile" class="quiet">تغيير الفيديو</button></div></div>
 <div class="urlrow hidden"><input id="videoUrl"><button id="useUrl">استخدام الرابط</button></div>
 </section>
-<section class="card"><h3>2 · اختر الطريقة</h3><p class="sub">اختر النتيجة المناسبة لمقطعك.</p>
+<section class="card"><h3>اختر طريقة التجهيز</h3><p class="sub">اختر النتيجة المناسبة لمقطعك.</p>
 <div class="modes">
 <label class="mode"><input type="radio" name="mode" value="lite"><span class="tag">الأسرع</span><strong>LITE · 720p / 60 FPS</strong><small>ينسخ مسارات الصورة والصوت دون إعادة ترميز؛ أسرع خيار عندما يكون الملف متوافقاً.</small></label>
 <label class="mode"><input type="radio" name="mode" value="classic" checked><span class="tag">موصى به</span><strong>CLASSIC · SDR / HDR</strong><small>يحافظ على مسارات الصورة والصوت كما هي دون إعادة ترميز. لا يضيف HDR إلى فيديو SDR.</small></label>
@@ -169,6 +172,12 @@ function runDeviceCheck(){
  ];
  deviceReportData={secure,wasm,sab,isolated,memory,cores,screenSize,rows,lastEngineReport};
  $('deviceRows').innerHTML=rows.map(([k,v,ok])=>'<div class="deviceRow"><span>'+esc(k)+'</span><b>'+esc(v)+(ok===true?' ✓':ok===false?' ✕':'')+'</b></div>').join('');
+ const mtReady=sab&&isolated&&!!window.IbrahimEnginePlan?.threadedBundleAvailable;
+ $('deviceKeyIndicators').innerHTML=[
+  ['Multi-thread',mtReady?'جاهز':'غير جاهز',mtReady],
+  ['COOP / COEP',isolated?'مفعّل':'غير مفعّل',isolated],
+  ['المحرك',window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode||'قيد التهيئة',null]
+ ].map(([k,v,ok])=>'<div class="deviceKey"><span>'+esc(k)+'</span><b class="'+(ok===true?'good':ok===false?'warn':'')+'">'+esc(v)+'</b></div>').join('');
  const canProcess=secure&&wasm;
  $('deviceStatus').textContent=canProcess?'✓ المتصفح يوفّر المتطلبات الأساسية للمعالجة المحلية. '+(!sab?'المعالجة متعددة الخيوط غير متاحة، وسيعمل المحرك الحالي بخيط واحد.':'دعم SharedArrayBuffer متاح.'):'لا يمكن بدء المعالجة: يلزم اتصال HTTPS ودعم WebAssembly.';
  $('deviceStatus').style.color=canProcess?'#9fe9d7':'#ffc0c8';
