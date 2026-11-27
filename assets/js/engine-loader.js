@@ -27,14 +27,14 @@ export function getEnginePlan() {
   if (!capabilities.wasm) blockers.push("WebAssembly غير مدعوم");
   if (!capabilities.sharedArrayBuffer) blockers.push("SharedArrayBuffer غير متاح");
   if (!capabilities.crossOriginIsolated) blockers.push("عزل COOP/COEP غير مفعّل");
-  if (!ENGINE_CONFIG.threadedBundleAvailable) blockers.push("حزمة core-mt غير مفعّلة في الإعدادات");
+  if (!ENGINE_CONFIG.threadedBundleAvailable) blockers.push("دعم الوضع المتوازي غير مفعّل في الإعدادات");
   return {
     mode,
     capabilities,
     config: mode === "multi-thread" ? ENGINE_CONFIG.multiThread : ENGINE_CONFIG.singleThread,
     threadedBundleAvailable: ENGINE_CONFIG.threadedBundleAvailable,
     reason: mode === "multi-thread"
-      ? "كل شروط Multi-thread متحققة؛ سيُحمّل core-mt."
-      : "تم اختيار Single-thread لأن: " + (blockers.join("، ") || "شرط من شروط اختيار المحرك لم يتحقق.")
+      ? "كل شروط الوضع المتوازي متحققة؛ سيتم استخدامه."
+      : "تم اختيار الوضع القياسي لأن: " + (blockers.join("، ") || "أحد شروط الوضع المتوازي غير متحقق.")
   };
 }

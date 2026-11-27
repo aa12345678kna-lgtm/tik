@@ -74,6 +74,179 @@ nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
 @media(max-width:600px){.modes{grid-template-columns:1fr}.mode{min-height:unset}}
 
 /* تحسينات واجهة الجوال فقط — دون تغيير مسار المعالجة */\n.deviceKeyIndicators{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 2px}.deviceKey{min-width:0;padding:10px;border:1px solid #293746;border-radius:10px;background:#111925}.deviceKey span{display:block;color:#9da8b7;font-size:11px}.deviceKey b{display:block;margin-top:5px;font-size:12px;overflow-wrap:anywhere}.deviceKey .good{color:#9fe9d7}.deviceKey .warn{color:#ffc0c8}.deviceDetails{margin-top:10px;border-top:1px solid #293342;padding-top:9px}.deviceDetails summary{color:#cbd5e1;font-size:12px;cursor:pointer;padding:5px 0}.deviceDetails[open] summary{margin-bottom:9px}.deviceDetails .deviceRows{margin-top:8px}.steps{margin:10px 0 12px;gap:7px}.step{padding:8px 7px;font-size:12px}.card{padding:15px;margin:10px 0}.card h3{margin-top:0;margin-bottom:7px;font-size:16px}.card .sub{margin-top:0;margin-bottom:12px}.drop{padding:25px 14px;min-height:126px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}.drop strong{font-size:14px}.drop small{font-size:11px;color:#9da8b7}.preview{display:block;width:100%;max-height: min(56vh,440px);object-fit:contain;background:#05070b;border-radius:12px;margin:10px auto}.videoDetails{gap:7px!important;margin-top:10px!important}.videoDetails .metric{padding:9px!important}.mode{padding:13px!important;border-radius:12px}.mode strong{display:block;line-height:1.5}.mode small{display:block;line-height:1.65;margin-top:5px}.actions{gap:8px;margin-top:13px}.actions button{min-height:44px}.progress{height:10px;margin:12px 0}.status{font-size:13px;line-height:1.7}.processIssue{margin-top:12px}.processIssue pre{max-height:220px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:11px;line-height:1.55}.deviceStatus{margin:8px 0 10px}@media(max-width:600px){.wrap{padding-left:12px;padding-right:12px}.steps{margin:8px 0 10px}.step{font-size:11px;padding:7px 5px}.card{padding:14px;margin:9px 0}.deviceKeyIndicators{gap:6px}.deviceKey{padding:8px 7px}.deviceKey span{font-size:10px}.deviceKey b{font-size:11px}.deviceRows{grid-template-columns:1fr 1fr;gap:7px}.deviceRow{padding:8px}.drop{min-height:116px;padding:21px 10px}.videoDetails{grid-template-columns:1fr 1fr;gap:7px!important}.videoActions button,.deviceActions button{flex:1 1 auto;min-height:42px}.actions{display:flex}.actions #start{flex:1 1 100%}.actions #cancel{flex:1 1 100%}.modes{gap:9px}.mode{min-height:unset}.processIssue{padding:11px}.processIssue .actions button{width:100%}}@media(min-width:601px){.deviceKeyIndicators{max-width:620px}}
+
+/* UI-only refinement — no processing, FFmpeg, codec, engine, or report logic changes */
+:root{
+ --ui-surface:#101720;--ui-surface-2:#0b1119;--ui-border:#283443;
+ --ui-accent:#ff6687;--ui-accent-soft:#351b28;--ui-muted:#a8b3c2;
+}
+body{background:radial-gradient(ellipse at 50% -18%,#172231 0, #080c12 48%,#07090e 100%);line-height:1.55}
+.wrap{max-width:900px;padding-left:clamp(12px,3vw,22px);padding-right:clamp(12px,3vw,22px)}
+.top{padding:17px 0 15px;border-color:#26303c}
+.logo{box-shadow:0 5px 18px #ff477226}
+.brand h1{letter-spacing:.1px}
+.pill{white-space:nowrap}
+h2{letter-spacing:-.5px;line-height:1.2;margin-top:18px}
+.intro{max-width:650px;color:#b0bac8}
+.steps{gap:10px}
+.step{border-radius:12px;background:linear-gradient(145deg,#141d29,#0e141d);border-color:#2b3746;display:flex;align-items:center;min-height:48px}
+.step b{flex:0 0 24px;margin-left:9px}
+.card{background:linear-gradient(155deg,rgba(19,28,40,.97),rgba(11,16,24,.98));border-color:#293646;border-radius:15px;padding:clamp(15px,2.5vw,21px);box-shadow:0 12px 34px #0003}
+.card h3{font-size:17px;letter-spacing:.05px}
+.card .sub{color:var(--ui-muted)}
+.drop{border-color:#526174;background:linear-gradient(145deg,#0c131d,#0a0e15);border-radius:13px}
+.drop:hover,.drop.drag{border-color:var(--ui-accent);box-shadow:0 0 0 3px #ff668718}
+.videoDetails .metric,.metric{background:#0b121b;border-color:#2a3645;border-radius:10px}
+.videoDetails .metric b{font-size:13px}
+.mode{background:linear-gradient(150deg,#0d141e,#0a0f16);border-color:#2b3746;border-radius:13px;transition:border-color .16s,background .16s,transform .16s}
+.mode:hover{border-color:#596b80}
+.mode:has(input:checked){background:linear-gradient(145deg,#241521,#15121a);border-color:#ff6687;box-shadow:inset 0 0 0 1px #ff6687,0 8px 22px #ff668710}
+.mode strong{font-size:14px}
+.mode small{color:#aeb9c8}
+.tag{font-weight:750;letter-spacing:.15px}
+button{border-radius:10px;min-height:42px}
+.primary{box-shadow:0 6px 18px #f34e7626}
+.quiet{border-color:#344253}
+.actions{align-items:center}
+.progress{height:10px;background:#252f3d;border:1px solid #303b49}
+.bar{background:linear-gradient(90deg,#f34e76,#ff9b54)}
+.status{padding:2px 1px;color:#c5d0de}
+.scanState{background:#0d1621;border-color:#2d3c4d;border-radius:11px}
+.scanChip,.scanItem,.deviceRow,.deviceKey{background:#0d1520;border-color:#2a3747;border-radius:10px}
+.scanChip b,.scanItem b,.deviceRow b{line-height:1.55}
+.scanReport details,.deviceDetails{border-color:#2b3949;border-radius:11px}
+.scanReport summary,.deviceDetails summary{padding:13px;color:#e2e8f0}
+.processIssue{border-radius:12px;padding:14px}
+.processIssue pre{max-height:300px;border-color:#344254;border-radius:10px}
+#result{border-color:#3b4657}
+#result h4{margin:18px 0 10px;font-size:14px}
+#engineReport{gap:9px}
+#result .actions{margin-top:16px}
+#download{display:inline-flex;text-decoration:none}
+footer{padding:18px 0;color:#778394}
+:focus-visible{outline:2px solid #ff8aa4;outline-offset:3px}
+@media(max-width:600px){
+ .wrap{padding-left:11px;padding-right:11px}
+ .top{gap:9px}
+ .brand{gap:9px}
+ .brand h1{font-size:15px}
+ .logo{width:39px;height:39px}
+ .steps{gap:6px}
+ .step{justify-content:center;min-height:47px;font-size:11px}
+ .step b{margin-left:0}
+ .card{border-radius:13px;padding:14px}
+ .modes{grid-template-columns:1fr}
+ .mode{padding:13px!important}
+ .videoDetails{gap:7px!important}
+ .videoDetails .metric{padding:9px!important}
+ .deviceKeyIndicators{gap:6px}
+ .deviceKey{padding:9px 7px}
+ #engineReport{grid-template-columns:1fr 1fr}
+ .processIssue pre{max-height:240px}
+}
+@media(min-width:601px){
+ .modes{grid-template-columns:1fr 1fr}
+ #engineReport{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+
+/* واجهة مبسطة ومنظمة — تغييرات عرض فقط */
+:root{
+  --bg:#090b10;
+  --line:#252b36;
+  --muted:#9da7b5;
+  --text:#f4f6fa;
+  --radius:14px;
+}
+body{background:radial-gradient(ellipse at 50% -18%,#1b2432 0%,#090b10 55%);color:var(--text)}
+.wrap{max-width:780px;padding:0 16px 48px}
+.top{padding:17px 0 13px;margin-bottom:16px;border-bottom:1px solid #252b36}
+.logo{width:40px;height:40px;border-radius:12px}
+.brand h1{font-size:16px;font-weight:750}
+.pill{font-size:11px;padding:7px 10px}
+h2{font-size:clamp(25px,5vw,32px);margin:2px 0 6px;letter-spacing:-.4px}
+.intro{font-size:13px;margin-bottom:14px;color:#aeb7c4}
+.steps{display:flex;gap:7px;margin:12px 0 15px}
+.step{flex:1;text-align:center;border-radius:9px;padding:8px 7px;background:#111722;border-color:#252e3b;font-size:11px;color:#d0d7e2}
+.step b{width:20px;height:20px;border-radius:7px;background:#38202b;color:#ff9bb0;margin-left:5px}
+.card{margin:10px 0;padding:17px;background:#10151e;border:1px solid #252e3b;border-radius:14px;box-shadow:0 8px 24px #0002}
+.card h3{font-size:16px;margin-bottom:6px}
+.sub{font-size:12px;line-height:1.75;margin-bottom:12px;color:#a5afbd}
+.drop{min-height:132px;padding:24px 14px;border:1.5px dashed #566276;border-radius:12px;background:#0b1018}
+.drop:hover,.drop.drag{border-color:#ff7894;background:#17131b}
+.uploadIcon{font-size:27px}
+.drop strong{font-size:14px;margin:6px 0}
+.drop small{font-size:11px;color:#9da8b7}
+.preview{max-height: min(58vh,430px);border-radius:12px;background:#05070b}
+.videoDetails,.meta{gap:7px}
+.metric{padding:10px;background:#0b111a;border-color:#273140;border-radius:10px}
+.metric span{font-size:10px;color:#9da8b7}
+.metric b{font-size:13px}
+.videoActions{gap:8px}
+.videoActions button,.deviceActions button{min-height:40px;padding:9px 13px}
+.modes{gap:8px}
+.mode{min-height:112px;padding:13px;background:#0b111a;border-color:#293342;border-radius:11px}
+.mode:has(input:checked){background:#1b141d;border-color:#ff718f;box-shadow:inset 0 0 0 1px #ff718f}
+.mode strong{font-size:13px;margin:7px 0 5px}
+.mode small{font-size:11px;line-height:1.65;color:#aab4c2}
+.tag{font-size:9px;padding:3px 6px}
+.modeHint{margin-top:10px;padding:10px 11px;background:#0d141e;border-color:#273342;font-size:11px}
+.actions{gap:8px;margin-top:12px}
+.actions button{min-height:43px;padding:10px 15px}
+.actions #start{min-width:150px}
+.primary{background:linear-gradient(110deg,#f04b76,#fa865d)}
+.quiet{background:#171e29;border-color:#303b4b}
+.danger{background:#43232c}
+.progress{height:9px;background:#252e3b}
+.bar{background:linear-gradient(90deg,#f04b76,#fa9a62)}
+.status{font-size:12px}
+.scanState{padding:10px 12px;background:#0c141e;border-color:#293747;font-size:11px}
+.scanChip,.scanItem{background:#0d141e;border-color:#293747}
+.scanChip{padding:9px}
+.scanChip span,.scanItem span{font-size:10px;color:#9da8b7}
+.scanChip b,.scanItem b{font-size:12px}
+.scanReport details{background:#0b111a;border-color:#293747}
+.scanReport summary{font-size:12px;padding:10px 12px}
+.deviceReport{padding:13px;margin:10px 0;background:#0e141d;border-color:#263241}
+.deviceReport h3{font-size:14px}
+.deviceReport .sub{font-size:11px;margin-bottom:8px}
+.deviceKeyIndicators{gap:6px}
+.deviceKey{padding:8px;background:#111a26;border-color:#293747}
+.deviceKey span{font-size:10px}
+.deviceKey b{font-size:11px}
+.deviceDetails summary{font-size:11px}
+.deviceRow{padding:8px;background:#111a26}
+.deviceRow span{font-size:10px}
+.deviceRow b{font-size:11px}
+.processIssue{border-radius:11px}
+#result{border-color:#3b4657}
+#result h4{font-size:14px;margin:14px 0 8px}
+#engineReport{gap:7px}
+footer{font-size:10px;color:#778293;padding-top:15px}
+@media(max-width:600px){
+ .wrap{padding-left:12px;padding-right:12px}
+ .top{padding-top:13px}
+ .card{padding:14px;margin:9px 0}
+ .steps{gap:5px;margin:9px 0 11px}
+ .step{font-size:10px;padding:7px 4px}
+ .step b{margin-left:0;margin-bottom:3px}
+ .modes{grid-template-columns:1fr 1fr;gap:7px}
+ .mode{min-height:118px;padding:10px}
+ .mode strong{font-size:12px}
+ .mode small{font-size:10px}
+ .videoDetails{grid-template-columns:1fr 1fr}
+ .deviceKeyIndicators{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .deviceKey{padding:7px 5px}
+ .deviceKey span{font-size:9px}
+ .deviceKey b{font-size:10px}
+ .actions #start,.actions #cancel{flex:1 1 100%}
+ .videoActions button,.deviceActions button{flex:1}
+}
+@media(max-width:360px){
+ .modes{grid-template-columns:1fr}
+ .pill{max-width:125px;white-space:nowrap}
+}
+
 </style>
 </head>
 <body><main class="wrap">
@@ -92,7 +265,7 @@ nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
  <details class="deviceDetails"><summary>التفاصيل الفنية وفحص الجهاز</summary>
   <div id="deviceRows" class="deviceRows"></div>
   <div class="deviceActions"><button id="copyDeviceReport" class="quiet" type="button">نسخ تقرير الجهاز</button><button id="recheckDevice" class="quiet" type="button">إعادة الفحص</button></div>
-  <p class="note">SharedArrayBuffer وعزل COOP/COEP من متطلبات المحرك متعدد الخيوط. يوضح التقرير المحرك الذي نفّذ آخر تصدير فعلياً، ووقت المعالجة، وهل حدث رجوع تلقائي إلى Single-Thread. الذاكرة المعروضة تقديرية وقد يخفيها المتصفح.</p>
+  <p class="note">SharedArrayBuffer وعزل COOP/COEP من متطلبات وضع المعالجة المتوازي. يوضح التقرير وضع التنفيذ الفعلي ووقت المعالجة، وهل حدث رجوع تلقائي إلى الوضع القياسي. الذاكرة المعروضة تقديرية وقد يخفيها المتصفح.</p>
  </details>
 </section>
 
@@ -111,7 +284,7 @@ nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
 <div id="modeHint" class="modeHint">افحص الفيديو أولاً حتى نتحقق من توافق طريقة التجهيز.</div><div class="actions"><button id="start" class="primary" disabled>ابدأ التجهيز</button><button id="cancel" class="danger hidden">إلغاء</button></div>
 <div id="progressWrap" class="hidden"><div class="progress"><div class="bar" id="bar"></div></div><div class="status" id="status">جارٍ التحضير...</div></div><div id="processIssue" class="processIssue hidden" role="status"><strong id="processIssueTitle"></strong><p id="processIssueMessage"></p><details><summary>سجل FFmpeg الأخير</summary><pre id="ffmpegLog"></pre></details><div class="actions"><button id="copyFfmpegLog" class="quiet" type="button">نسخ السجل</button></div></div>
 </section>
-<section class="card hidden" id="result"><h3>3 · الفيديو جاهز</h3><p class="sub" id="resultText">اكتملت العملية.</p><h4>تقرير المحرك الفعلي</h4><div id="engineReport" class="scanSummary"></div><div class="actions"><a id="download" download="ibrahim-studio.mp4"><button class="primary">تنزيل الفيديو</button></a><button id="again" class="quiet">تجهيز فيديو آخر</button></div></section>
+<section class="card hidden" id="result"><h3>3 · الفيديو جاهز</h3><p class="sub" id="resultText">اكتملت العملية.</p><h4>تقرير التنفيذ الفعلي</h4><div id="engineReport" class="scanSummary"></div><div class="actions"><a id="download" download="ibrahim-studio.mp4"><button class="primary">تنزيل الفيديو</button></a><button id="again" class="quiet">تجهيز فيديو آخر</button></div></section>
 <div id="legacyTools" class="hidden" aria-hidden="true">
 <button id="thumbYes"></button><button id="thumbNo"></button>
 <div id="thumbPanel"><canvas id="canvas" width="640" height="360"></canvas><input id="seek" type="range"><span id="seekTime"></span><button id="prevFrame"></button><button id="nextFrame"></button><button id="saveCover"></button></div>
@@ -120,7 +293,7 @@ nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
 </main>
 <script>
 const $=id=>document.getElementById(id);let file=null,objectUrl=null,outputUrl=null,ffmpeg=null,working=false,videoDuration=0,mediaInfoData=null,scanGeneration=0,mediaInfoFactoryPromise=null;
-const ENGINE_PLAN_MODULE_URL="./assets/js/engine-loader.js?v=20261127-mt-startup-3";
+const ENGINE_PLAN_MODULE_URL="./assets/js/engine-loader.js?v=20261128-public-labels-1";
 let enginePlanPromise=null;
 function initializeEnginePlan(){
  if(!enginePlanPromise){
@@ -130,7 +303,7 @@ function initializeEnginePlan(){
    return window.IbrahimEnginePlan;
   }).catch(error=>{
    const message=error?.message||String(error);
-   window.IbrahimEnginePlan={mode:"single-thread",requestedMode:"single-thread",capabilities:{secureContext:window.isSecureContext===true,wasm:typeof WebAssembly==="object",sharedArrayBuffer:typeof SharedArrayBuffer!=="undefined",crossOriginIsolated:window.crossOriginIsolated===true,hardwareConcurrency:navigator.hardwareConcurrency??null},threadedBundleAvailable:false,reason:"تعذّر تحميل مخطط المحرك: "+message,fallbackUsed:false,fallbackReason:""};
+   window.IbrahimEnginePlan={mode:"single-thread",requestedMode:"single-thread",capabilities:{secureContext:window.isSecureContext===true,wasm:typeof WebAssembly==="object",sharedArrayBuffer:typeof SharedArrayBuffer!=="undefined",crossOriginIsolated:window.crossOriginIsolated===true,hardwareConcurrency:navigator.hardwareConcurrency??null},threadedBundleAvailable:false,reason:"تعذّر إعداد خطة المعالجة: "+message,fallbackUsed:false,fallbackReason:""};
    return window.IbrahimEnginePlan;
   });
  }
@@ -141,7 +314,8 @@ const time=s=>{if(!Number.isFinite(s))return '—';return Math.floor(s/60)+':'+S
 const ENGINE_REPORT_KEY='ibrahimStudioLastEngineReport';
 function getLastEngineReport(){try{return JSON.parse(localStorage.getItem(ENGINE_REPORT_KEY)||'null')}catch(e){return null}}
 function saveEngineReport(report){try{localStorage.setItem(ENGINE_REPORT_KEY,JSON.stringify(report))}catch(e){console.warn('تعذّر حفظ تقرير المحرك محلياً',e)}}
-function engineReportRows(report){if(!report)return [];const speed=Number.isFinite(report.speedFactor)?report.speedFactor.toFixed(2)+'× من مدة الفيديو':'غير متاح';return [['المحرك الذي نفّذ التصدير',report.activeMode||'غير متاح'],['وضع المعالجة',report.processingMode||'غير متاح'],['الخطة قبل التحميل',report.plannedMode||'غير متاح'],['سبب اختيار الخطة',report.planReason||'غير متاح'],['HTTPS في وقت الاختيار',report.capabilities?.secureContext?'نعم':'لا'],['WebAssembly في وقت الاختيار',report.capabilities?.wasm?'نعم':'لا'],['SharedArrayBuffer في وقت الاختيار',report.capabilities?.sharedArrayBuffer?'نعم':'لا'],['COOP/COEP في وقت الاختيار',report.capabilities?.crossOriginIsolated?'مفعّل':'غير مفعّل'],['عدد الأنوية المنطقية',report.capabilities?.hardwareConcurrency??'غير متاح'],['الرجوع التلقائي للاحتياطي',report.fallbackUsed?'نعم':'لا'],['سبب الرجوع',report.fallbackReason||'لا يوجد'],['مدة المعالجة الكلية',Number.isFinite(report.processingSeconds)?report.processingSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة تنفيذ FFmpeg',Number.isFinite(report.encodeSeconds)?report.encodeSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة تحميل المحرك',Number.isFinite(report.loadSeconds)?report.loadSeconds.toFixed(2)+' ثانية':'غير متاح'],['سرعة المعالجة',speed]]}
+function executionModeLabel(mode){return mode==='multi-thread'?'متعدد الخيوط':mode==='single-thread'?'خيط واحد':mode||'غير متاح'}
+function engineReportRows(report){if(!report)return [];const speed=Number.isFinite(report.speedFactor)?report.speedFactor.toFixed(2)+'× من مدة الفيديو':'غير متاح';return [['وضع التنفيذ الفعلي',executionModeLabel(report.activeMode)],['وضع المعالجة',report.processingMode||'غير متاح'],['خطة التنفيذ قبل البدء',executionModeLabel(report.plannedMode)],['سبب اختيار وضع المعالجة',report.planReason||'غير متاح'],['HTTPS في وقت الاختيار',report.capabilities?.secureContext?'نعم':'لا'],['WebAssembly في وقت الاختيار',report.capabilities?.wasm?'نعم':'لا'],['SharedArrayBuffer في وقت الاختيار',report.capabilities?.sharedArrayBuffer?'نعم':'لا'],['COOP/COEP في وقت الاختيار',report.capabilities?.crossOriginIsolated?'مفعّل':'غير مفعّل'],['عدد الأنوية المنطقية',report.capabilities?.hardwareConcurrency??'غير متاح'],['الرجوع التلقائي للاحتياطي',report.fallbackUsed?'نعم':'لا'],['سبب الرجوع',report.fallbackReason||'لا يوجد'],['مدة المعالجة الكلية',Number.isFinite(report.processingSeconds)?report.processingSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة تنفيذ FFmpeg',Number.isFinite(report.encodeSeconds)?report.encodeSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة تهيئة المعالجة',Number.isFinite(report.loadSeconds)?report.loadSeconds.toFixed(2)+' ثانية':'غير متاح'],['سرعة المعالجة',speed]]}
 function renderEngineReport(report){const target=$('engineReport');if(!target||!report)return;target.innerHTML=engineReportRows(report).map(([k,v])=>'<div class="scanChip"><span>'+esc(k)+'</span><b>'+esc(v)+'</b></div>').join('')}
 
 function setStatus(t,p){$('status').textContent=t;if(p!==undefined)$('bar').style.width=Math.max(0,Math.min(100,p))+'%'}
@@ -163,11 +337,11 @@ function runDeviceCheck(){
   ['أبعاد الشاشة',screenSize,null],
   ['المتصفح',nav.userAgent||'غير متاح',null],
   ['لغة الجهاز',nav.language||'غير متاح',null],
-  ['خطة المحرك الحالية',window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode||'لم يبدأ التحميل بعد',null],
-  ['سبب اختيار الخطة',window.IbrahimEnginePlan?.reason||'لم يتم تحميل مخطط المحرك بعد',null],
+  ['خطة المعالجة الحالية',window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode||'لم يبدأ التحميل بعد',null],
+  ['سبب اختيار وضع المعالجة',window.IbrahimEnginePlan?.reason||'لم يتم إعداد خطة المعالجة بعد',null],
   ['شرط COOP/COEP وقت الاختيار',window.IbrahimEnginePlan?.capabilities?.crossOriginIsolated?'مفعّل':'غير مفعّل أو غير معروف',null],
-  ['حزمة Multi-thread',window.IbrahimEnginePlan?.threadedBundleAvailable?'مفعّلة':'غير مفعّلة أو غير معروفة',null],
-  ['آخر محرك نفّذ تصديراً',lastEngineReport?.activeMode||'لم يُسجل تصدير بعد',null],
+  ['دعم المعالجة متعددة الخيوط',window.IbrahimEnginePlan?.threadedBundleAvailable?'مفعّلة':'غير مفعّلة أو غير معروفة',null],
+  ['آخر وضع تنفيذ فعلي',lastEngineReport?executionModeLabel(lastEngineReport.activeMode):'لم يُسجل تصدير بعد',null],
   ['الرجوع للاحتياطي في آخر تصدير',lastEngineReport?(lastEngineReport.fallbackUsed?'نعم':'لا'):'غير متاح',null],
   ['مدة آخر معالجة',lastEngineReport&&Number.isFinite(lastEngineReport.processingSeconds)?lastEngineReport.processingSeconds.toFixed(2)+' ثانية':'غير متاح',null],
   ['سرعة آخر معالجة',lastEngineReport&&Number.isFinite(lastEngineReport.speedFactor)?lastEngineReport.speedFactor.toFixed(2)+'×':'غير متاح',null]
@@ -176,12 +350,12 @@ function runDeviceCheck(){
  $('deviceRows').innerHTML=rows.map(([k,v,ok])=>'<div class="deviceRow"><span>'+esc(k)+'</span><b>'+esc(v)+(ok===true?' ✓':ok===false?' ✕':'')+'</b></div>').join('');
  const mtReady=sab&&isolated&&!!window.IbrahimEnginePlan?.threadedBundleAvailable;
  $('deviceKeyIndicators').innerHTML=[
-  ['Multi-thread',mtReady?'جاهز':'غير جاهز',mtReady],
+  ['المعالجة المتوازية',mtReady?'جاهزة':'غير جاهزة',mtReady],
   ['COOP / COEP',isolated?'مفعّل':'غير مفعّل',isolated],
-  ['المحرك',window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode||'قيد التهيئة',null]
+  ['نمط التنفيذ',executionModeLabel(window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode)||'قيد التهيئة',null]
  ].map(([k,v,ok])=>'<div class="deviceKey"><span>'+esc(k)+'</span><b class="'+(ok===true?'good':ok===false?'warn':'')+'">'+esc(v)+'</b></div>').join('');
  const canProcess=secure&&wasm;
- $('deviceStatus').textContent=canProcess?'✓ المتصفح يوفّر المتطلبات الأساسية للمعالجة المحلية. '+(!sab?'المعالجة متعددة الخيوط غير متاحة، وسيعمل المحرك الحالي بخيط واحد.':'دعم SharedArrayBuffer متاح.'):'لا يمكن بدء المعالجة: يلزم اتصال HTTPS ودعم WebAssembly.';
+ $('deviceStatus').textContent=canProcess?'✓ المتصفح يوفّر المتطلبات الأساسية للمعالجة المحلية. '+(!sab?'المعالجة متعددة الخيوط غير متاحة، وسيعمل الوضع الحالي بخيط واحد.':'دعم SharedArrayBuffer متاح.'):'لا يمكن بدء المعالجة: يلزم اتصال HTTPS ودعم WebAssembly.';
  $('deviceStatus').style.color=canProcess?'#9fe9d7':'#ffc0c8';
  updateModeHint();
  return canProcess;
@@ -278,8 +452,8 @@ class IbrahimEngine{
 constructor(){this.ffmpeg=new FFmpeg();this.loaded=false;this.busy=false;this.onProgress=onProgress;this.logs=[];this.cancelRequested=false;this.lastErrorReport=null;this.bindEvents();}
 bindEvents(){this.ffmpeg.on('log',({message})=>{this.logs.push(message);if(this.logs.length>250)this.logs.shift()});this.ffmpeg.on('progress',({progress})=>{if(this.onProgress)this.onProgress(Math.min(.99,Math.max(.01,progress||0)))});}
 async loadCore(multithread){const classWorkerURL=new URL('assets/ffmpeg/worker.js',document.baseURI).href;const base=multithread?'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.6/dist/esm':'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';const [coreURL,wasmURL]=await Promise.all([toBlobURL(base+'/ffmpeg-core.js','text/javascript'),toBlobURL(base+'/ffmpeg-core.wasm','application/wasm')]);const options={classWorkerURL,coreURL,wasmURL};if(multithread)options.workerURL=await toBlobURL(base+'/ffmpeg-core.worker.js','text/javascript');await this.ffmpeg.load(options);}
-async load(){if(this.loaded)return;const wantsMulti=window.IbrahimEnginePlan?.mode==='multi-thread';setStatus(wantsMulti?'تحميل محرك المعالجة متعدد الخيوط لأول مرة...':'تحميل محرك المعالجة لأول مرة؛ اترك الصفحة مفتوحة...',2);try{await this.loadCore(wantsMulti);this.loaded=true;this.activeMode=wantsMulti?'multi-thread':'single-thread';}catch(error){if(!wantsMulti)throw error;try{this.ffmpeg.terminate()}catch(e){}this.ffmpeg=new FFmpeg();this.bindEvents();window.IbrahimEnginePlan={...window.IbrahimEnginePlan,mode:'single-thread',fallbackUsed:true,fallbackReason:error?.message||String(error),reason:'تعذّر تحميل المحرك متعدد الخيوط؛ تم الرجوع تلقائياً إلى Single-Thread.'};setStatus('تعذّر تحميل المحرك المتعدد؛ جارٍ تشغيل النسخة الاحتياطية...',4);await this.loadCore(false);this.loaded=true;this.activeMode='single-thread';}}
-async process(inputFile,method){if(this.busy)throw Error('المعالج مشغول حالياً');this.busy=true;this.cancelRequested=false;this.lastErrorReport=null;const processStarted=performance.now();let loadSeconds=0,encodeSeconds=0;const ext=(inputFile.name.match(/\.[^.]+$/)||['.mp4'])[0].toLowerCase();const input='input'+ext,output='output.mp4';let wrote=false;try{setStatus('تهيئة محرك الفيديو...',4);const loadStarted=performance.now();await this.load();loadSeconds=(performance.now()-loadStarted)/1000;setStatus('قراءة الفيديو داخل ذاكرة المعالجة المحلية...',7);await this.ffmpeg.writeFile(input,await fetchFile(inputFile));wrote=true;this.logs=[];setStatus('تجهيز مسارات الفيديو والصوت...',9);let args;
+async load(){if(this.loaded)return;const wantsMulti=window.IbrahimEnginePlan?.mode==='multi-thread';setStatus(wantsMulti?'تهيئة المعالجة المتوازية لأول مرة...':'تهيئة نظام المعالجة لأول مرة؛ اترك الصفحة مفتوحة...',2);try{await this.loadCore(wantsMulti);this.loaded=true;this.activeMode=wantsMulti?'multi-thread':'single-thread';}catch(error){if(!wantsMulti)throw error;try{this.ffmpeg.terminate()}catch(e){}this.ffmpeg=new FFmpeg();this.bindEvents();window.IbrahimEnginePlan={...window.IbrahimEnginePlan,mode:'single-thread',fallbackUsed:true,fallbackReason:error?.message||String(error),reason:'تعذّرت تهيئة الوضع المتوازي؛ تم الرجوع تلقائياً إلى الوضع القياسي.'};setStatus('تعذّرت تهيئة الوضع المتوازي؛ جارٍ تشغيل الوضع الاحتياطي...',4);await this.loadCore(false);this.loaded=true;this.activeMode='single-thread';}}
+async process(inputFile,method){if(this.busy)throw Error('المعالج مشغول حالياً');this.busy=true;this.cancelRequested=false;this.lastErrorReport=null;const processStarted=performance.now();let loadSeconds=0,encodeSeconds=0;const ext=(inputFile.name.match(/\.[^.]+$/)||['.mp4'])[0].toLowerCase();const input='input'+ext,output='output.mp4';let wrote=false;try{setStatus('تهيئة نظام المعالجة...',4);const loadStarted=performance.now();await this.load();loadSeconds=(performance.now()-loadStarted)/1000;setStatus('قراءة الفيديو داخل ذاكرة المعالجة المحلية...',7);await this.ffmpeg.writeFile(input,await fetchFile(inputFile));wrote=true;this.logs=[];setStatus('تجهيز مسارات الفيديو والصوت...',9);let args;
 if(method==='preserve'||method==='lite'||method==='classic'){setStatus('نسخ مسارات الفيديو والصوت دون إعادة ترميز...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-map_chapters','0','-c','copy','-movflags','+faststart','-map_metadata','0',output]}
 else if(method==='max'){setStatus('MAX: حفظ مسار الفيديو والصوت والبيانات المتاحة دون إعادة ترميز...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-map_metadata','0','-map_chapters','0' ,'-c','copy','-movflags','+faststart',output]}
 else if(method==='noaudio'){setStatus('نسخ مسار الفيديو وحذف الصوت...',10);args=['-i',input,'-map','0:v:0','-c:v','copy','-an','-movflags','+faststart',output]}
