@@ -1,0 +1,13 @@
+{
+  "name": "Ibrahim Studio",
+  "short_name": "Ibrahim Studio",
+  "description": "استوديو تجهيز الفيديو محلياً داخل المتصفح",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#08090d",
+  "theme_color": "#080b12",
+  "icons": []
+}
