@@ -75,10 +75,10 @@ nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
 </section>
 <section class="card"><h3>2 · اختر الطريقة</h3><p class="sub">اختر النتيجة المناسبة لمقطعك.</p>
 <div class="modes">
-<label class="mode"><input type="radio" name="mode" value="lite"><span class="tag">الأسرع</span><strong>LITE · نسخ سريع</strong><small>ينسخ مسارات الصورة والصوت دون إعادة ترميز؛ أسرع خيار عندما يكون الملف متوافقاً.</small></label>
+<label class="mode"><input type="radio" name="mode" value="lite"><span class="tag">الأسرع</span><strong>LITE · 720p / 60 FPS</strong><small>ينسخ مسارات الصورة والصوت دون إعادة ترميز؛ أسرع خيار عندما يكون الملف متوافقاً.</small></label>
 <label class="mode"><input type="radio" name="mode" value="classic" checked><span class="tag">موصى به</span><strong>CLASSIC · SDR / HDR</strong><small>يحافظ على مسارات الصورة والصوت كما هي دون إعادة ترميز. لا يضيف HDR إلى فيديو SDR.</small></label>
 <label class="mode"><input type="radio" name="mode" value="max"><span class="tag">لـ HEVC</span><strong>MAX · HEVC / HDR</strong><small>للمقاطع المتوافقة مع HEVC/HDR. يحفظ مسار الصورة والصوت الأصليين دون إعادة ترميز؛ يحتاج وجود مسار صوت.</small></label>
-<label class="mode"><input type="radio" name="mode" value="antilag"><strong>Anti Lag · MP4 حتى 1080p</strong><small>يعيد تجهيز الفيديو إلى MP4 بجودة مناسبة للرفع.</small></label>
+<label class="mode"><input type="radio" name="mode" value="antilag"><strong>Anti Lag · MP4 حتى 1080p60</strong><small>يعيد تجهيز الفيديو إلى MP4 بجودة مناسبة للرفع.</small></label>
 </div>
 <div id="modeHint" class="modeHint">افحص الفيديو أولاً حتى نتحقق من توافق طريقة التجهيز.</div><div class="actions"><button id="start" class="primary" disabled>ابدأ التجهيز</button><button id="cancel" class="danger hidden">إلغاء</button></div>
 <div id="progressWrap" class="hidden"><div class="progress"><div class="bar" id="bar"></div></div><div class="status" id="status">جارٍ التحضير...</div></div>
@@ -130,7 +130,7 @@ function renderReport(result,f,v){
 }
 async function scanFile(f,token,v){
  mediaInfoData=null;$('start').disabled=true;$('scanSummary').classList.add('hidden');$('scanReport').classList.add('hidden');$('scanState').textContent='جارٍ فحص الحاوية والمسارات والترميز محلياً...';
- try{const result=await getMediaInfo(f);if(token!==scanGeneration)return;renderReport(result,f,v);$('scanState').textContent='✓ اكتمل فحص الملف نفسه على جهازك. لم يتم رفع الفيديو.';$('start').disabled=false}
+ try{const result=await getMediaInfo(f);if(token!==scanGeneration)return;renderReport(result,f,v);$('scanState').textContent='✓ اكتمل فحص الملف نفسه على جهازك. لم يتم رفع الفيديو.';updateModeHint()}
  catch(e){if(token!==scanGeneration)return;console.error(e);$('scanState').textContent='تعذّر تحليل الملف: '+(e.message||e)+'. لم نعرض معلومات تخمينية؛ جرّب MP4 أو MOV.';$('start').disabled=true;mediaInfoData=null}
 }
 function setFile(f,url){
