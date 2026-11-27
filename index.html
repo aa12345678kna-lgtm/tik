@@ -283,10 +283,10 @@ footer{font-size:10px;color:#778293;padding-top:15px}
 .mode:hover{border-color:rgba(255,255,255,.22)}
 .mode input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
 .mode:focus-within{outline:2px solid #e05a6d;outline-offset:3px}
-.mode::after{content:"";position:absolute;inset-inline-end:18px;top:19px;width:18px;height:18px;border:2px solid rgba(255,255,255,.28);border-radius:50%;display:grid;place-items:center}
+.mode::after{content:"";position:absolute;inset-inline-start:18px;top:19px;width:18px;height:18px;border:2px solid rgba(255,255,255,.28);border-radius:50%;display:grid;place-items:center}
 .mode:has(input:checked)::after{border-color:#e05a6d;background:#e05a6d;box-shadow:inset 0 0 0 4px #24161b}
 .mode .tag{position:absolute;top:-10px;inset-inline-end:18px;display:inline-block;color:#fff;background:#e05a6d;border-radius:999px;padding:3px 10px;font-size:10px;font-weight:700}
-.mode strong{display:block;margin:8px 36px 0 0;font-size:16px;font-weight:800;letter-spacing:.02em;line-height:1.4}
+.mode strong{display:block;margin:8px 0 0;padding-inline-start:36px;font-size:16px;font-weight:800;letter-spacing:.02em;line-height:1.4}
 .mode small{display:block;color:#a6a8b1;line-height:1.65;font-size:12px;padding-inline-end:2px}
 .mode:has(input[value="handbrake"]){display:none}
 @media(max-width:680px){.modes{grid-template-columns:1fr;gap:13px}.mode{min-height:132px}}
