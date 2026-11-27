@@ -37,6 +37,23 @@ button{font:inherit;cursor:pointer;border:0;border-radius:11px;padding:12px 17px
 footer{text-align:center;color:#687180;font-size:12px;margin-top:30px}
 @media(max-width:680px){.wrap{padding:0 12px 42px}.top{padding-top:15px}.card{padding:17px}.preview{grid-template-columns:1fr}.modes{grid-template-columns:1fr}.urlrow{flex-direction:column}.coverBox,.guide{grid-template-columns:1fr}.steps{gap:6px}.step{padding:9px 6px;font-size:11px;text-align:center}.step b{margin:0 0 5px}.pill{font-size:10px;padding:7px 9px}}
 
+
+/* تقرير فحص الملف الحقيقي */
+.scanState{margin:12px 0;padding:11px 13px;border:1px solid #2b3543;border-radius:10px;background:#0b1119;color:#c7d2df;font-size:12px;line-height:1.8}
+.scanSummary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.scanChip{background:#0a0e14;border:1px solid #27303c;border-radius:10px;padding:10px;min-width:0}
+.scanChip span{display:block;color:var(--muted);font-size:10px}.scanChip b{display:block;margin-top:4px;font-size:13px;overflow-wrap:anywhere}
+.scanReport{margin-top:12px;border-top:1px solid #252d39;padding-top:10px}
+.scanReport details{background:#0b0f15;border:1px solid #252d39;border-radius:10px;margin:8px 0;overflow:hidden}
+.scanReport summary{padding:12px;cursor:pointer;font-size:13px;font-weight:750;list-style:none}
+.scanReport summary::-webkit-details-marker{display:none}.scanReport summary:after{content:"＋";float:left;color:#ff8ba4}.scanReport details[open] summary:after{content:"−"}
+.scanGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:0 10px 10px}
+.scanItem{background:#111722;border-radius:7px;padding:8px;min-width:0}
+.scanItem span{display:block;color:#9da8b7;font-size:10px}.scanItem b{display:block;font-size:12px;margin-top:4px;overflow-wrap:anywhere}
+.scanTrack{margin:8px 10px 10px;padding:10px;border:1px solid #293342;border-radius:8px}
+.modeHint{margin-top:12px;padding:10px 12px;border-radius:9px;background:#111722;color:#c7d2df;font-size:12px;line-height:1.8}
+@media(max-width:600px){.scanGrid{grid-template-columns:1fr 1fr}.scanSummary{grid-template-columns:1fr 1fr}}
+
 /* واجهة مبسطة على نمط Wudooh */
 nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
 #videoInfo{display:block!important;margin-top:16px}.videoDetails{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}.videoDetails .metric{min-width:0}.videoActions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.fileName{overflow-wrap:anywhere}
@@ -53,7 +70,7 @@ nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
 <div class="steps"><div class="step"><b>1</b> الفيديو</div><div class="step"><b>2</b> الطريقة</div><div class="step"><b>3</b> التنزيل</div></div>
 <section class="card" id="studio"><h3>1 · اختر الفيديو</h3><p class="sub">اختر فيديو من جهازك للبدء.</p>
 <label class="drop" id="drop"><input id="file" type="file" accept="video/*"><span class="uploadIcon">＋</span><strong>اختر فيديو أو اسحب الملف هنا</strong><small>MP4 · MOV · WEBM</small></label>
-<div id="videoInfo" class="hidden"><video id="preview" class="preview" controls playsinline></video><h4 style="margin:14px 0 4px">تفاصيل المقطع</h4><p class="sub">تُقرأ مباشرة من الملف الموجود على جهازك.</p><div id="meta" class="videoDetails"></div><div class="videoActions"><button id="copyInfo" class="quiet">نسخ التفاصيل</button><button id="changeFile" class="quiet">تغيير الفيديو</button></div></div>
+<div id="videoInfo" class="hidden"><video id="preview" class="preview" controls playsinline></video><h4 style="margin:14px 0 4px">تفاصيل المقطع</h4><p class="sub">تُقرأ مباشرة من الملف الموجود على جهازك.</p><div id="meta" class="videoDetails"></div><div id="scanState" class="scanState">اختر فيديو لبدء الفحص المحلي.</div><div id="scanSummary" class="scanSummary hidden"></div><div id="scanReport" class="scanReport hidden"></div><div class="videoActions"><button id="copyInfo" class="quiet">نسخ التفاصيل</button><button id="changeFile" class="quiet">تغيير الفيديو</button></div></div>
 <div class="urlrow hidden"><input id="videoUrl"><button id="useUrl">استخدام الرابط</button></div>
 </section>
 <section class="card"><h3>2 · اختر الطريقة</h3><p class="sub">اختر النتيجة المناسبة لمقطعك.</p>
@@ -63,7 +80,7 @@ nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
 <label class="mode"><input type="radio" name="mode" value="max"><span class="tag">لـ HEVC</span><strong>MAX · HEVC / HDR</strong><small>للمقاطع المتوافقة مع HEVC/HDR. يحفظ مسار الصورة والصوت الأصليين دون إعادة ترميز؛ يحتاج وجود مسار صوت.</small></label>
 <label class="mode"><input type="radio" name="mode" value="antilag"><strong>Anti Lag · MP4 حتى 1080p</strong><small>يعيد تجهيز الفيديو إلى MP4 بجودة مناسبة للرفع.</small></label>
 </div>
-<div class="actions"><button id="start" class="primary" disabled>ابدأ التجهيز</button><button id="cancel" class="danger hidden">إلغاء</button></div>
+<div id="modeHint" class="modeHint">افحص الفيديو أولاً حتى نتحقق من توافق طريقة التجهيز.</div><div class="actions"><button id="start" class="primary" disabled>ابدأ التجهيز</button><button id="cancel" class="danger hidden">إلغاء</button></div>
 <div id="progressWrap" class="hidden"><div class="progress"><div class="bar" id="bar"></div></div><div class="status" id="status">جارٍ التحضير...</div></div>
 </section>
 <section class="card hidden" id="result"><h3>3 · الفيديو جاهز</h3><p class="sub" id="resultText">اكتملت العملية.</p><div class="actions"><a id="download" download="ibrahim-studio.mp4"><button class="primary">تنزيل الفيديو</button></a><button id="again" class="quiet">تجهيز فيديو آخر</button></div></section>
@@ -74,22 +91,89 @@ nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
 <footer>IBRAHIM STUDIO · معالجة الفيديو محلياً داخل المتصفح</footer>
 </main>
 <script>
-const $=id=>document.getElementById(id);let file=null,objectUrl=null,outputUrl=null,ffmpeg=null,working=false,videoDuration=0;
+const $=id=>document.getElementById(id);let file=null,objectUrl=null,outputUrl=null,ffmpeg=null,working=false,videoDuration=0,mediaInfoData=null,scanGeneration=0,mediaInfoFactoryPromise=null;
 const fmt=n=>{if(!Number.isFinite(n))return '—';if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';return (n/1048576).toFixed(2)+' MB'};
 const time=s=>{if(!Number.isFinite(s))return '—';return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')};
 function setStatus(t,p){$('status').textContent=t;if(p!==undefined)$('bar').style.width=Math.max(0,Math.min(100,p))+'%'}
-function setFile(f,url){file=f;if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=url||URL.createObjectURL(f);$('preview').src=objectUrl;$('videoInfo').classList.remove('hidden');$('drop').classList.add('hidden');$('start').disabled=false;$('result').classList.add('hidden');$('meta').innerHTML='جارٍ قراءة معلومات الفيديو...';$('preview').onloadedmetadata=()=>{const v=$('preview');videoDuration=v.duration;const ratio=v.videoHeight?(v.videoWidth/v.videoHeight).toFixed(3):'—';const modified=f.lastModified?new Date(f.lastModified).toLocaleString('ar-IQ'):'غير متاح';const items=[['اسم الملف',f.name],['الدقة',v.videoWidth+' × '+v.videoHeight+' بكسل'],['المدة',time(v.duration)],['حجم الملف',fmt(f.size)],['صيغة الملف',f.type||f.name.split('.').pop().toUpperCase()],['نسبة الأبعاد',ratio],['تاريخ الملف',modified],['معدل الإطارات','غير متاح من بيانات المتصفح']];$('meta').innerHTML=items.map(x=>'<div class="metric"><span>'+x[0]+'</span><b class="fileName">'+x[1]+'</b></div>').join('');$('seek').max=Math.max(0,v.duration||0);$('seek').value=0;drawFrame(0)}}
+
+const esc=v=>String(v??'غير متاح').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const val=(o,...keys)=>{for(const k of keys){const x=o?.[k];if(x!==undefined&&x!==null&&String(x).trim()!=='')return String(x)}return 'غير متاح'};
+const tracksOf=r=>Array.isArray(r?.media?.track)?r.media.track:[];
+const firstTrack=(r,type)=>tracksOf(r).find(t=>t['@type']===type)||{};
+const fmtDuration=v=>{const n=Number(v);return Number.isFinite(n)?time(n):'غير متاح'};
+const humanBytes=v=>{const n=Number(v);return Number.isFinite(n)?fmt(n):'غير متاح'};
+const codecName=t=>{const x=(val(t,'Format')+' '+val(t,'CodecID')+' '+val(t,'Format_Commercial')).toLowerCase();if(x.includes('hevc')||x.includes('h.265')||x.includes('hvc1')||x.includes('hev1'))return 'HEVC / H.265';if(x.includes('avc')||x.includes('h.264')||x.includes('avc1'))return 'AVC / H.264';return val(t,'Format','CodecID')};
+function hdrInfo(v){const transfer=val(v,'colour_primaries','ColorPrimaries','colour_primaries');const tr=val(v,'transfer_characteristics','TransferCharacteristics','transfer_characteristics');const hdr=val(v,'HDR_Format','HDR_Format_Commercial','HDR_Format_String');const txt=(hdr+' '+tr).toLowerCase();const yes=(hdr!=='غير متاح')||/smpte.?2084|pq|arib.?std.?b67|hlg/.test(txt);return {yes,label:yes?(hdr!=='غير متاح'?hdr:(/hlg|arib/.test(txt)?'HLG':'HDR / PQ')):'SDR',transfer:tr,primaries:val(v,'colour_primaries','ColorPrimaries'),matrix:val(v,'matrix_coefficients','MatrixCoefficients'),range:val(v,'colour_range','ColorRange'),wide:/bt.?2020|2020/i.test(transfer+' '+tr+' '+val(v,'matrix_coefficients','MatrixCoefficients'))};}
+async function getMediaInfo(fileToScan){
+ if(!mediaInfoFactoryPromise)mediaInfoFactoryPromise=import('https://cdn.jsdelivr.net/npm/mediainfo.js@0.3.8/dist/esm/index.js').then(m=>m.default||m.mediaInfoFactory);
+ const factory=await mediaInfoFactoryPromise;
+ const mi=await factory({format:'object',full:true,chunkSize:1024*1024});
+ try{return await mi.analyzeData(fileToScan.size,async(size,offset)=>new Uint8Array(await fileToScan.slice(offset,offset+size).arrayBuffer()))}
+ finally{mi.close()}
+}
+function field(label,value){return '<div class="scanItem"><span>'+esc(label)+'</span><b>'+esc(value)+'</b></div>'}
+function section(title,items){return '<details><summary>'+esc(title)+'</summary><div class="scanGrid">'+items.map(x=>field(x[0],x[1])).join('')+'</div></details>'}
+function renderReport(result,f,v){
+ const tracks=tracksOf(result),g=firstTrack(result,'General'),videos=tracks.filter(t=>t['@type']==='Video'),audios=tracks.filter(t=>t['@type']==='Audio'),video=videos[0]||{},audio=audios[0]||{},hdr=hdrInfo(video);
+ const width=Number(val(video,'Width').replace(/[^0-9.]/g,''))||v.videoWidth,height=Number(val(video,'Height').replace(/[^0-9.]/g,''))||v.videoHeight;
+ const fps=val(video,'FrameRate'),fpsNum=parseFloat(fps),frameMode=val(video,'FrameRate_Mode');
+ const summary=[['النطاق الديناميكي',hdr.label],['الدقة',(width&&height)?width+' × '+height:'غير متاح'],['معدل الإطارات',fps==='غير متاح'?'غير متاح':fps+' FPS'],['عمق البت',val(video,'BitDepth')==='غير متاح'?'غير متاح':val(video,'BitDepth')+' bit'],['ترميز الفيديو',codecName(video)],['مسارات الفيديو والصوت',videos.length+' فيديو · '+audios.length+' صوت']];
+ $('scanSummary').innerHTML=summary.map(x=>'<div class="scanChip"><span>'+esc(x[0])+'</span><b>'+esc(x[1])+'</b></div>').join('');
+ const general=[['اسم الملف',f.name],['الحجم',humanBytes(val(g,'FileSize')==='غير متاح'?f.size:g.FileSize)],['الحاوية',val(g,'Format')+' · '+val(g,'Format_Profile')],['معرّف الحاوية',val(g,'CodecID')],['المدة',fmtDuration(g.Duration)],['معدل البت الكلي',val(g,'OverallBitRate')==='غير متاح'?'غير متاح':(Number(g.OverallBitRate)/1000000).toFixed(2)+' Mbps'],['تاريخ الإنشاء',val(g,'Encoded_Date','Tagged_Date')],['ترتيب الملف',String(val(g,'IsStreamable')).toLowerCase()==='yes'?'Fast start / قابل للبث':'غير محدد']];
+ const videoItems=[['الترميز',codecName(video)+' ['+val(video,'CodecID')+']'],['البروفايل',val(video,'Format_Profile')],['الدقة',width+' × '+height],['الاتجاه',height>width?'عمودي (Portrait)':width>height?'أفقي (Landscape)':'مربع / غير محدد'],['الدوران',val(video,'Rotation')],['عمق البت',val(video,'BitDepth')],['تجزئة الألوان',val(video,'ChromaSubsampling')],['معدل بت الفيديو',val(video,'BitRate')],['مدة الفيديو',fmtDuration(video.Duration)],['عدد الإطارات',val(video,'FrameCount')],['معدل الإطارات',fps],['نوع المعدل',frameMode==='غير متاح'?'غير متاح':frameMode+(frameMode.toLowerCase().includes('constant')?' (CFR)':frameMode.toLowerCase().includes('variable')?' (VFR)':'')],['Timescale',val(video,'TimeCodeScale','TimeScale','Time_Base')],['حجم الإطار الأقصى',val(video,'MaxFrameSize')],['GOP / الإطارات المفتاحية',val(video,'GOP_OpenClosed','Format_Settings_GOP')],['B-frames',val(video,'Format_Settings_BFrames')]];
+ const colorItems=[['النوع',hdr.label],['الألوان الأساسية (Primaries)',hdr.primaries],['منحنى النقل (Transfer)',hdr.transfer],['المصفوفة (Matrix)',hdr.matrix],['النطاق (Range)',hdr.range],['مجال ألوان واسع',hdr.wide?'نعم':'غير مثبت'],['HDR metadata',val(video,'HDR_Format','HDR_Format_Commercial')],['شاشة الماستر ST 2086',val(video,'MasteringDisplay_ColorPrimaries','MasteringDisplay_Luminance')],['MaxCLL / MaxFALL',val(video,'MaxCLL','MaxFALL')],['Dolby Vision',val(video,'HDR_Format_Compatibility')]];
+ const audioItems=audios.map((a,i)=>({title:'الصوت '+(i+1),items:[['الترميز',val(a,'Format')+' ['+val(a,'CodecID')+']'],['القنوات',val(a,'ChannelLayout','Channels')],['التردد',val(a,'SamplingRate')],['معدل البت',val(a,'BitRate')],['المدة',fmtDuration(a.Duration)]]}));
+ $('scanReport').innerHTML=section('عام',general)+videos.map((t,i)=>section('الفيديو '+(i+1),i===0?videoItems:[['الترميز',codecName(t)],['الدقة',val(t,'Width')+' × '+val(t,'Height')],['FPS',val(t,'FrameRate')]])).join('')+section('الإطارات والتوقيت',videoItems.filter(x=>['عدد الإطارات','معدل الإطارات','نوع المعدل','Timescale','حجم الإطار الأقصى','GOP / الإطارات المفتاحية','B-frames'].includes(x[0])))+section('HDR والألوان',colorItems)+audioItems.map(a=>section(a.title,a.items)).join('')+(tracks.filter(t=>!['General','Video','Audio'].includes(t['@type'])).length?section('مسارات أخرى',tracks.filter(t=>!['General','Video','Audio'].includes(t['@type'])).map(t=>[val(t,'@type'),val(t,'Format')])):'');
+ $('scanSummary').classList.remove('hidden');$('scanReport').classList.remove('hidden');
+ mediaInfoData={result,tracks,g,video,audio,videos,audios,width,height,fps:fpsNum,frameMode,hdr,videoCodec:codecName(video)};
+ updateModeHint();
+}
+async function scanFile(f,token,v){
+ mediaInfoData=null;$('start').disabled=true;$('scanSummary').classList.add('hidden');$('scanReport').classList.add('hidden');$('scanState').textContent='جارٍ فحص الحاوية والمسارات والترميز محلياً...';
+ try{const result=await getMediaInfo(f);if(token!==scanGeneration)return;renderReport(result,f,v);$('scanState').textContent='✓ اكتمل فحص الملف نفسه على جهازك. لم يتم رفع الفيديو.';$('start').disabled=false}
+ catch(e){if(token!==scanGeneration)return;console.error(e);$('scanState').textContent='تعذّر تحليل الملف: '+(e.message||e)+'. لم نعرض معلومات تخمينية؛ جرّب MP4 أو MOV.';$('start').disabled=true;mediaInfoData=null}
+}
+function setFile(f,url){
+ file=f;mediaInfoData=null;const token=++scanGeneration;
+ if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=url||URL.createObjectURL(f);$('preview').src=objectUrl;$('videoInfo').classList.remove('hidden');$('drop').classList.add('hidden');$('start').disabled=true;$('result').classList.add('hidden');$('meta').innerHTML='جارٍ قراءة معلومات الفيديو...';$('scanState').textContent='جارٍ فحص الملف محلياً...';
+ $('preview').onloadedmetadata=()=>{if(token!==scanGeneration)return;const v=$('preview');videoDuration=v.duration;const ratio=v.videoHeight?(v.videoWidth/v.videoHeight).toFixed(3):'—';const modified=f.lastModified?new Date(f.lastModified).toLocaleString('ar-IQ'):'غير متاح';const items=[['اسم الملف',f.name],['الدقة',v.videoWidth+' × '+v.videoHeight+' بكسل'],['المدة',time(v.duration)],['حجم الملف',fmt(f.size)],['صيغة الملف',f.type||f.name.split('.').pop().toUpperCase()],['نسبة الأبعاد',ratio],['تاريخ الملف',modified]];$('meta').innerHTML=items.map(x=>'<div class="metric"><span>'+esc(x[0])+'</span><b class="fileName">'+esc(x[1])+'</b></div>').join('');$('seek').max=Math.max(0,v.duration||0);$('seek').value=0;drawFrame(0);scanFile(f,token,v)};
+}
+function modeCompatibility(mode){
+ if(!mediaInfoData)return {ok:false,reason:'انتظر اكتمال فحص الفيديو.'};
+ const d=mediaInfoData,video=d.video,audio=d.audios.length>0;
+ if(!d.videos.length)return {ok:false,reason:'لم يتم العثور على مسار فيديو.'};
+ if(mode==='lite'){
+  if(!Number.isFinite(d.fps))return {ok:false,reason:'تعذّر قراءة FPS؛ لا يمكن تأكيد توافق LITE 720p60.'};
+  if(d.width>1280||d.height>1280||Math.max(d.width,d.height)>1280||Math.min(d.width,d.height)>720)return {ok:false,reason:'LITE ينسخ دون إعادة ترميز، لذلك لا يمكنه تحويل هذا الفيديو إلى 720p. اختر Anti Lag إذا أردت تصغيره.'};
+  if(d.fps>60.01)return {ok:false,reason:'معدل الفيديو أعلى من 60 FPS، وLITE لا يغيّر معدل الإطارات.'};
+  return {ok:true,reason:'متوافق: نسخ مباشر دون تغيير الدقة أو FPS.'};
+ }
+ if(mode==='max'){
+  if(!/HEVC|H\.265/i.test(d.videoCodec))return {ok:false,reason:'MAX يحتاج فيديو HEVC / H.265.'};
+  if(!d.hdr.yes)return {ok:false,reason:'MAX مخصص لـ HDR، وهذا الملف لم يثبت أنه HDR.'};
+  if(!audio)return {ok:false,reason:'MAX يحتاج مسار صوت واحداً على الأقل.'};
+  return {ok:true,reason:'متوافق: HEVC + HDR + مسار صوت. سيتم النسخ دون إعادة ترميز.'};
+ }
+ if(mode==='classic')return {ok:true,reason:'سيتم نسخ الصورة والصوت دون إعادة ترميز؛ لا يغيّر هذا الوضع الدقة أو FPS.'};
+ return {ok:true,reason:'سيعاد ترميز الفيديو محلياً إلى MP4 بحد أقصى 1080p و60 FPS. قد تكون المعالجة ثقيلة على الهاتف.'};
+}
+function updateModeHint(){
+ const selected=document.querySelector('input[name="mode"]:checked')?.value||'classic',check=modeCompatibility(selected);
+ $('modeHint').textContent=check.reason;$('modeHint').style.border='1px solid '+(check.ok?'#31514f':'#65404a');$('modeHint').style.color=check.ok?'#a5f4e8':'#ffc0c8';$('start').disabled=!check.ok||working;
+}
+
 $('file').onchange=e=>{if(e.target.files[0])setFile(e.target.files[0])};
 $('drop').onclick=e=>{if(e.target.tagName!=='INPUT')$('file').click()};
 $('drop').ondragover=e=>{e.preventDefault();$('drop').classList.add('drag')};$('drop').ondragleave=()=>$('drop').classList.remove('drag');
 $('drop').ondrop=e=>{e.preventDefault();$('drop').classList.remove('drag');const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('video/'))setFile(f)};
 $('useUrl').onclick=async()=>{const u=$('videoUrl').value.trim();if(!u)return alert('ألصق رابط الفيديو أولاً');$('useUrl').disabled=true;$('useUrl').textContent='جارٍ القراءة...';try{const r=await fetch(u);if(!r.ok)throw Error('تعذّر جلب الملف');const b=await r.blob();if(!b.type.startsWith('video/')&&!/\.mp4([?#]|$)/i.test(u))throw Error('الرابط لا يبدو ملف فيديو');setFile(new File([b],'remote-video.mp4',{type:b.type||'video/mp4'}))}catch(e){alert('لم أستطع قراءة الرابط. قد يمنع المصدر الوصول من المتصفح (CORS). اختر الملف من جهازك بدلاً من ذلك.')}finally{$('useUrl').disabled=false;$('useUrl').textContent='استخدام الرابط'}};
 $('changeFile').onclick=()=>$('file').click();
+document.querySelectorAll('input[name="mode"]').forEach(el=>el.addEventListener('change',updateModeHint));
 $('copyInfo').onclick=()=>{const t=[...$('meta').querySelectorAll('.metric')].map(x=>x.innerText.replace('\n',': ')).join('\n');navigator.clipboard?.writeText(t).then(()=>alert('تم نسخ التفاصيل')).catch(()=>alert(t))};
 async function drawFrame(sec){const v=$('preview'),c=$('canvas'),ctx=c.getContext('2d');if(!v.videoWidth)return;try{v.currentTime=Math.min(sec,Math.max(0,v.duration-.05));await new Promise(resolve=>v.onseeked=resolve);const scale=Math.min(c.width/v.videoWidth,c.height/v.videoHeight),w=v.videoWidth*scale,h=v.videoHeight*scale;ctx.fillStyle='#05080d';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(v,(c.width-w)/2,(c.height-h)/2,w,h);$('seekTime').textContent='الإطار عند '+time(v.currentTime)}catch(e){}}
 $('seek').oninput=e=>drawFrame(Number(e.target.value));$('thumbYes').onclick=()=>{$('thumbPanel').classList.remove('hidden');if($('preview').readyState>=2)drawFrame($('preview').currentTime||0)};$('thumbNo').onclick=()=>$('thumbPanel').classList.add('hidden');$('prevFrame').onclick=()=>drawFrame(Math.max(0,($('preview').currentTime||0)-.05));$('nextFrame').onclick=()=>drawFrame(Math.min(videoDuration||0,($('preview').currentTime||0)+.05));$('saveCover').onclick=()=>{$('canvas').toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='cover.jpg';a.click();URL.revokeObjectURL(a.href)},'image/jpeg',.94)};
 $('preview').addEventListener('loadeddata',()=>{$('saveCover').disabled=false});
-$('openTikTok').onclick=()=>{const field=$('tiktokCheckUrl');const msg=$('tiktokUrlMessage');const u=field.value.trim();try{if(!u)throw Error('الصق رابط فيديو TikTok أولاً.');const parsed=new URL(u);if(!['http:','https:'].includes(parsed.protocol)||!(parsed.hostname==='tiktok.com'||parsed.hostname.endsWith('.tiktok.com')))throw Error('الرابط غير صحيح. استخدم رابطاً يبدأ بـ tiktok.com أو vm.tiktok.com.');msg.textContent='جاري فتح رابط TikTok...';msg.style.color='#a5f4e8';const win=window.open(parsed.href,'_blank','noopener');if(!win){msg.textContent='تعذّر فتح نافذة جديدة. اسمح بالنوافذ المنبثقة أو افتح الرابط يدوياً.';msg.style.color='#ffb0a6'}}catch(e){msg.textContent=e.message||'تعذّر التحقق من الرابط.';msg.style.color='#ff9ba8';field.focus()}};
+
 async function loadEngine(onProgress){if(window.IbrahimEngineInstance)return window.IbrahimEngineInstance;const mod=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');const util=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js');const {FFmpeg}=mod;const {fetchFile,toBlobURL}=util;
 class IbrahimEngine{
 constructor(){this.ffmpeg=new FFmpeg();this.loaded=false;this.busy=false;this.onProgress=onProgress;this.logs=[];this.ffmpeg.on('log',({message})=>{this.logs.push(message);if(this.logs.length>250)this.logs.shift()});this.ffmpeg.on('progress',({progress})=>{if(this.onProgress)this.onProgress(Math.min(.99,Math.max(.01,progress||0)))});}
@@ -100,16 +184,16 @@ else if(method==='max'){setStatus('MAX: حفظ مسار الفيديو والص�
 else if(method==='noaudio'){setStatus('نسخ مسار الفيديو وحذف الصوت...',10);args=['-i',input,'-map','0:v:0','-c:v','copy','-an','-movflags','+faststart',output]}
 else if(method==='sdr'){setStatus('تحويل SDR عالي الجودة إلى H.264...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-c:v','libx264','-preset','veryfast','-crf','18','-pix_fmt','yuv420p','-c:a','aac','-b:a','192k','-movflags','+faststart',output]}
 else if(method==='720'){setStatus('تحويل الفيديو إلى 720p مع الحفاظ على FPS المصدر...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-vf','scale=w=1280:h=720:force_original_aspect_ratio=decrease:force_divisible_by=2','-c:v','libx264','-preset','ultrafast','-crf','20','-pix_fmt','yuv420p','-c:a','aac','-b:a','160k','-movflags','+faststart',output]}
-else if(method==='1080'||method==='antilag'){setStatus('تحويل الفيديو إلى H.264 حتى 1080p مع الحفاظ على FPS المصدر...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-vf','scale=w=1920:h=1080:force_original_aspect_ratio=decrease:force_divisible_by=2','-c:v','libx264','-preset','ultrafast','-crf',method==='antilag'?'24':'20','-pix_fmt','yuv420p','-c:a','aac','-b:a','128k','-movflags','+faststart',output]}
+else if(method==='1080'||method==='antilag'){setStatus('تحويل الفيديو إلى H.264 حتى 1080p مع الحفاظ على FPS المصدر...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-vf','fps=60,scale=w=1920:h=1080:force_original_aspect_ratio=decrease:force_divisible_by=2','-c:v','libx264','-preset','ultrafast','-crf',method==='antilag'?'24':'20','-pix_fmt','yuv420p','-c:a','aac','-b:a','128k','-movflags','+faststart',output]}
 else if(method==='4k60'){setStatus('تصدير عمودي 4K مع الحفاظ على FPS المصدر؛ قد يستغرق وقتاً طويلاً...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-vf','scale=2160:3840:force_original_aspect_ratio=decrease,pad=2160:3840:(ow-iw)/2:(oh-ih)/2','-c:v','libx264','-preset','ultrafast','-crf','21','-pix_fmt','yuv420p','-c:a','aac','-b:a','192k','-movflags','+faststart',output]}
 await this.ffmpeg.exec(args);setStatus('قراءة الملف الناتج...',98);const data=await this.ffmpeg.readFile(output);const blob=new Blob([data],{type:'video/mp4'});try{await this.ffmpeg.deleteFile(output);if(wrote)await this.ffmpeg.deleteFile(input)}catch(e){}return blob;
 }finally{this.busy=false;}}
 }
 const instance=new IbrahimEngine();window.IbrahimEngine=IbrahimEngine;window.IbrahimEngineInstance=instance;return instance;}
-$('start').onclick=async()=>{if(!file||working)return;const selected=document.querySelector('input[name="mode"]:checked').value;working=true;$('start').disabled=true;$('cancel').classList.remove('hidden');$('progressWrap').classList.remove('hidden');$('result').classList.add('hidden');try{if(outputUrl)URL.revokeObjectURL(outputUrl);
+$('start').onclick=async()=>{if(!file||working)return;const selected=document.querySelector('input[name="mode"]:checked').value;const compatibility=modeCompatibility(selected);if(!compatibility.ok){updateModeHint();alert(compatibility.reason);return;}working=true;$('start').disabled=true;$('cancel').classList.remove('hidden');$('progressWrap').classList.remove('hidden');$('result').classList.add('hidden');try{if(outputUrl)URL.revokeObjectURL(outputUrl);
 const sourceInfo={width:$('preview').videoWidth,height:$('preview').videoHeight,duration:$('preview').duration,size:file.size,name:file.name};const engine=await loadEngine(p=>setStatus('جاري تنفيذ المعالجة المحلية...',Math.round(p*100)));const method=selected==='lite'?'lite':selected==='classic'?'classic':selected==='max'?'max':selected==='mute'?'noaudio':selected==='sdr'?'sdr':selected==='720'?'720':selected==='1080'?'1080':selected==='4k60'?'4k60':'antilag';const blob=await engine.process(file,method);await finish(blob,file.name.replace(/\.[^.]+$/,'')+'_ibrahim.mp4',sourceInfo,method);
-}catch(e){console.error(e);setStatus('فشلت المعالجة: '+(e.message||e),0);alert('فشلت المعالجة: '+(e.message||'خطأ غير معروف')+'\nقد تكون الصيغة غير متوافقة مع MP4 أو ذاكرة الهاتف غير كافية.')}finally{working=false;$('start').disabled=false;$('cancel').classList.add('hidden')}};
+}catch(e){console.error(e);setStatus('فشلت المعالجة: '+(e.message||e),0);alert('فشلت المعالجة: '+(e.message||'خطأ غير معروف')+'\nقد تكون الصيغة غير متوافقة مع MP4 أو ذاكرة الهاتف غير كافية.')}finally{working=false;$('cancel').classList.add('hidden');updateModeHint()}};
 async function finish(blob,name,sourceInfo,method){outputUrl=URL.createObjectURL(blob);$('download').href=outputUrl;$('download').download=name;$('resultText').textContent='جارٍ فحص أبعاد الملف الناتج...';$('result').classList.remove('hidden');$('cancel').classList.add('hidden');$('thumbPanel').classList.remove('hidden');const checkVideo=document.createElement('video');checkVideo.preload='metadata';checkVideo.muted=true;checkVideo.src=outputUrl;try{await new Promise((resolve,reject)=>{checkVideo.onloadedmetadata=resolve;checkVideo.onerror=()=>reject(Error('تعذّر قراءة بيانات الملف الناتج في المتصفح'))});const same=checkVideo.videoWidth===sourceInfo.width&&checkVideo.videoHeight===sourceInfo.height;const lines=['اكتملت المعالجة المحلية.','الأصل: '+sourceInfo.width+'×'+sourceInfo.height+' · الناتج: '+checkVideo.videoWidth+'×'+checkVideo.videoHeight,'حجم الأصل: '+fmt(sourceInfo.size)+' · حجم الناتج: '+fmt(blob.size),'مدة الناتج: '+time(checkVideo.duration)];if(['lite','classic','max'].includes(method)){lines.push(same?'✓ أبعاد الصورة محفوظة.':'⚠ تغيّرت أبعاد الصورة؛ تحقق من الملف قبل رفعه.');lines.push('وضع النسخ لا يعيد ضغط الصورة، لكن فحص المتصفح لا يثبت وحده نوع الترميز أو HDR أو ظهور الفيديو في For You.')}else{lines.push('هذا الوضع أعاد ترميز الفيديو؛ قد تختلف الجودة والألوان عن الأصل.');if(method==='4k60')lines.push('تم إنشاء إطار 2160×3840 مع الحفاظ على FPS المصدر؛ التكبير لا يستعيد تفاصيل غير موجودة في المصدر.');} $('resultText').textContent=lines.join(' | ');setStatus(same?'اكتمل التجهيز وفُحصت أبعاد الفيديو':'اكتمل التجهيز؛ الأبعاد مختلفة عن الأصل',100)}catch(e){$('resultText').textContent='اكتملت المعالجة، لكن تعذّر فحص بيانات الناتج: '+e.message;setStatus('اكتمل إنشاء الملف؛ تعذّر التحقق من أبعاده',100)}finally{checkVideo.removeAttribute('src');checkVideo.load()}}
 $('cancel').onclick=()=>{const active=window.IbrahimEngineInstance;if(active){try{active.ffmpeg.terminate()}catch(e){}window.IbrahimEngineInstance=null}working=false;$('start').disabled=false;$('cancel').classList.add('hidden');setStatus('تم طلب إيقاف المعالجة. أعد تحميل الصفحة إذا بقي المحرك متوقفاً.',0)};
-$('again').onclick=()=>{$('result').classList.add('hidden');$('file').value='';$('videoInfo').classList.add('hidden');$('drop').classList.remove('hidden');$('start').disabled=true;file=null;if(objectUrl)URL.revokeObjectURL(objectUrl);$('preview').removeAttribute('src');$('meta').innerHTML='';$('saveCover').disabled=true;$('canvas').getContext('2d').clearRect(0,0,640,360);};
+$('again').onclick=()=>{$('result').classList.add('hidden');$('file').value='';$('videoInfo').classList.add('hidden');$('drop').classList.remove('hidden');$('start').disabled=true;mediaInfoData=null;scanGeneration++;$('scanState').textContent='اختر فيديو لبدء الفحص المحلي.';$('scanSummary').classList.add('hidden');$('scanReport').classList.add('hidden');file=null;if(objectUrl)URL.revokeObjectURL(objectUrl);$('preview').removeAttribute('src');$('meta').innerHTML='';$('saveCover').disabled=true;$('canvas').getContext('2d').clearRect(0,0,640,360);};
 </script></body></html>
