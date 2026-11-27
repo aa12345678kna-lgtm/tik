@@ -22,12 +22,19 @@ const ENGINE_CONFIG = Object.freeze({
 export function getEnginePlan() {
   const capabilities = detectRuntimeCapabilities();
   const mode = selectEngineMode(capabilities, ENGINE_CONFIG);
+  const blockers = [];
+  if (!capabilities.secureContext) blockers.push("HTTPS غير متاح");
+  if (!capabilities.wasm) blockers.push("WebAssembly غير مدعوم");
+  if (!capabilities.sharedArrayBuffer) blockers.push("SharedArrayBuffer غير متاح");
+  if (!capabilities.crossOriginIsolated) blockers.push("عزل COOP/COEP غير مفعّل");
+  if (!ENGINE_CONFIG.threadedBundleAvailable) blockers.push("حزمة core-mt غير مفعّلة في الإعدادات");
   return {
     mode,
     capabilities,
     config: mode === "multi-thread" ? ENGINE_CONFIG.multiThread : ENGINE_CONFIG.singleThread,
+    threadedBundleAvailable: ENGINE_CONFIG.threadedBundleAvailable,
     reason: mode === "multi-thread"
-      ? "المتصفح معزول ويدعم SharedArrayBuffer وحزمة المحرك متعددة الخيوط متوفرة."
-      : "سيُستخدم محرك Single-Thread للتوافق أو كخيار احتياطي عند تعذّر تحميل المحرك متعدد الخيوط."
+      ? "كل شروط Multi-thread متحققة؛ سيُحمّل core-mt."
+      : "تم اختيار Single-thread لأن: " + (blockers.join("، ") || "شرط من شروط اختيار المحرك لم يتحقق.")
   };
 }
