@@ -65,6 +65,10 @@ nav,#guide,#support,.urlrow,#videoInfo,.card:has(#thumbPanel){display:none!impor
 <div id="progressWrap" class="hidden"><div class="progress"><div class="bar" id="bar"></div></div><div class="status" id="status">جارٍ التحضير...</div></div>
 </section>
 <section class="card hidden" id="result"><h3>3 · الفيديو جاهز</h3><p class="sub" id="resultText">اكتملت العملية.</p><div class="actions"><a id="download" download="ibrahim-studio.mp4"><button class="primary">تنزيل الفيديو</button></a><button id="again" class="quiet">تجهيز فيديو آخر</button></div></section>
+<div id="legacyTools" class="hidden" aria-hidden="true">
+<button id="thumbYes"></button><button id="thumbNo"></button>
+<div id="thumbPanel"><canvas id="canvas" width="640" height="360"></canvas><input id="seek" type="range"><span id="seekTime"></span><button id="prevFrame"></button><button id="nextFrame"></button><button id="saveCover"></button></div>
+</div>
 <footer>IBRAHIM STUDIO · معالجة الفيديو محلياً داخل المتصفح</footer>
 </main>
 <script>
