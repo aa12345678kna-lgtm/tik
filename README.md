@@ -18,10 +18,11 @@ These headers enable cross-origin isolation only when all loaded resources satis
 
 ## Engine strategy
 
-- Existing studio engine remains single-threaded.
-- `assets/js/runtime-capabilities.js` detects browser capabilities.
-- `assets/js/engine-loader.js` selects a mode, but intentionally keeps the multi-thread bundle disabled until a matching threaded FFmpeg core and worker files are checked in and tested.
-- SharedArrayBuffer support alone does not turn a single-thread core into a multi-thread core.
+- The studio selects `@ffmpeg/core-mt@0.12.10` when HTTPS, WebAssembly, SharedArrayBuffer and cross-origin isolation are available.
+- The multi-thread core and its pthread worker are loaded from jsDelivr; the wrapper uses `@ffmpeg/ffmpeg@0.12.10`.
+- If the multi-thread core fails to load, the studio automatically falls back to `@ffmpeg/core@0.12.10` (single-thread).
+- SharedArrayBuffer support alone does not turn a single-thread core into a multi-thread core; the matching core and worker are both required.
+- First load of the multi-thread core downloads a large WASM file (about 33 MB) and requires an internet connection.
 
 ## Pages
 
