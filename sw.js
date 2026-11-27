@@ -4,7 +4,6 @@ const APP_SHELL = [
   "./docs/",
   "./tiktok/",
   "./support/",
-  "./account/",
   "./assets/css/site.css",
   "./assets/js/runtime-capabilities.js",
   "./assets/js/engine-loader.js",
