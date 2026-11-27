@@ -243,7 +243,7 @@ function runDeviceCheck(){
   ['سبب اختيار وضع المعالجة',window.IbrahimEnginePlan?.reason||'لم يتم إعداد خطة المعالجة بعد',null],
   ['شرط COOP/COEP وقت الاختيار',window.IbrahimEnginePlan?.capabilities?.crossOriginIsolated?'مفعّل':'غير مفعّل أو غير معروف',null],
   ['دعم المعالجة متعددة الخيوط',window.IbrahimEnginePlan?.threadedBundleAvailable?'مفعّلة':'غير مفعّلة أو غير معروفة',null],
-  ['آخر وضع تنفيذ فعلي',executionModeLabel(lastEngineReport?.activeMode)||'لم يُسجل تصدير بعد',null],
+  ['آخر وضع تنفيذ فعلي',lastEngineReport?executionModeLabel(lastEngineReport.activeMode):'لم يُسجل تصدير بعد',null],
   ['الرجوع للاحتياطي في آخر تصدير',lastEngineReport?(lastEngineReport.fallbackUsed?'نعم':'لا'):'غير متاح',null],
   ['مدة آخر معالجة',lastEngineReport&&Number.isFinite(lastEngineReport.processingSeconds)?lastEngineReport.processingSeconds.toFixed(2)+' ثانية':'غير متاح',null],
   ['سرعة آخر معالجة',lastEngineReport&&Number.isFinite(lastEngineReport.speedFactor)?lastEngineReport.speedFactor.toFixed(2)+'×':'غير متاح',null]
