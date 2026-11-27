@@ -1,9 +1,8 @@
 /**
- * Engine selection scaffold.
- *
- * The existing production studio currently uses the single-thread FFmpeg core.
- * Do not set threadedBundleAvailable=true until a matching @ffmpeg/core-mt build,
- * worker assets and browser integration tests have been added to this repository.
+ * Capability-gated FFmpeg engine selection.
+ * Multi-thread is selected only when browser isolation, SharedArrayBuffer,
+ * WebAssembly and the matching core-mt CDN bundle are available.
+ * The studio retains a single-thread fallback if threaded loading fails.
  */
 import { detectRuntimeCapabilities, selectEngineMode } from "./runtime-capabilities.js";
 
@@ -29,6 +28,6 @@ export function getEnginePlan() {
     config: mode === "multi-thread" ? ENGINE_CONFIG.multiThread : ENGINE_CONFIG.singleThread,
     reason: mode === "multi-thread"
       ? "المتصفح معزول ويدعم SharedArrayBuffer وحزمة المحرك متعددة الخيوط متوفرة."
-      : "سيُستخدم محرك Single-Thread للتوافق؛ سيُستخدم Single-Thread كخيار احتياطي عند تعذّر تحميل المحرك متعدد الخيوط."
+      : "سيُستخدم محرك Single-Thread للتوافق أو كخيار احتياطي عند تعذّر تحميل المحرك متعدد الخيوط."
   };
 }
