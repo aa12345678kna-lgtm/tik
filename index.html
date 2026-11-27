@@ -269,10 +269,13 @@ footer{font-size:10px;color:#778293;padding-top:15px}
  .coverBox .actions{grid-template-columns:1fr 1fr}
 }
 
+
+/* Bilingual interface control — presentation only */
+.topControls{display:flex;align-items:center;gap:8px}.languageToggle{min-height:38px;padding:8px 12px;border:1px solid #344253;border-radius:10px;background:#111925;color:#e7edf5;font-size:12px;font-weight:750}.languageToggle:focus-visible{outline:2px solid #ff7894;outline-offset:3px}@media(max-width:520px){.top{align-items:flex-start}.topControls{flex-direction:column;align-items:flex-end;gap:6px}.languageToggle{min-height:34px;padding:6px 10px}}
 </style>
 </head>
 <body><main class="wrap">
-<header class="top"><div class="brand"><div class="logo">4K</div><div><div class="eyebrow">IBRAHIM STUDIO · LOCAL LAB</div><h1>استوديو تحسين الفيديو</h1></div></div><div class="pill">● المعالجة المحلية</div></header>
+<header class="top"><div class="brand"><div class="logo">4K</div><div><div class="eyebrow">IBRAHIM STUDIO · LOCAL LAB</div><h1>استوديو تحسين الفيديو</h1></div></div><div class="topControls"><div class="pill" id="localProcessingLabel">● المعالجة المحلية</div><button class="languageToggle" id="languageToggle" type="button" aria-label="Switch interface language">English</button></div></header>
 
 <nav class="sub" style="display:flex;gap:14px;flex-wrap:wrap;margin:12px 0 18px"><a href="./docs/">الدليل</a><a href="./tiktok/">الرفع إلى TikTok</a><a href="./support/">الدعم والفحص</a></nav>
 <div id="home"></div>
@@ -577,5 +580,84 @@ $('cancel').onclick=()=>{
 };
 $('again').onclick=()=>{$('result').classList.add('hidden');$('file').value='';$('videoInfo').classList.add('hidden');$('drop').classList.remove('hidden');$('start').disabled=true;mediaInfoData=null;scanGeneration++;$('scanState').textContent='اختر فيديو لبدء الفحص المحلي.';$('scanSummary').classList.add('hidden');$('scanReport').classList.add('hidden');file=null;if(objectUrl)URL.revokeObjectURL(objectUrl);$('preview').removeAttribute('src');$('meta').innerHTML='';$('saveCover').disabled=true;$('canvas').getContext('2d').clearRect(0,0,640,360);};
 </script>
-<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}</script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}
+/* Arabic/English interface toggle. Presentation-only: does not touch media processing. */
+(()=>{
+ const toggle=document.getElementById('languageToggle');
+ if(!toggle)return;
+ const set=(selector,value)=>{const el=document.querySelector(selector);if(el)el.textContent=value};
+ const apply=(language)=>{
+  const en=language==='en';
+  document.documentElement.lang=en?'en':'ar';
+  document.documentElement.dir=en?'ltr':'rtl';
+  toggle.textContent=en?'العربية':'English';
+  toggle.setAttribute('aria-label',en?'Switch interface language to Arabic':'Switch interface language to English');
+  document.title=en?'IBRAHIM STUDIO — Video Preparation Studio':'IBRAHIM STUDIO — استوديو تجهيز الفيديو';
+  set('.brand h1',en?'Video Studio':'استوديو تحسين الفيديو');
+  set('#localProcessingLabel',en?'● Local processing':'● المعالجة المحلية');
+  set('h2',en?'Prepare your video':'تحسين الفيديو');
+  set('.intro',en?'Choose a video, select a mode, then download the prepared file.':'اختر مقطعك، حدّد الطريقة المناسبة، ثم نزّل الملف الجاهز.');
+  const steps=document.querySelectorAll('.steps .step');
+  const stepLabels=en?['Video','Mode','Download']:['الفيديو','الطريقة','التنزيل'];
+  steps.forEach((el,i)=>{if(el.lastChild)el.lastChild.textContent=' '+(stepLabels[i]||'')});
+  set('#deviceCheck h3',en?'Device and browser check':'فحص الجهاز والمتصفح');
+  set('#deviceCheck .sub',en?'Automatic compatibility check before local processing. Results stay on your device.':'اختبار تلقائي قبل المعالجة المحلية. النتائج تُعرض على جهازك ولا تُرسل إلى أي خادم.');
+  set('.deviceDetails summary',en?'Technical details and device check':'التفاصيل الفنية وفحص الجهاز');
+  set('#copyDeviceReport',en?'Copy device report':'نسخ تقرير الجهاز');
+  set('#recheckDevice',en?'Run check again':'إعادة الفحص');
+  const deviceNote=document.querySelector('#deviceCheck .note');
+  if(deviceNote)deviceNote.textContent=en?'SharedArrayBuffer and COOP/COEP isolation are required for multi-thread processing. The report shows the actual execution mode, processing time, and whether fallback occurred. Memory figures are estimates and may be hidden by the browser.':'SharedArrayBuffer وعزل COOP/COEP من متطلبات وضع المعالجة المتوازي. يوضح التقرير وضع التنفيذ الفعلي ووقت المعالجة، وهل حدث رجوع تلقائي إلى الوضع القياسي. الذاكرة المعروضة تقديرية وقد يخفيها المتصفح.';
+  set('#studio h3',en?'Choose a video':'اختر الفيديو');
+  set('#studio .sub',en?'Select a video from your device to get started.':'اختر فيديو من جهازك للبدء.');
+  set('#drop strong',en?'Choose a video or drop it here':'اختر فيديو أو اسحب الملف هنا');
+  set('#drop small',en?'MP4 · MOV · WEBM':'MP4 · MOV · WEBM');
+  set('#videoInfo h4',en?'Video details':'تفاصيل المقطع');
+  set('#videoInfo .sub',en?'Read directly from the file on your device.':'تُقرأ مباشرة من الملف الموجود على جهازك.');
+  set('#copyInfo',en?'Copy details':'نسخ التفاصيل');
+  set('#changeFile',en?'Change video':'تغيير الفيديو');
+  const modeSection=document.querySelector('#studio + section');
+  if(modeSection){
+   set('#studio + section h3',en?'Choose a preparation mode':'اختر طريقة التجهيز');
+   set('#studio + section .sub',en?'Select the result that best suits your video.':'اختر النتيجة المناسبة لمقطعك.');
+   const modes=modeSection.querySelectorAll('.mode');
+   const data=en?[
+    ['FASTEST','LITE · 720p / 60 FPS','Copies video and audio streams without re-encoding; fastest when the file is compatible.'],
+    ['RECOMMENDED','CLASSIC · SDR / HDR','Keeps the original video and audio streams without re-encoding. Does not add HDR to SDR video.'],
+    ['FOR HEVC','MAX · HEVC / HDR','For compatible HEVC/HDR clips. Keeps original streams without re-encoding; requires an audio stream.'],
+    ['','Anti Lag · MP4 up to 1080p60','Prepares the video locally in your browser.'],
+    ['TEMP SERVER','HandBrake · up to 1080p','Temporarily uploads the video for server-side encoding; temporary files are deleted after download.']
+   ]:[
+    ['الأسرع','LITE · 720p / 60 FPS','ينسخ مسارات الصورة والصوت دون إعادة ترميز؛ أسرع خيار عندما يكون الملف متوافقاً.'],
+    ['موصى به','CLASSIC · SDR / HDR','يحافظ على مسارات الصورة والصوت كما هي دون إعادة ترميز. لا يضيف HDR إلى فيديو SDR.'],
+    ['لـ HEVC','MAX · HEVC / HDR','للمقاطع المتوافقة مع HEVC/HDR. يحفظ مسار الصورة والصوت الأصليين دون إعادة ترميز؛ يحتاج وجود مسار صوت.'],
+    ['','Anti Lag · MP4 حتى 1080p60','يعيد تجهيز الفيديو محلياً داخل المتصفح.'],
+    ['خادم مؤقت','HandBrake · حتى 1080p','يرفع الفيديو مؤقتاً لإعادة ترميزه على الخادم، ثم تُحذف الملفات المؤقتة بعد التنزيل.']
+   ];
+   modes.forEach((mode,i)=>{const tag=mode.querySelector('.tag');const strong=mode.querySelector('strong');const small=mode.querySelector('small');const row=data[i];if(row){if(tag)tag.textContent=row[0];if(strong)strong.textContent=row[1];if(small)small.textContent=row[2]}});
+  }
+  set('#modeHint',en?'Scan the video first to check which preparation modes are compatible.':'افحص الفيديو أولاً حتى نتحقق من توافق طريقة التجهيز.');
+  set('#start',en?'Start preparation':'ابدأ التجهيز');
+  set('#cancel',en?'Cancel':'إلغاء');
+  set('#processIssue details summary',en?'Recent processing log':'سجل المعالجة الأخير');
+  set('#copyFfmpegLog',en?'Copy log':'نسخ السجل');
+  set('#result h3',en?'3 · Video ready':'3 · الفيديو جاهز');
+  set('#result h4',en?'Actual execution report':'تقرير التنفيذ الفعلي');
+  set('#download button',en?'Download video':'تنزيل الفيديو');
+  set('#again',en?'Prepare another video':'تجهيز فيديو آخر');
+  set('#coverTools h3',en?'Optional thumbnail':'صورة مصغّرة اختيارية');
+  set('#coverTools .sub',en?'Choose a frame and save it as a separate JPG image. Video data will not change.':'اختر إطاراً من الفيديو واحفظه كصورة JPG منفصلة؛ لن تتغير بيانات الفيديو.');
+  set('#thumbNo',en?'No, thanks':'لا، شكراً');
+  set('#thumbYes',en?'Yes, choose a frame':'نعم، اختر إطاراً');
+  set('#prevFrame',en?'− 0.05 sec':'− 0.05 ثانية');
+  set('#nextFrame',en?'+ 0.05 sec':'+ 0.05 ثانية');
+  set('#saveCover',en?'Download JPG':'تنزيل JPG');
+  set('footer',en?'IBRAHIM STUDIO · Video processing in your browser':'IBRAHIM STUDIO · معالجة الفيديو محلياً داخل المتصفح');
+  document.documentElement.dataset.interfaceLanguage=language;
+ };
+ let current='ar';
+ toggle.addEventListener('click',()=>{current=current==='ar'?'en':'ar';apply(current)});
+ apply(current);
+})();
+
+</script>
 </body></html>
