@@ -54,6 +54,16 @@ footer{text-align:center;color:#687180;font-size:12px;margin-top:30px}
 .modeHint{margin-top:12px;padding:10px 12px;border-radius:9px;background:#111722;color:#c7d2df;font-size:12px;line-height:1.8}
 @media(max-width:600px){.scanGrid{grid-template-columns:1fr 1fr}.scanSummary{grid-template-columns:1fr 1fr}}
 
+
+.deviceReport{margin:14px 0;background:#0c1119;border:1px solid #293342;border-radius:12px;padding:14px}
+.deviceReport h3{font-size:15px;margin:0 0 5px}.deviceReport .sub{margin-bottom:12px}
+.deviceRows{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.deviceRow{background:#111925;border:1px solid #263242;border-radius:9px;padding:10px;min-width:0}
+.deviceRow span{display:block;color:#9da8b7;font-size:10px}.deviceRow b{display:block;margin-top:5px;font-size:12px;overflow-wrap:anywhere}
+.deviceStatus{font-size:12px;line-height:1.8;margin:10px 0;color:#cbd5e1}
+.deviceActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+@media(max-width:600px){.deviceRows{grid-template-columns:1fr 1fr}}
+
 /* واجهة مبسطة على نمط Wudooh */
 nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
 #videoInfo{display:block!important;margin-top:16px}.videoDetails{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}.videoDetails .metric{min-width:0}.videoActions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.fileName{overflow-wrap:anywhere}
@@ -68,6 +78,16 @@ nav,#guide,#support,.urlrow,.card:has(#thumbPanel){display:none!important}
 <div id="home"></div>
 <h2>تحسين الفيديو</h2><p class="intro">اختر مقطعك، حدّد الطريقة المناسبة، ثم نزّل الملف الجاهز.</p>
 <div class="steps"><div class="step"><b>1</b> الفيديو</div><div class="step"><b>2</b> الطريقة</div><div class="step"><b>3</b> التنزيل</div></div>
+
+<section class="card deviceReport" id="deviceCheck">
+ <h3>فحص الجهاز والمتصفح</h3>
+ <p class="sub">اختبار تلقائي قبل المعالجة المحلية. النتائج تُعرض على جهازك ولا تُرسل إلى أي خادم.</p>
+ <div id="deviceStatus" class="deviceStatus">جارٍ فحص إمكانيات المتصفح...</div>
+ <div id="deviceRows" class="deviceRows"></div>
+ <div class="deviceActions"><button id="copyDeviceReport" class="quiet" type="button">نسخ تقرير الجهاز</button><button id="recheckDevice" class="quiet" type="button">إعادة الفحص</button></div>
+ <p class="note">SharedArrayBuffer مطلوب عادةً للمعالجة متعددة الخيوط فقط. المحرك الحالي يعمل بنسخة FFmpeg أحادية الخيط؛ لذلك عدم توفره لا يمنع المعالجة وحده. الذاكرة المعروضة تقديرية وقد يخفيها المتصفح.</p>
+</section>
+
 <section class="card" id="studio"><h3>1 · اختر الفيديو</h3><p class="sub">اختر فيديو من جهازك للبدء.</p>
 <label class="drop" id="drop"><input id="file" type="file" accept="video/*"><span class="uploadIcon">＋</span><strong>اختر فيديو أو اسحب الملف هنا</strong><small>MP4 · MOV · WEBM</small></label>
 <div id="videoInfo" class="hidden"><video id="preview" class="preview" controls playsinline></video><h4 style="margin:14px 0 4px">تفاصيل المقطع</h4><p class="sub">تُقرأ مباشرة من الملف الموجود على جهازك.</p><div id="meta" class="videoDetails"></div><div id="scanState" class="scanState">اختر فيديو لبدء الفحص المحلي.</div><div id="scanSummary" class="scanSummary hidden"></div><div id="scanReport" class="scanReport hidden"></div><div class="videoActions"><button id="copyInfo" class="quiet">نسخ التفاصيل</button><button id="changeFile" class="quiet">تغيير الفيديو</button></div></div>
@@ -95,6 +115,37 @@ const $=id=>document.getElementById(id);let file=null,objectUrl=null,outputUrl=n
 const fmt=n=>{if(!Number.isFinite(n))return '—';if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';return (n/1048576).toFixed(2)+' MB'};
 const time=s=>{if(!Number.isFinite(s))return '—';return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')};
 function setStatus(t,p){$('status').textContent=t;if(p!==undefined)$('bar').style.width=Math.max(0,Math.min(100,p))+'%'}
+
+let deviceReportData=null;
+function runDeviceCheck(){
+ const nav=navigator,wasm=typeof WebAssembly==='object'&&typeof WebAssembly.validate==='function',sab=typeof SharedArrayBuffer!=='undefined',isolated=window.crossOriginIsolated===true,secure=window.isSecureContext===true;
+ const memory=Number.isFinite(nav.deviceMemory)?nav.deviceMemory+' GB تقريباً':'غير متاح من المتصفح';
+ const cores=Number.isFinite(nav.hardwareConcurrency)?nav.hardwareConcurrency+' معالج منطقي':'غير متاح';
+ const screenSize=screen.width+' × '+screen.height+' CSS px · DPR '+(window.devicePixelRatio||1);
+ const rows=[
+  ['اتصال آمن HTTPS',secure?'مدعوم':'غير آمن / غير متاح',secure],
+  ['WebAssembly',wasm?'مدعوم':'غير مدعوم',wasm],
+  ['SharedArrayBuffer',sab?'مدعوم':'غير متاح',sab],
+  ['عزل المتصفح COOP/COEP',isolated?'مفعّل':'غير مفعّل',isolated],
+  ['الذاكرة التقريبية',memory,null],
+  ['عدد المعالجات المنطقية',cores,null],
+  ['أبعاد الشاشة',screenSize,null],
+  ['المتصفح',nav.userAgent||'غير متاح',null],
+  ['لغة الجهاز',nav.language||'غير متاح',null]
+ ];
+ deviceReportData={secure,wasm,sab,isolated,memory,cores,screenSize,rows};
+ $('deviceRows').innerHTML=rows.map(([k,v,ok])=>'<div class="deviceRow"><span>'+esc(k)+'</span><b>'+esc(v)+(ok===true?' ✓':ok===false?' ✕':'')+'</b></div>').join('');
+ const canProcess=secure&&wasm;
+ $('deviceStatus').textContent=canProcess?'✓ المتصفح يوفّر المتطلبات الأساسية للمعالجة المحلية. '+(!sab?'المعالجة متعددة الخيوط غير متاحة، وسيعمل المحرك الحالي بخيط واحد.':'دعم SharedArrayBuffer متاح.'):'لا يمكن بدء المعالجة: يلزم اتصال HTTPS ودعم WebAssembly.';
+ $('deviceStatus').style.color=canProcess?'#9fe9d7':'#ffc0c8';
+ updateModeHint();
+ return canProcess;
+}
+function deviceReportText(){
+ if(!deviceReportData)runDeviceCheck();
+ return ['تقرير تشخيص Ibrahim Studio',...deviceReportData.rows.map(([k,v])=>k+': '+v),'الفيديو لا يُرسل عند إجراء هذا الفحص.','SharedArrayBuffer: '+(deviceReportData.sab?'متاح':'غير متاح')+' (ميزة تعدد الخيوط).'].join('\n');
+}
+
 
 const esc=v=>String(v??'غير متاح').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const val=(o,...keys)=>{for(const k of keys){const x=o?.[k];if(x!==undefined&&x!==null&&String(x).trim()!=='')return String(x)}return 'غير متاح'};
@@ -158,8 +209,8 @@ function modeCompatibility(mode){
  return {ok:true,reason:'سيعاد ترميز الفيديو محلياً إلى MP4 بحد أقصى 1080p و60 FPS. قد تكون المعالجة ثقيلة على الهاتف.'};
 }
 function updateModeHint(){
- const selected=document.querySelector('input[name="mode"]:checked')?.value||'classic',check=modeCompatibility(selected);
- $('modeHint').textContent=check.reason;$('modeHint').style.border='1px solid '+(check.ok?'#31514f':'#65404a');$('modeHint').style.color=check.ok?'#a5f4e8':'#ffc0c8';$('start').disabled=!check.ok||working;
+ const selected=document.querySelector('input[name="mode"]:checked')?.value||'classic',check=modeCompatibility(selected);const deviceOK=deviceReportData?deviceReportData.secure&&deviceReportData.wasm:(window.isSecureContext===true&&typeof WebAssembly==='object');
+ $('modeHint').textContent=check.reason;$('modeHint').style.border='1px solid '+(check.ok?'#31514f':'#65404a');$('modeHint').style.color=check.ok?'#a5f4e8':'#ffc0c8';$('start').disabled=!check.ok||!deviceOK||working;
 }
 
 $('file').onchange=e=>{if(e.target.files[0])setFile(e.target.files[0])};
@@ -169,6 +220,9 @@ $('drop').ondrop=e=>{e.preventDefault();$('drop').classList.remove('drag');const
 $('useUrl').onclick=async()=>{const u=$('videoUrl').value.trim();if(!u)return alert('ألصق رابط الفيديو أولاً');$('useUrl').disabled=true;$('useUrl').textContent='جارٍ القراءة...';try{const r=await fetch(u);if(!r.ok)throw Error('تعذّر جلب الملف');const b=await r.blob();if(!b.type.startsWith('video/')&&!/\.mp4([?#]|$)/i.test(u))throw Error('الرابط لا يبدو ملف فيديو');setFile(new File([b],'remote-video.mp4',{type:b.type||'video/mp4'}))}catch(e){alert('لم أستطع قراءة الرابط. قد يمنع المصدر الوصول من المتصفح (CORS). اختر الملف من جهازك بدلاً من ذلك.')}finally{$('useUrl').disabled=false;$('useUrl').textContent='استخدام الرابط'}};
 $('changeFile').onclick=()=>$('file').click();
 document.querySelectorAll('input[name="mode"]').forEach(el=>el.addEventListener('change',updateModeHint));
+$('recheckDevice').onclick=runDeviceCheck;
+$('copyDeviceReport').onclick=()=>{const report=deviceReportText();if(navigator.clipboard?.writeText)navigator.clipboard.writeText(report).then(()=>$('deviceStatus').textContent='تم نسخ التقرير. لم يُرسل إلى أي جهة.').catch(()=>alert(report));else alert(report)};
+runDeviceCheck();
 $('copyInfo').onclick=()=>{const t=[...$('meta').querySelectorAll('.metric')].map(x=>x.innerText.replace('\n',': ')).join('\n');navigator.clipboard?.writeText(t).then(()=>alert('تم نسخ التفاصيل')).catch(()=>alert(t))};
 async function drawFrame(sec){const v=$('preview'),c=$('canvas'),ctx=c.getContext('2d');if(!v.videoWidth)return;try{v.currentTime=Math.min(sec,Math.max(0,v.duration-.05));await new Promise(resolve=>v.onseeked=resolve);const scale=Math.min(c.width/v.videoWidth,c.height/v.videoHeight),w=v.videoWidth*scale,h=v.videoHeight*scale;ctx.fillStyle='#05080d';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(v,(c.width-w)/2,(c.height-h)/2,w,h);$('seekTime').textContent='الإطار عند '+time(v.currentTime)}catch(e){}}
 $('seek').oninput=e=>drawFrame(Number(e.target.value));$('thumbYes').onclick=()=>{$('thumbPanel').classList.remove('hidden');if($('preview').readyState>=2)drawFrame($('preview').currentTime||0)};$('thumbNo').onclick=()=>$('thumbPanel').classList.add('hidden');$('prevFrame').onclick=()=>drawFrame(Math.max(0,($('preview').currentTime||0)-.05));$('nextFrame').onclick=()=>drawFrame(Math.min(videoDuration||0,($('preview').currentTime||0)+.05));$('saveCover').onclick=()=>{$('canvas').toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='cover.jpg';a.click();URL.revokeObjectURL(a.href)},'image/jpeg',.94)};
@@ -190,7 +244,7 @@ await this.ffmpeg.exec(args);setStatus('قراءة الملف الناتج...',9
 }finally{this.busy=false;}}
 }
 const instance=new IbrahimEngine();window.IbrahimEngine=IbrahimEngine;window.IbrahimEngineInstance=instance;return instance;}
-$('start').onclick=async()=>{if(!file||working)return;const selected=document.querySelector('input[name="mode"]:checked').value;const compatibility=modeCompatibility(selected);if(!compatibility.ok){updateModeHint();alert(compatibility.reason);return;}working=true;$('start').disabled=true;$('cancel').classList.remove('hidden');$('progressWrap').classList.remove('hidden');$('result').classList.add('hidden');try{if(outputUrl)URL.revokeObjectURL(outputUrl);
+$('start').onclick=async()=>{if(!file||working)return;const selected=document.querySelector('input[name="mode"]:checked').value;const deviceOK=runDeviceCheck();if(!deviceOK){alert('المتصفح يحتاج اتصال HTTPS ودعم WebAssembly قبل المعالجة.');return;}const compatibility=modeCompatibility(selected);if(!compatibility.ok){updateModeHint();alert(compatibility.reason);return;}working=true;$('start').disabled=true;$('cancel').classList.remove('hidden');$('progressWrap').classList.remove('hidden');$('result').classList.add('hidden');try{if(outputUrl)URL.revokeObjectURL(outputUrl);
 const sourceInfo={width:$('preview').videoWidth,height:$('preview').videoHeight,duration:$('preview').duration,size:file.size,name:file.name};const engine=await loadEngine(p=>setStatus('جاري تنفيذ المعالجة المحلية...',Math.round(p*100)));const method=selected==='lite'?'lite':selected==='classic'?'classic':selected==='max'?'max':selected==='mute'?'noaudio':selected==='sdr'?'sdr':selected==='720'?'720':selected==='1080'?'1080':selected==='4k60'?'4k60':'antilag';const blob=await engine.process(file,method);await finish(blob,file.name.replace(/\.[^.]+$/,'')+'_ibrahim.mp4',sourceInfo,method);
 }catch(e){console.error(e);setStatus('فشلت المعالجة: '+(e.message||e),0);alert('فشلت المعالجة: '+(e.message||'خطأ غير معروف')+'\nقد تكون الصيغة غير متوافقة مع MP4 أو ذاكرة الهاتف غير كافية.')}finally{working=false;$('cancel').classList.add('hidden');updateModeHint()}};
 async function finish(blob,name,sourceInfo,method){outputUrl=URL.createObjectURL(blob);$('download').href=outputUrl;$('download').download=name;$('resultText').textContent='جارٍ فحص أبعاد الملف الناتج...';$('result').classList.remove('hidden');$('cancel').classList.add('hidden');$('thumbPanel').classList.remove('hidden');const checkVideo=document.createElement('video');checkVideo.preload='metadata';checkVideo.muted=true;checkVideo.src=outputUrl;try{await new Promise((resolve,reject)=>{checkVideo.onloadedmetadata=resolve;checkVideo.onerror=()=>reject(Error('تعذّر قراءة بيانات الملف الناتج في المتصفح'))});const same=checkVideo.videoWidth===sourceInfo.width&&checkVideo.videoHeight===sourceInfo.height;const lines=['اكتملت المعالجة المحلية.','الأصل: '+sourceInfo.width+'×'+sourceInfo.height+' · الناتج: '+checkVideo.videoWidth+'×'+checkVideo.videoHeight,'حجم الأصل: '+fmt(sourceInfo.size)+' · حجم الناتج: '+fmt(blob.size),'مدة الناتج: '+time(checkVideo.duration)];if(['lite','classic','max'].includes(method)){lines.push(same?'✓ أبعاد الصورة محفوظة.':'⚠ تغيّرت أبعاد الصورة؛ تحقق من الملف قبل رفعه.');lines.push('وضع النسخ لا يعيد ضغط الصورة، لكن فحص المتصفح لا يثبت وحده نوع الترميز أو HDR أو ظهور الفيديو في For You.')}else{lines.push('هذا الوضع أعاد ترميز الفيديو؛ قد تختلف الجودة والألوان عن الأصل.');if(method==='4k60')lines.push('تم إنشاء إطار 2160×3840 مع الحفاظ على FPS المصدر؛ التكبير لا يستعيد تفاصيل غير موجودة في المصدر.');} $('resultText').textContent=lines.join(' | ');setStatus(same?'اكتمل التجهيز وفُحصت أبعاد الفيديو':'اكتمل التجهيز؛ الأبعاد مختلفة عن الأصل',100)}catch(e){$('resultText').textContent='اكتملت المعالجة، لكن تعذّر فحص بيانات الناتج: '+e.message;setStatus('اكتمل إنشاء الملف؛ تعذّر التحقق من أبعاده',100)}finally{checkVideo.removeAttribute('src');checkVideo.load()}}
