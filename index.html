@@ -247,6 +247,28 @@ footer{font-size:10px;color:#778293;padding-top:15px}
  .pill{max-width:125px;white-space:nowrap}
 }
 
+
+/* Wudooh-style studio layout: presentation only */
+#deviceCheck,nav,#guide,#support{display:none!important}
+.urlrow{display:flex!important;gap:9px;margin-top:14px}
+.urlrow input{min-width:0;flex:1;background:#080b10;border:1px solid #303744;border-radius:10px;padding:12px;color:#fff;font:inherit}
+.urlrow button{white-space:nowrap}
+.coverCard{margin-top:12px}
+.coverChoices{margin-top:8px}
+#thumbPanel{margin-top:14px}
+#thumbPanel.hidden{display:none!important}
+.coverBox{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.coverBox canvas{width:100%;max-height:260px;object-fit:contain}
+.coverBox .actions{display:grid;grid-template-columns:1fr 1fr}
+.coverBox #saveCover{grid-column:1/-1}
+#modeHint{font-size:12px;padding:9px 11px;border-radius:9px}
+@media(max-width:600px){
+ .urlrow{flex-direction:column}
+ .coverBox{grid-template-columns:1fr}
+ .coverBox canvas{max-height:220px}
+ .coverBox .actions{grid-template-columns:1fr 1fr}
+}
+
 </style>
 </head>
 <body><main class="wrap">
@@ -272,7 +294,7 @@ footer{font-size:10px;color:#778293;padding-top:15px}
 <section class="card" id="studio"><h3>اختر الفيديو</h3><p class="sub">اختر فيديو من جهازك للبدء.</p>
 <label class="drop" id="drop"><input id="file" type="file" accept="video/*"><span class="uploadIcon">＋</span><strong>اختر فيديو أو اسحب الملف هنا</strong><small>MP4 · MOV · WEBM</small></label>
 <div id="videoInfo" class="hidden"><video id="preview" class="preview" controls playsinline></video><h4 style="margin:14px 0 4px">تفاصيل المقطع</h4><p class="sub">تُقرأ مباشرة من الملف الموجود على جهازك.</p><div id="meta" class="videoDetails"></div><div id="scanState" class="scanState">اختر فيديو لبدء الفحص المحلي.</div><div id="scanSummary" class="scanSummary hidden"></div><div id="scanReport" class="scanReport hidden"></div><div class="videoActions"><button id="copyInfo" class="quiet">نسخ التفاصيل</button><button id="changeFile" class="quiet">تغيير الفيديو</button></div></div>
-<div class="urlrow hidden"><input id="videoUrl"><button id="useUrl">استخدام الرابط</button></div>
+<div class="urlrow"><input id="videoUrl" type="url" placeholder="ألصق رابطاً مباشراً لملف فيديو" aria-label="رابط مباشر للفيديو"><button id="useUrl">استخدام الفيديو</button></div><p class="note">الرابط يُقرأ من مصدره داخل متصفحك. قد تمنع بعض المواقع الوصول المباشر.</p>
 </section>
 <section class="card"><h3>اختر طريقة التجهيز</h3><p class="sub">اختر النتيجة المناسبة لمقطعك.</p>
 <div class="modes">
@@ -285,10 +307,7 @@ footer{font-size:10px;color:#778293;padding-top:15px}
 <div id="progressWrap" class="hidden"><div class="progress"><div class="bar" id="bar"></div></div><div class="status" id="status">جارٍ التحضير...</div></div><div id="processIssue" class="processIssue hidden" role="status"><strong id="processIssueTitle"></strong><p id="processIssueMessage"></p><details><summary>سجل FFmpeg الأخير</summary><pre id="ffmpegLog"></pre></details><div class="actions"><button id="copyFfmpegLog" class="quiet" type="button">نسخ السجل</button></div></div>
 </section>
 <section class="card hidden" id="result"><h3>3 · الفيديو جاهز</h3><p class="sub" id="resultText">اكتملت العملية.</p><h4>تقرير التنفيذ الفعلي</h4><div id="engineReport" class="scanSummary"></div><div class="actions"><a id="download" download="ibrahim-studio.mp4"><button class="primary">تنزيل الفيديو</button></a><button id="again" class="quiet">تجهيز فيديو آخر</button></div></section>
-<div id="legacyTools" class="hidden" aria-hidden="true">
-<button id="thumbYes"></button><button id="thumbNo"></button>
-<div id="thumbPanel"><canvas id="canvas" width="640" height="360"></canvas><input id="seek" type="range"><span id="seekTime"></span><button id="prevFrame"></button><button id="nextFrame"></button><button id="saveCover"></button></div>
-</div>
+<section class="card coverCard" id="coverTools"><h3>صورة مصغّرة اختيارية</h3><p class="sub">اختر إطاراً من الفيديو واحفظه كصورة JPG منفصلة؛ لن تتغير بيانات الفيديو.</p><div class="actions coverChoices"><button id="thumbNo" class="quiet" type="button">لا، شكراً</button><button id="thumbYes" class="quiet" type="button">نعم، اختر إطاراً</button></div><div id="thumbPanel" class="hidden"><div class="coverBox"><canvas id="canvas" width="640" height="360"></canvas><div><div id="seekTime" class="status">اختر إطاراً من الفيديو</div><input id="seek" class="range" type="range" min="0" max="0" step="0.05" value="0"><div class="actions"><button id="prevFrame" class="quiet" type="button">− 0.05 ثانية</button><button id="nextFrame" class="quiet" type="button">+ 0.05 ثانية</button><button id="saveCover" class="primary" type="button" disabled>تنزيل JPG</button></div></div></div></div></section>
 <footer>IBRAHIM STUDIO · معالجة الفيديو محلياً داخل المتصفح</footer>
 </main>
 <script>
