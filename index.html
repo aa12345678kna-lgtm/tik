@@ -157,7 +157,7 @@ function runDeviceCheck(){
 }
 function deviceReportText(){
  if(!deviceReportData)runDeviceCheck();
- return ['تقرير تشخيص Ibrahim Studio',...deviceReportData.rows.map(([k,v])=>k+': '+v),'تقرير آخر تصدير: '+(deviceReportData.lastEngineReport?'محفوظ محلياً':'لا يوجد بعد'),'الفيديو لا يُرسل عند إجراء هذا الفحص.'].join('\\n');
+ return ['تقرير تشخيص Ibrahim Studio',...deviceReportData.rows.map(([k,v])=>k+': '+v),'تقرير آخر تصدير: '+(deviceReportData.lastEngineReport?'محفوظ محلياً':'لا يوجد بعد'),'الفيديو لا يُرسل عند إجراء هذا الفحص.'].join('\n');
 }
 
 
@@ -242,7 +242,7 @@ async function drawFrame(sec){const v=$('preview'),c=$('canvas'),ctx=c.getContex
 $('seek').oninput=e=>drawFrame(Number(e.target.value));$('thumbYes').onclick=()=>{$('thumbPanel').classList.remove('hidden');if($('preview').readyState>=2)drawFrame($('preview').currentTime||0)};$('thumbNo').onclick=()=>$('thumbPanel').classList.add('hidden');$('prevFrame').onclick=()=>drawFrame(Math.max(0,($('preview').currentTime||0)-.05));$('nextFrame').onclick=()=>drawFrame(Math.min(videoDuration||0,($('preview').currentTime||0)+.05));$('saveCover').onclick=()=>{$('canvas').toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='cover.jpg';a.click();URL.revokeObjectURL(a.href)},'image/jpeg',.94)};
 $('preview').addEventListener('loadeddata',()=>{$('saveCover').disabled=false});
 
-async function loadEngine(onProgress){if(window.IbrahimEngineInstance)return window.IbrahimEngineInstance;const {getEnginePlan}=await import("./assets/js/engine-loader.js");const enginePlan=getEnginePlan();window.IbrahimEnginePlan=enginePlan;const mod=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');const util=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js');const {FFmpeg}=mod;const {fetchFile,toBlobURL}=util;
+async function loadEngine(onProgress){if(window.IbrahimEngineInstance)return window.IbrahimEngineInstance;const {getEnginePlan}=await import("./assets/js/engine-loader.js");const enginePlan=getEnginePlan();window.IbrahimEnginePlan={...enginePlan,requestedMode:enginePlan.mode,fallbackUsed:false,fallbackReason:''};const mod=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');const util=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js');const {FFmpeg}=mod;const {fetchFile,toBlobURL}=util;
 class IbrahimEngine{
 constructor(){this.ffmpeg=new FFmpeg();this.loaded=false;this.busy=false;this.onProgress=onProgress;this.logs=[];this.bindEvents();}
 bindEvents(){this.ffmpeg.on('log',({message})=>{this.logs.push(message);if(this.logs.length>250)this.logs.shift()});this.ffmpeg.on('progress',({progress})=>{if(this.onProgress)this.onProgress(Math.min(.99,Math.max(.01,progress||0)))});}
