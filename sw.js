@@ -1,4 +1,4 @@
-const CACHE_NAME = "ibrahim-studio-shell-v11";
+const CACHE_NAME = "ibrahim-studio-shell-v12";
 const APP_SHELL = [
   "./",
   "./docs/",
@@ -7,7 +7,7 @@ const APP_SHELL = [
   "./assets/css/site.css",
   "./assets/js/runtime-capabilities.js",
   "./assets/js/engine-loader.js",
-  "./manifest.webmanifest"
+  "./manifest.webmanifest",\n  "./favicon.svg",\n  "./assets/ibrahim-al-faris-logo.svg"
 ];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));

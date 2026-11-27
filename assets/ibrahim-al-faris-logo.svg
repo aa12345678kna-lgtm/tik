@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 180" role="img" aria-labelledby="title desc">
+<title id="title">إبراهيم ال فارس — IBRAHIM AL FARIS</title><desc id="desc">Blue and red video studio logo with a clapperboard and play symbol</desc>
+<defs>
+ <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7fbff"/><stop offset=".48" stop-color="#8ca5c7"/><stop offset="1" stop-color="#eef5ff"/></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#087bff"/><stop offset="1" stop-color="#31d5ff"/></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff304f"/><stop offset="1" stop-color="#ff704e"/></linearGradient>
+ <linearGradient id="rim" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#168bff"/><stop offset=".52" stop-color="#dcecff"/><stop offset="1" stop-color="#ff3d55"/></linearGradient>
+ <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect x="5" y="5" width="710" height="170" rx="24" fill="#080d18" stroke="url(#rim)" stroke-width="4"/>
+<g transform="translate(22 28)">
+ <rect x="0" y="34" width="122" height="92" rx="13" fill="#101a2b" stroke="url(#rim)" stroke-width="4"/>
+ <path d="M8 31 18 5 130 5 120 31Z" fill="#17243a" stroke="url(#rim)" stroke-width="4"/>
+ <path d="M24 7 43 7 32 29 13 29ZM62 7 81 7 70 29 51 29ZM100 7 119 7 108 29 89 29Z" fill="#f3f7ff"/>
+ <path d="M48 57 48 105 91 81Z" fill="url(#red)" stroke="#fff" stroke-width="3" filter="url(#glow)"/>
+ <path d="M0 145H122" stroke="url(#blue)" stroke-width="5" stroke-linecap="round"/>
+</g>
+<path d="M174 34H688" stroke="#24364f" stroke-width="2"/>
+<text x="690" y="83" text-anchor="end" fill="url(#metal)" font-size="47" font-weight="800" font-family="Tahoma,Arial,sans-serif">إبراهيم ال فارس</text>
+<text x="690" y="119" text-anchor="end" fill="#e9f1ff" font-size="24" font-weight="700" letter-spacing="5" font-family="Arial,sans-serif">IBRAHIM AL FARIS</text>
+<rect x="174" y="136" width="280" height="27" rx="13.5" fill="#111d30" stroke="url(#rim)" stroke-width="1.8"/>
+<text x="314" y="155" text-anchor="middle" fill="#f5f8ff" font-size="14" font-weight="800" letter-spacing="3" font-family="Arial,sans-serif">VIDEO STUDIO · 4K</text>
+</svg>
