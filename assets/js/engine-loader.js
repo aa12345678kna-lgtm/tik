@@ -34,7 +34,7 @@ export function getEnginePlan() {
     config: mode === "multi-thread" ? ENGINE_CONFIG.multiThread : ENGINE_CONFIG.singleThread,
     threadedBundleAvailable: ENGINE_CONFIG.threadedBundleAvailable,
     reason: mode === "multi-thread"
-      ? "كل شروط Multi-thread متحققة؛ سيُحمّل core-mt."
-      : "تم اختيار Single-thread لأن: " + (blockers.join("، ") || "شرط من شروط اختيار المحرك لم يتحقق.")
+      ? "كل شروط الوضع المتوازي متحققة؛ سيتم استخدامه."
+      : "تم اختيار الوضع القياسي لأن: " + (blockers.join("، ") || "أحد شروط الوضع المتوازي غير متحقق.")
   };
 }
