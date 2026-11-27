@@ -1,0 +1,33 @@
+name: Validate Ibrahim Studio
+
+on:
+  push:
+    branches: ["main", "add-handbrake-server-20261128"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check backend Python syntax
+        run: python -m py_compile server/app.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check embedded studio JavaScript syntax
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path("index.html").read_text(encoding="utf-8")
+          scripts = re.findall(r"<script>([\s\S]*?)</script>", html)
+          if not scripts:
+              raise SystemExit("No inline studio script found")
+          Path("/tmp/studio-inline.mjs").write_text(scripts[0], encoding="utf-8")
+          PY
+          node --check /tmp/studio-inline.mjs
