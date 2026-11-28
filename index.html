@@ -401,6 +401,17 @@ footer{border-top:1px solid var(--lab-border);padding-top:16px;color:#777e8b}
 #result{scroll-margin-top:16px}
 footer{line-height:2;border-top:1px solid #20242c;padding-top:18px}
 @media(max-width:620px){.mainNav{gap:16px!important;margin-bottom:20px!important}.modes{grid-template-columns:1fr}.mode{min-height:unset}.heroTitle h2{font-size:28px}}
+
+/* Four clear preparation choices; advanced legacy methods remain in the engine but are hidden */
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.modes .mode[hidden]{display:none!important}
+.modes .mode:has(input[value="720p60"]){order:1}
+.modes .mode:has(input[value="classic"]){order:2}
+.modes .mode:has(input[value="hevc-hdr"]){order:3}
+.modes .mode:has(input[value="maxquality"]){order:4}
+.modes .mode:has(input[value="classic"]){border-color:#31514f}
+.modes .mode:has(input[value="classic"]) .tag{margin-top:10px}
+@media(max-width:620px){.modes{grid-template-columns:1fr}}
 </style>
 </head>
 <body><main class="wrap">
@@ -601,7 +612,7 @@ function modeCompatibility(mode){
  return {ok:false,reason:'طريقة التجهيز غير معروفة.'};
 }
 function updateModeHint(){
- const selected=document.querySelector('input[name="mode"]:checked')?.value||'studio4k',check=modeCompatibility(selected);const deviceOK=selected==='handbrake'?Boolean(HANDBRAKE_API_BASE):(deviceReportData?deviceReportData.secure&&deviceReportData.wasm:(window.isSecureContext===true&&typeof WebAssembly==='object'));
+ const selected=document.querySelector('input[name="mode"]:checked')?.value||'classic',check=modeCompatibility(selected);const deviceOK=selected==='handbrake'?Boolean(HANDBRAKE_API_BASE):(deviceReportData?deviceReportData.secure&&deviceReportData.wasm:(window.isSecureContext===true&&typeof WebAssembly==='object'));
  $('modeHint').textContent=check.reason;$('modeHint').style.border='1px solid '+(check.ok?'#31514f':'#65404a');$('modeHint').style.color=check.ok?'#a5f4e8':'#ffc0c8';$('start').disabled=!check.ok||!deviceOK||working;
 }
 
@@ -759,6 +770,7 @@ $('again').onclick=()=>{$('result').classList.add('hidden');$('file').value='';$
 /* Arabic/English interface toggle. Presentation-only: does not touch media processing. */
 (()=>{
  const toggle=document.getElementById('languageToggle');
+ const classicDefault=document.querySelector('input[name="mode"][value="classic"]');if(classicDefault)classicDefault.checked=true;
  if(!toggle)return;
  const set=(selector,value)=>{const el=document.querySelector(selector);if(el)el.textContent=value};
  const apply=(language)=>{
@@ -795,28 +807,27 @@ $('again').onclick=()=>{$('result').classList.add('hidden');$('file').value='';$
    set('#studio + section h3',en?'Choose a preparation mode':'اختر طريقة التجهيز');
    set('#studio + section .sub',en?'Select the result that best suits your video.':'اختر النتيجة المناسبة لمقطعك.');
    const modes=modeSection.querySelectorAll('.mode');
-   const data=en?[
-    ['RECOMMENDED','Studio 4K · High-quality preparation','Local high-quality H.264 export up to 4K, preserving source frame timing. Upscaling does not restore missing detail.'],
-    ['','WUDOOH x264 · 4K60','H.264 at 2160×3840 and 60 FPS using libx264, CRF 1 and settings based on the supplied x264 log. Large output and high device load are possible.'],
-    ['','MAX QUALITY + FPS','High-quality MP4 up to 1080p while preserving source frame timing.'],
-    ['','FPS Method','Remuxes the video and copies picture frames without re-encoding; does not create new frames.'],
-    ['','Preserve HEVC and HDR','Copies the original HEVC/HDR video stream without re-encoding; adds an AAC alternative audio track when available.'],
-    ['','High-quality SDR encoding','Locally re-encodes SDR video using H.264 while preserving source timing.'],
-    ['','Preserve SDR without re-encoding','Copies H.264 SDR video as-is and prepares audio as AAC when needed.'],
-    ['','Vertical 4K60 export','Requires libx265 support; exports HEVC 10-bit at 2160×3840 and 60 FPS.'],
-    ['','720p60 Method','Copies streams into MPEG-TS without re-encoding. The source resolution is not changed.']
-   ]:[
-    ['موصى به','Studio 4K · تجهيز عالي الجودة','تصدير H.264 محلي بجودة عالية حتى 4K مع الحفاظ على توقيت المصدر؛ التكبير لا يستعيد تفاصيل مفقودة.'],
-    ['','WUDOOH x264 · 4K60','ترميز H.264 بمقاس 2160×3840 و60 FPS باستخدام libx264 وCRF 1 وخيارات x264 المضمّنة من سجل الترميز المرسل. قد يكون الملف كبيراً والمعالجة ثقيلة على الجهاز.'],
-    ['','MAX QUALITY + FPS','ملف MP4 عالي الجودة حتى 1080p مع الحفاظ على توقيت إطارات المصدر.'],
-    ['','FPS Method','يعيد تنظيم الحاوية وينسخ إطارات الصورة دون إعادة ترميز؛ لا ينشئ إطارات جديدة.'],
-    ['','حفظ جودة HEVC وHDR','ينسخ فيديو HEVC/HDR الأصلي دون إعادة ترميز، ويضيف مسار AAC بديلاً للصوت عند توفره.'],
-    ['','ترميز SDR بجودة عالية','يعيد ترميز فيديو SDR محلياً باستخدام H.264 مع الحفاظ على توقيت المصدر.'],
-    ['','حفظ جودة SDR دون إعادة ترميز','ينسخ فيديو H.264 SDR كما هو، ويجهز الصوت بصيغة AAC عند الحاجة.'],
-    ['','تصدير عمودي 4K60','يحتاج دعم libx265؛ يصدر HEVC ‏10-bit بمقاس 2160×3840 و60 FPS.'],
-    ['','720p60 Method','ينسخ المسارات إلى MPEG-TS دون إعادة ترميز؛ لا يغيّر دقة المصدر.']
-   ];
-   modes.forEach((mode,i)=>{const tag=mode.querySelector('.tag');const strong=mode.querySelector('strong');const small=mode.querySelector('small');const row=data[i];if(row){if(tag)tag.textContent=row[0];if(strong)strong.textContent=row[1];if(small)small.textContent=row[2]}});
+   const modeCopy={
+    classic:en?['CLASSIC · SDR / HDR','Preserves the original video and audio streams without re-encoding. Keeps the source resolution, frame rate and original SDR/HDR stream.']:['CLASSIC · SDR / HDR','يحافظ على مساري الفيديو والصوت الأصليين دون إعادة ترميز، مع إبقاء الدقة ومعدل الإطارات ونوع SDR/HDR كما في المصدر.'],
+    '720p60':en?['LITE720p60','Copies video and audio without re-encoding. It does not resize a 4K source to 720p; compatibility depends on the source and target player.']:['LITE720p60','ينسخ الفيديو والصوت دون إعادة ترميز. لا يحوّل مصدر 4K إلى 720p؛ التوافق يعتمد على الملف والمشغّل.'],
+    'hevc-hdr':en?['MAX HDR','For verified HDR HEVC sources. Copies the original video stream without re-encoding; unavailable for SDR videos.']:['MAX HDR','لمقاطع HEVC التي ثبت أنها HDR؛ ينسخ مسار الفيديو الأصلي دون إعادة ترميز، ولا يناسب مقاطع SDR.'],
+    maxquality:en?['Anti Lag · MP4 · up to 1080p60','Creates a smaller H.264 MP4 by re-encoding. This may reduce quality compared with the original stream.']:['Anti Lag · MP4 · حتى 1080p60','ينشئ ملف H.264 أصغر بإعادة الترميز؛ وقد تقل الجودة مقارنة بمسار الفيديو الأصلي.']
+   };
+   modes.forEach(mode=>{
+    const input=mode.querySelector('input[name="mode"]');
+    if(!input)return;
+    const value=input.value,copy=modeCopy[value];
+    if(!copy){mode.hidden=true;return;}
+    mode.hidden=false;
+    const strong=mode.querySelector('strong'),small=mode.querySelector('small');
+    if(strong)strong.textContent=copy[0];
+    if(small)small.textContent=copy[1];
+    let tag=mode.querySelector('.tag');
+    if(value==='classic'){
+     if(!tag){tag=document.createElement('span');tag.className='tag';mode.appendChild(tag)}
+     tag.textContent=en?'RECOMMENDED':'موصى به';
+    }else if(tag){tag.remove()}
+   });
   }
   set('#modeHint',en?'Scan the video first to check which preparation modes are compatible.':'افحص الفيديو أولاً حتى نتحقق من توافق طريقة التجهيز.');
   set('#start',en?'Start preparation':'ابدأ التجهيز');
