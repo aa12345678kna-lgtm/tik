@@ -827,10 +827,29 @@ async function runHandBrakeJob(inputFile){
  if(!turnstileToken)throw Error('أكمل فحص الحماية قبل رفع الفيديو.');
  const form=new FormData();form.append('file',inputFile,inputFile.name);form.append('turnstile_token',turnstileToken);
  setStatus('رفع الفيديو مؤقتاً إلى خادم HandBrake...',5);
- const created=await fetch(HANDBRAKE_API_BASE+'/api/jobs',{method:'POST',body:form,signal:controller.signal});
+ const uploadResult=await new Promise((resolve,reject)=>{
+  const xhr=new XMLHttpRequest();window.handbrakeUploadXhr=xhr;
+  xhr.open('POST',HANDBRAKE_API_BASE+'/api/jobs');
+  xhr.upload.onprogress=event=>{
+   if(event.lengthComputable){
+    const percent=Math.round(event.loaded/event.total*100);
+    setStatus('رفع الفيديو إلى الخادم... '+percent+'%',5+Math.round(percent*.5));
+   }else setStatus('جارٍ رفع الفيديو إلى خادم HandBrake...',5);
+  };
+  xhr.onload=()=>{
+   let data={};try{data=JSON.parse(xhr.responseText||'{}')}catch{}
+   resolve({ok:xhr.status>=200&&xhr.status<300,data});
+  };
+  xhr.onerror=()=>reject(Error('انقطع الاتصال أثناء رفع الفيديو إلى الخادم.'));
+  xhr.onabort=()=>reject(new DOMException('تم إلغاء العملية.','AbortError'));
+  controller.signal.addEventListener('abort',()=>xhr.abort(),{once:true});
+  if(controller.signal.aborted){xhr.abort();return;}
+  xhr.send(form);
+ });
+ window.handbrakeUploadXhr=null;
  turnstileToken='';if(window.turnstile&&turnstileWidgetId!==null)window.turnstile.reset(turnstileWidgetId);
- const createdData=await created.json().catch(()=>({}));
- if(!created.ok)throw Error(createdData.detail||'تعذّر رفع الفيديو إلى خادم المعالجة.');
+ const createdData=uploadResult.data;
+ if(!uploadResult.ok)throw Error(createdData.detail||'تعذّر رفع الفيديو إلى خادم المعالجة.');
  const jobId=createdData.id;const jobToken=createdData.access_token;if(!jobId||!jobToken)throw Error('استجابة الخادم غير مكتملة.');window.handbrakeJobId=jobId;window.handbrakeJobToken=jobToken;
  const started=Date.now();
  while(true){
