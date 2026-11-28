@@ -692,6 +692,7 @@ function modeCompatibility(mode){
  if(!mediaInfoData)return {ok:false,reason:'انتظر اكتمال فحص الفيديو.'};
  const d=mediaInfoData;
  if(!d.videos.length)return {ok:false,reason:'لم يتم العثور على مسار فيديو.'};
+ if(mode==='handbrake')return {ok:true,reason:'تم فحص الفيديو؛ سيُرفع مؤقتاً إلى خادم HandBrake لإعادة الترميز.'};
  const isHevc=/HEVC|H\.265/i.test(d.videoCodec),isH264=/AVC|H\.264/i.test(d.videoCodec);
  if(mode==='classic'){if(!isHevc&&!isH264)return {ok:false,reason:'تعذّر إثبات أن ترميز المصدر HEVC أو H.264؛ لن نخمن نوع الترميز. جرّب ملفاً مدعوماً.'};return {ok:true,reason:isHevc?'تم التعرّف على HEVC من فحص الملف؛ سيُنسخ الفيديو والصوت دون إعادة ترميز مع وسم hvc1 وFast Start.':'تم التعرّف على H.264 من فحص الملف؛ سيُنسخ الفيديو والصوت دون إعادة ترميز دون فرض وسم hvc1، مع Fast Start.'};}
  if(mode==='wudooh-x264'){if(d.hdr.yes)return {ok:false,reason:'وضع WUDOOH x264 الحالي يخرج SDR ‏8-bit؛ لا نريد تحويل HDR دون tone mapping صحيح. اختر حفظ HEVC/HDR.'};return {ok:true,reason:'سيتم فحص libx264 ثم إعادة الترميز إلى 2160×3840 و60 FPS وCRF 1. قد يكون الملف الناتج كبيراً جداً وقد تكون المعالجة بطيئة على الهاتف.'};}
