@@ -159,8 +159,8 @@ export class WudoohEngine {
         "-map", "0:v:0", "-an", "-sn", "-dn",
         "-vf", "showinfo", "-f", "null", "-"
       ]);
-      const report = this.logs.join("\\n");
-      const frameRegex = /showinfo.*?n:\\s*(\\d+).*?pts_time:\\s*(-?[\\d.]+).*?iskey:\\s*(\\d+).*?type:\\s*([IPB?])/gi;
+      const report = this.logs.join("\n");
+      const frameRegex = /showinfo.*?n:\s*(\d+).*?pts_time:\s*(-?[\d.]+).*?iskey:\s*(\d+).*?type:\s*([IPB?])/gi;
       const frames = [];
       let match;
       while ((match = frameRegex.exec(report)) !== null) {
