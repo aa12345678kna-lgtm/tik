@@ -821,6 +821,44 @@ const processingSeconds=(performance.now()-processStarted)/1000;const sourceSeco
 }catch(error){this.lastErrorReport={cancelled:this.cancelRequested===true,message:error?.message||String(error),name:error?.name||'Error',logs:this.logs.slice(-50),processingMode:method,activeMode:this.activeMode||window.IbrahimEnginePlan?.mode||'غير متاح',timestamp:new Date().toISOString()};throw error;}finally{this.busy=false;}}
 }
 const instance=new IbrahimEngine();window.IbrahimEngine=IbrahimEngine;window.IbrahimEngineInstance=instance;return instance;}
+async function fetchHandBrakeWithRetry(url,options,attempts=6){
+ let lastError;
+ for(let attempt=0;attempt<attempts;attempt++){
+  if(options?.signal?.aborted)throw new DOMException('تم إلغاء العملية.','AbortError');
+  try{return await fetch(url,options)}
+  catch(error){
+   lastError=error;
+   if(options?.signal?.aborted)throw new DOMException('تم إلغاء العملية.','AbortError');
+   if(!(error instanceof TypeError)||attempt===attempts-1)throw error;
+   setStatus('انقطع الاتصال مؤقتاً؛ جارٍ إعادة الاتصال بالخادم ('+(attempt+1)+'/'+attempts+')...',Math.min(96,8+Math.round((window.handbrakeLastProgress||0)*.78)));
+   await new Promise((resolve,reject)=>{
+    const timer=setTimeout(resolve,2500);
+    options.signal?.addEventListener('abort',()=>{clearTimeout(timer);reject(new DOMException('تم إلغاء العملية.','AbortError'))},{once:true});
+   });
+  }
+ }
+ throw lastError||Error('تعذّر الاتصال بخادم المعالجة.');
+}
+async function downloadHandBrakeBlobWithRetry(url,options,attempts=5){
+ let lastError;
+ for(let attempt=0;attempt<attempts;attempt++){
+  try{
+   const response=await fetchHandBrakeWithRetry(url,options,2);
+   if(!response.ok)throw Error('اكتملت المعالجة لكن تعذّر تنزيل الملف الناتج (HTTP '+response.status+').');
+   return await response.blob();
+  }catch(error){
+   lastError=error;
+   if(options?.signal?.aborted||error?.name==='AbortError')throw error;
+   if(attempt===attempts-1)throw error;
+   setStatus('اكتملت المعالجة؛ تعذّر استلام الملف مؤقتاً، جارٍ إعادة التنزيل ('+(attempt+1)+'/'+attempts+')...',96);
+   await new Promise((resolve,reject)=>{
+    const timer=setTimeout(resolve,2500);
+    options.signal?.addEventListener('abort',()=>{clearTimeout(timer);reject(new DOMException('تم إلغاء العملية.','AbortError'))},{once:true});
+   });
+  }
+ }
+ throw lastError||Error('تعذّر تنزيل الملف الناتج.');
+}
 async function runHandBrakeJob(inputFile){
  if(!HANDBRAKE_API_BASE)throw Error('خدمة HandBrake لم تُنشر أو لم يُضف رابطها بعد.');
  const controller=new AbortController();window.handbrakeAbortController=controller;window.handbrakeLogs=[];
@@ -879,9 +917,8 @@ async function runHandBrakeJob(inputFile){
   if(state.status==='cancelled')throw new DOMException('تم إلغاء العملية.','AbortError');
   if(state.status==='completed'){
    setStatus('استلام الفيديو الناتج من الخادم...',96);
-   const download=await fetch(HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(jobId)+'/download',{cache:'no-store',headers:{'X-Job-Token':jobToken},signal:controller.signal});
-   if(!download.ok)throw Error('اكتملت المعالجة لكن تعذّر تنزيل الملف الناتج.');
-   const blob=await download.blob();
+   const downloadUrl=HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(jobId)+'/download';
+   const blob=await downloadHandBrakeBlobWithRetry(downloadUrl,{cache:'no-store',headers:{'X-Job-Token':jobToken},signal:controller.signal});
    const report=state.report||{};
    report.capabilities={};report.speedFactor=null;
    report.sourceDurationSeconds=report.sourceDurationSeconds||Number($('preview').duration)||0;
