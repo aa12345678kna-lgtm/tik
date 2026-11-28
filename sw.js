@@ -1,4 +1,4 @@
-const CACHE_NAME = "ibrahim-studio-shell-v17";
+const CACHE_NAME = "ibrahim-studio-shell-v18";
 const APP_SHELL = [
   "./",
   "./docs/",
