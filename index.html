@@ -412,13 +412,112 @@ footer{line-height:2;border-top:1px solid #20242c;padding-top:18px}
 .modes .mode:has(input[value="classic"]){border-color:#31514f}
 .modes .mode:has(input[value="classic"]) .tag{margin-top:10px}
 @media(max-width:620px){.modes{grid-template-columns:1fr}}
+ 
+/* Landing page inspired by the supplied Wudooh page structure; engine untouched */
+.mainNav{display:flex!important;gap:clamp(12px,2vw,23px)!important;margin:0 0 25px!important;padding:0 0 15px!important;border-bottom:1px solid #283342!important}
+.mainNav a{flex:0 0 auto}
+.landingHero{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(22px,5vw,55px);align-items:center;padding:clamp(24px,5vw,58px) 0 28px}
+.landingEyebrow{font-size:10px;letter-spacing:1.7px;color:#ff8aa5;font-weight:850}
+.landingKicker{margin:13px 0 8px;color:#c3ccda;font-size:13px;font-weight:700}
+.landingHero h1{font-size:clamp(34px,6vw,58px);line-height:1.13;letter-spacing:-1.5px;margin:0 0 16px}
+.landingHero h1 span{color:#aebbd0}
+.landingLead{max-width:570px;color:#aeb8c7;font-size:14px;line-height:2;margin:0}
+.landingActions{display:flex;gap:10px;flex-wrap:wrap;margin:23px 0 13px}
+.landingPrimary,.landingSecondary{display:inline-flex;align-items:center;justify-content:center;min-height:45px;padding:11px 17px;border-radius:10px;text-decoration:none;font-weight:800;font-size:13px}
+.landingPrimary{color:#fff;background:linear-gradient(110deg,#f04475,#ff9659);box-shadow:0 8px 22px #f34e7625}
+.landingSecondary{color:#e5eaf2;border:1px solid #344253;background:#111923}
+.landingTrust{font-size:11px;color:#91a0b1;margin:0}
+.landingVisual{position:relative;min-width:0}
+.visualGlow{position:absolute;inset:10% 8%;background:#e94d7a;filter:blur(70px);opacity:.13}
+.visualPanel{position:relative;padding:15px;border:1px solid #344253;border-radius:19px;background:linear-gradient(145deg,#182333,#0b111a);box-shadow:0 25px 65px #0005;transform:rotate(-1deg)}
+.visualTop{display:flex;justify-content:space-between;gap:8px;color:#9eacbe;font-size:10px;font-weight:800;letter-spacing:1px;margin-bottom:13px}
+.liveDot{color:#a6edda;letter-spacing:0}
+.visualScreen{min-height:210px;border-radius:12px;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(circle at 60% 25%,#596d82 0,#25364a 26%,#111b2a 60%,#090e16 100%)}
+.visualScreen:before,.visualScreen:after{content:"";position:absolute;width:150%;height:1px;background:#ffffff16;transform:rotate(-28deg)}
+.visualScreen:after{transform:rotate(28deg)}
+.visualPlay{width:55px;height:55px;border-radius:50%;display:grid;place-items:center;background:#ffffff20;border:1px solid #ffffff55;color:white;z-index:1}
+.visualCaption{position:absolute;bottom:14px;right:15px;color:#fff;font-size:13px;font-weight:800}
+.visualStats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+.visualStats div{background:#0b121c;border:1px solid #293747;border-radius:9px;padding:9px;min-width:0}
+.visualStats b,.visualStats small{display:block}.visualStats b{font-size:15px}.visualStats small{font-size:9px;color:#9eacbd;line-height:1.5;margin-top:3px}
+.landingHighlights{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0 50px}
+.landingHighlights div{padding:15px;border:1px solid #293747;border-radius:12px;background:#101722}
+.landingHighlights b,.landingHighlights span{display:block}.landingHighlights b{font-size:13px}.landingHighlights span{font-size:11px;color:#9eacbd;margin-top:5px;line-height:1.7}
+.landingSection{padding:25px 0 48px;scroll-margin-top:20px}
+.sectionHeading{text-align:center;margin:0 auto 20px;max-width:650px}
+.sectionHeading>span{font-size:11px;color:#ff8aa5;font-weight:800}
+.sectionHeading h2,.landingFeatureBand h2,.landingStudioHeading h2{font-size:clamp(23px,4vw,32px);margin:7px 0 9px}
+.sectionHeading p,.landingStudioHeading p{color:#aeb8c7;font-size:13px;line-height:1.8}
+.landingSteps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.landingSteps article{padding:18px;border:1px solid #293747;border-radius:13px;background:linear-gradient(145deg,#121b27,#0d131c)}
+.landingSteps i{display:inline-grid;place-items:center;width:35px;height:35px;border-radius:10px;background:#39202c;color:#ff9bb0;font-style:normal;font-weight:900;font-size:12px}
+.landingSteps h3{font-size:15px;margin:13px 0 6px}.landingSteps p{font-size:12px;color:#a6b2c2;line-height:1.8;margin:0}
+.landingFeatureBand{display:grid;grid-template-columns:.85fr 1.15fr;gap:22px;align-items:center;padding:25px;border:1px solid #2b394a;border-radius:17px;background:linear-gradient(130deg,#172231,#10151e);margin:0 0 35px}
+.landingFeatureBand p{font-size:13px;line-height:2;color:#aeb8c7}.landingFeatureBand>div:first-child>a{display:inline-block;color:#ff9ab0;text-decoration:none;font-size:13px;font-weight:800;margin-top:7px}
+.featureTiles{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.featureTiles div{padding:13px;border:1px solid #304052;border-radius:11px;background:#0c131d}
+.featureTiles b{display:block;color:#ff91aa;font-size:18px}.featureTiles strong,.featureTiles small{display:block}.featureTiles strong{font-size:12px;margin:6px 0}.featureTiles small{font-size:10px;color:#9eacbd;line-height:1.7}
+.landingLinks{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.landingLinks a{display:block;padding:16px;border:1px solid #2a3848;border-radius:12px;background:#101722;text-decoration:none;color:#eef2f8}
+.landingLinks b,.landingLinks span{display:block}.landingLinks b{font-size:13px}.landingLinks span{font-size:11px;color:#a3afbf;margin-top:7px}
+.landingStudioHeading{text-align:center;padding:20px 0 34px;border-top:1px solid #273342;border-bottom:1px solid #273342;margin-bottom:24px}
+.landingStudioHeading .landingPrimary{margin-top:8px}
+#studio{scroll-margin-top:18px}
+@media(max-width:680px){
+ .landingHero{grid-template-columns:1fr;padding-top:25px;gap:22px}
+ .landingHero h1{font-size:38px}
+ .visualScreen{min-height:165px}
+ .landingHighlights{gap:6px;margin-bottom:30px}
+ .landingHighlights div{padding:10px 8px}
+ .landingHighlights b{font-size:11px}.landingHighlights span{font-size:10px}
+ .landingSteps{grid-template-columns:1fr}
+ .landingFeatureBand{grid-template-columns:1fr;padding:17px}
+ .landingLinks{grid-template-columns:1fr}
+ .mainNav{overflow-x:auto;white-space:nowrap}
+}
+
 </style>
 </head>
 <body><main class="wrap">
 <header class="top"><div class="brand"><img class="brandLogo" src="./assets/ibrahim-al-faris-logo.svg" alt="إبراهيم ال فارس — IBRAHIM AL FARIS" width="360" height="90"><span class="srOnly">استوديو تحسين الفيديو</span></div><div class="topControls"><div class="pill" id="localProcessingLabel">● المعالجة المحلية</div><button class="languageToggle" id="languageToggle" type="button" aria-label="Switch interface language">English</button></div></header>
 
-<nav class="sub mainNav" aria-label="التنقل الرئيسي"><a href="#home">⌂ الرئيسية</a><a href="#studio">▶ تحسين الفيديو</a><a href="./tiktok/">↑ رفع إلى TikTok</a><a href="#account">● الحساب</a><a href="./docs/">? الدليل</a><a href="./support/">✆ الدعم</a></nav>
+<nav class="sub mainNav" aria-label="التنقل الرئيسي"><a href="#home">⌂ الرئيسية</a><a href="#studio">▶ تحسين الفيديو</a><a href="#features">✦ المميزات</a><a href="./tiktok/">↑ رفع إلى TikTok</a><a href="./docs/">? الدليل</a><a href="./support/">✆ الدعم</a></nav>
 <div id="home"></div>
+<section class="landingHero" aria-labelledby="landingTitle">
+ <div class="landingCopy">
+  <div class="landingEyebrow">IBRAHIM AL FARIS · LOCAL VIDEO STUDIO</div>
+  <p class="landingKicker">استوديو تجهيز الفيديو</p>
+  <h1 id="landingTitle">وضوح مقطعك.<br><span>من متصفح جوالك.</span></h1>
+  <p class="landingLead">جهّز مقطعك لتيك توك من المتصفح، مع فحص الدقة والإطارات والألوان قبل بدء المعالجة، وبحسب توافق الملف وطريقة التجهيز.</p>
+  <div class="landingActions"><a class="landingPrimary" href="#studio">ابدأ تجهيز الفيديو ↗</a><a class="landingSecondary" href="./docs/">اقرأ الدليل ←</a></div>
+  <p class="landingTrust">● المعالجة المحلية للطرق المدعومة · لا يحتاج حساباً أو كود تفعيل</p>
+ </div>
+ <div class="landingVisual" aria-label="مميزات الاستوديو">
+  <div class="visualGlow"></div><div class="visualPanel"><div class="visualTop"><span>IBRAHIM STUDIO</span><span class="liveDot">● محلي</span></div><div class="visualScreen"><div class="visualPlay">▶</div><div class="visualCaption">كل لقطة تستاهل</div></div><div class="visualStats"><div><b>4K</b><small>بحسب المصدر والوضع</small></div><div><b>60 FPS</b><small>بحسب توافق الملف</small></div><div><b>MP4</b><small>ملف جاهز للتنزيل</small></div></div></div>
+ </div>
+</section>
+<section class="landingHighlights" aria-label="مميزات سريعة">
+ <div><b>على جهازك</b><span>معالجة محلية للطرق المدعومة</span></div>
+ <div><b>فحص أولاً</b><span>تفاصيل المصدر والتوافق قبل البدء</span></div>
+ <div><b>تقرير حقيقي</b><span>سجل التنفيذ ونتيجة الملف الناتج</span></div>
+</section>
+<section class="landingSection" id="features">
+ <div class="sectionHeading"><span>من المقطع إلى النسخة الجاهزة</span><h2>ثلاث خطوات. والباقي على الاستوديو.</h2></div>
+ <div class="landingSteps">
+  <article><i>01</i><h3>اختر مقطعك</h3><p>اختر الفيديو من جهازك، وشاهد معاينته ومعلوماته الأساسية.</p></article>
+  <article><i>02</i><h3>نفحص التوافق أولاً</h3><p>نعرض الدقة ومعدل الإطارات والترميز والألوان، ونوضح الطرق المناسبة للمصدر.</p></article>
+  <article><i>03</i><h3>احفظ نسختك</h3><p>تابع التقدم والسجل، ثم افحص الناتج ونزّله إلى جهازك.</p></article>
+ </div>
+</section>
+<section class="landingFeatureBand">
+ <div><span class="landingEyebrow">MADE FOR YOUR NEXT CLIP</span><h2>لقطتك هي الأساس.</h2><p>ابدأ بوضع CLASSIC لنسخ مسار الفيديو والصوت المتوافق دون إعادة ترميز. استخدم أوضاع إعادة الترميز فقط عندما تحتاج تغييراً فعلياً، لأنها قد تؤثر في الجودة.</p><a href="#studio">افتح الاستوديو ↗</a></div>
+ <div class="featureTiles"><div><b>◈</b><strong>حافظ على المصدر</strong><small>نسخ دون إعادة ترميز في وضع CLASSIC للملفات المدعومة.</small></div><div><b>▣</b><strong>تفاصيل قبل الإنتاج</strong><small>اعرف خصائص المقطع وحالة توافقه قبل البدء.</small></div><div><b>⇩</b><strong>نسختك عندك</strong><small>نزّل الملف الناتج وتحقق من تقرير التنفيذ الفعلي.</small></div><div><b>⌘</b><strong>خصوصية واضحة</strong><small>الفحص والمعالجة المحلية لا يرفعان ملفك إلى خادم.</small></div></div>
+</section>
+<section class="landingSection landingHelp">
+ <div class="sectionHeading"><span>معك إلى آخر خطوة</span><h2>حفظت المقطع؟ كمّلها صح.</h2><p>روابط واضحة للحفظ والرفع، ودليل يساعدك إذا احتجت.</p></div>
+ <div class="landingLinks"><a href="#studio"><b>▶ تحسين الفيديو</b><span>اختر طريقة التجهيز ونزّل الفيديو ↗</span></a><a href="./tiktok/"><b>↑ رفع إلى TikTok</b><span>افتح صفحة الرفع وخطوات الجوال ↗</span></a><a href="./docs/"><b>? الدليل</b><span>تعرف على طرق التجهيز والتوافق ↗</span></a><a href="./support/"><b>✆ الدعم</b><span>مساعدة عند مواجهة مشكلة ↗</span></a></div>
+</section>
+<div class="landingStudioHeading"><span class="landingEyebrow">IBRAHIM STUDIO · LOCAL PROCESSING</span><h2>جاهز لتجربة مقطعك؟</h2><p>اختر ملفاً قصيراً وابدأ من جهازك.</p><a class="landingPrimary" href="#studio">افتح الاستوديو ↓</a></div>
 <div class="heroTitle"><div class="heroEyebrow">IBRAHIM AL FARIS · LOCAL VIDEO LAB</div><h2>تحسين الفيديو</h2><p class="intro">اختر مقطعك، حدّد الطريقة المناسبة، ثم نزّل الملف الجاهز.</p><div class="localNotice">✓ المعالجة على جهازك · لا يُرفع الفيديو إلى أي خادم في طرق التجهيز المحلية</div></div>
 <div class="steps"><div class="step"><b>1</b> الفيديو</div><div class="step"><b>2</b> الطريقة</div><div class="step"><b>3</b> التنزيل</div></div>
 
