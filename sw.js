@@ -1,5 +1,4 @@
-const CACHE_NAME = "ibrahim-studio-shell-v15";
-const ENGINE_CACHE_NAME = "ibrahim-ffmpeg-assets-v1";
+const CACHE_NAME = "ibrahim-studio-shell-v16";
 const APP_SHELL = [
   "./",
   "./docs/",
@@ -26,7 +25,7 @@ self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys()
       .then(keys => Promise.all(
-        keys.filter(key => key !== CACHE_NAME && key !== ENGINE_CACHE_NAME).map(key => caches.delete(key))
+        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
       ))
       .then(() => self.clients.claim())
   );
