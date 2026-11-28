@@ -118,8 +118,14 @@ async def execute_job(job_id: str) -> None:
                 for line in parts:
                     append_log(job, line)
                     match = re.search(r"(\d+(?:\.\d+)?)\s*%", line)
+                    json_progress = re.search(r'"Progress"\s*:\s*(\d+(?:\.\d+)?)', line)
                     if match:
                         job["progress"] = min(99, max(1, int(float(match.group(1)))))
+                    elif json_progress:
+                        value = float(json_progress.group(1))
+                        if 0 <= value <= 1:
+                            value *= 100
+                        job["progress"] = min(99, max(1, int(value)))
             if buffer:
                 append_log(job, buffer)
             code = await proc.wait()
