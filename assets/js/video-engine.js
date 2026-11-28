@@ -86,31 +86,30 @@ export class VideoEngine {
   }
 
   async _assetURL(url, mime) {
-    if (!this.options.cacheAssets || !("caches" in globalThis)) {
-      const response = await fetch(url, { mode: "cors" });
-      if (!response.ok) throw new Error(`تعذّر تحميل ملف المحرك: HTTP ${response.status}`);
-      const blob = await response.blob();
-      const objectURL = URL.createObjectURL(blob.type ? blob : new Blob([await blob.arrayBuffer()], { type: mime }));
-      this.objectURLs.push(objectURL);
-      return objectURL;
+    let blob = null;
+    let cache = null;
+
+    if (this.options.cacheAssets && "caches" in globalThis) {
+      try {
+        cache = await caches.open(CACHE_NAME);
+        const cached = await cache.match(url);
+        if (cached) blob = await cached.blob();
+      } catch (error) {
+        console.warn("FFmpeg cache unavailable; fetching the asset directly.", error);
+      }
     }
 
-    let blob;
-    try {
-      const cache = await caches.open(CACHE_NAME);
-      const cached = await cache.match(url);
-      if (cached) blob = await cached.blob();
-      if (!blob) {
-        const response = await fetch(url, { mode: "cors", cache: "force-cache" });
-        if (!response.ok) throw new Error(`تعذّر تحميل ملف المحرك: HTTP ${response.status}`);
-        const copy = response.clone();
-        blob = await response.blob();
-        try { await cache.put(url, copy); } catch (error) { console.warn("FFmpeg cache write skipped", error); }
+    if (!blob) {
+      const response = await fetch(url, { mode: "cors", cache: "force-cache" });
+      if (!response.ok) throw new Error(`تعذّر تحميل ملف المحرك: HTTP ${response.status}`);
+      const copy = response.clone();
+      blob = await response.blob();
+      if (cache) {
+        try { await cache.put(url, copy); }
+        catch (error) { console.warn("FFmpeg cache write skipped.", error); }
       }
-    } catch (error) {
-      if (error instanceof TypeError) throw error;
-      throw new Error(`تعذّر تجهيز ملفات FFmpeg: ${error.message}`);
     }
+
     if (!blob.type) blob = new Blob([await blob.arrayBuffer()], { type: mime });
     const objectURL = URL.createObjectURL(blob);
     this.objectURLs.push(objectURL);
