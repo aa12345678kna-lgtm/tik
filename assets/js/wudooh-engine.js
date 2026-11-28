@@ -138,6 +138,73 @@ export class WudoohEngine {
     }
   }
 
+  async inspectAdvanced(file) {
+    if (!(file instanceof Blob)) throw new TypeError("اختر ملف فيديو أولاً.");
+    if (this.busy) throw new Error("المحرك مشغول حالياً.");
+    this.busy = true;
+    this.logs = [];
+    let wrote = false;
+    let active = null;
+    try {
+      if (!this.loaded) await this.load(true);
+      active = this.ffmpeg;
+      if (!active) throw new Error("تعذّر تحميل محرك التحليل المتقدم.");
+      this._log("بدء تحليل الإطارات: GOP / CFR / I-P-B...");
+      this._log("تنبيه: هذا التحليل يفك ترميز الفيديو محلياً للقراءة فقط ولا ينشئ ملفاً جديداً.");
+      const bytes = await fetchFile(file);
+      await active.writeFile("advanced_input", bytes);
+      wrote = true;
+      await active.exec([
+        "-hide_banner", "-i", "advanced_input",
+        "-map", "0:v:0", "-an", "-sn", "-dn",
+        "-vf", "showinfo", "-f", "null", "-"
+      ]);
+      const report = this.logs.join("\\n");
+      const frameRegex = /showinfo.*?n:\\s*(\\d+).*?pts_time:\\s*(-?[\\d.]+).*?iskey:\\s*(\\d+).*?type:\\s*([IPB?])/gi;
+      const frames = [];
+      let match;
+      while ((match = frameRegex.exec(report)) !== null) {
+        frames.push({ n: Number(match[1]), time: Number(match[2]), key: match[3] === "1", type: match[4].toUpperCase() });
+      }
+      if (!frames.length) {
+        throw new Error("لم يستطع إصدار FFmpeg استخراج بيانات showinfo. انسخ السجل وأرسله للفحص.");
+      }
+      const deltas = [];
+      for (let i = 1; i < frames.length; i++) {
+        const delta = frames[i].time - frames[i - 1].time;
+        if (Number.isFinite(delta) && delta > 0) deltas.push(delta);
+      }
+      const sorted = [...deltas].sort((a,b)=>a-b);
+      const median = sorted.length ? sorted[Math.floor(sorted.length / 2)] : 0;
+      const tolerance = Math.max(0.0005, median * 0.02);
+      const cfr = !!median && deltas.every(value => Math.abs(value - median) <= tolerance);
+      const keyframes = frames.filter(frame => frame.key);
+      const gops = [];
+      for (let i = 1; i < keyframes.length; i++) gops.push(keyframes[i].n - keyframes[i - 1].n);
+      const types = frames.reduce((acc, frame) => { acc[frame.type] = (acc[frame.type] || 0) + 1; return acc; }, {});
+      const averageGop = gops.length ? gops.reduce((a,b)=>a+b,0) / gops.length : 0;
+      const fps = median ? 1 / median : 0;
+      const result = {
+        analyzedFrames: frames.length,
+        keyframeCount: keyframes.length,
+        gopAverage: averageGop ? averageGop.toFixed(1) + " إطار" : "غير كافٍ",
+        gopMin: gops.length ? Math.min(...gops) + " إطار" : "غير متاح",
+        gopMax: gops.length ? Math.max(...gops) + " إطار" : "غير متاح",
+        cfr: cfr ? "ثابت CFR" : "متغير VFR أو توقيت غير منتظم",
+        measuredFps: fps ? fps.toFixed(3) + " FPS" : "غير متاح",
+        iFrames: types.I || 0,
+        pFrames: types.P || 0,
+        bFrames: types.B || 0,
+        keyframeIntervals: gops
+      };
+      this._log("التحليل اكتمل: " + frames.length + " إطار، " + keyframes.length + " إطار مفتاحي، " + result.cfr + ".");
+      return result;
+    } finally {
+      if (active && wrote) { try { await active.deleteFile("advanced_input"); } catch {} }
+      this.busy = false;
+    }
+  }
+
   async _run(inputFile, args, onProgress) {
     if (this.busy) throw new Error("المحرك مشغول حالياً.");
     if (!(inputFile instanceof Blob)) throw new TypeError("ملف الفيديو غير صالح.");
