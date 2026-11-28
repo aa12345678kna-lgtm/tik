@@ -854,8 +854,23 @@ async function runHandBrakeJob(inputFile){
  const started=Date.now();
  while(true){
   if(controller.signal.aborted)throw new DOMException('تم إلغاء العملية.','AbortError');
-  const response=await fetch(HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(jobId),{cache:'no-store',headers:{'X-Job-Token':jobToken},signal:controller.signal});
+  let response;
+  for(let attempt=0;attempt<20;attempt++){
+   try{
+    response=await fetch(HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(jobId),{cache:'no-store',headers:{'X-Job-Token':jobToken},signal:controller.signal});
+    break;
+   }catch(error){
+    if(controller.signal.aborted)throw new DOMException('تم إلغاء العملية.','AbortError');
+    if(!(error instanceof TypeError)||attempt===19)throw Error('انقطع الاتصال بخادم المعالجة بعد عدة محاولات. قد تكون الخدمة أعادت التشغيل؛ أعد المحاولة بعد التأكد من حالة الخادم.');
+    setStatus('انقطع الاتصال مؤقتاً؛ جارٍ إعادة الاتصال بالخادم ('+(attempt+1)+'/20)...',Math.min(92,8+Math.round((window.handbrakeLastProgress||0)*.78)));
+    await new Promise((resolve,reject)=>{
+     const timer=setTimeout(resolve,3000);
+     controller.signal.addEventListener('abort',()=>{clearTimeout(timer);reject(new DOMException('تم إلغاء العملية.','AbortError'))},{once:true});
+    });
+   }
+  }
   const state=await response.json().catch(()=>({}));
+  window.handbrakeLastProgress=state.progress||window.handbrakeLastProgress||0;
   if(!response.ok)throw Error(state.detail||'تعذّر قراءة حالة المعالجة.');
   window.handbrakeLogs=state.logs||[];
   const labels={queued:'الفيديو في قائمة الانتظار على الخادم...',processing:'HandBrake يعيد ترميز الفيديو على الخادم...',completed:'اكتمل الترميز؛ جارٍ استلام الفيديو...',failed:'فشلت معالجة HandBrake.',cancelled:'تم إلغاء المعالجة.'};
