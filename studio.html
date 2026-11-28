@@ -107,7 +107,7 @@ $("inspectBtn").addEventListener("click",async()=>{
 });
 document.querySelectorAll('input[name="mode"]').forEach(el=>el.addEventListener("change",()=>{$("compressOptions").hidden=document.querySelector('input[name="mode"]:checked').value!=="COMPRESS";}));
 $("startBtn").addEventListener("click",async()=>{
- if(!file||busy)return; busy=true;resetResult();$("startBtn").disabled=true;$("cancelBtn").hidden=false;$("progressCard").hidden=false;$("log").textContent="";setProgress(0);$("step3").classList.add("active");
+ if(!file||busy)return; busy=true;resetResult();$("startBtn").disabled=true;$("cancelBtn").disabled=false;$("cancelBtn").hidden=false;$("progressCard").hidden=false;$("log").textContent="";setProgress(0);$("step3").classList.add("active");
  const mode=document.querySelector('input[name="mode"]:checked').value;
  try{
   const output=await createEngine().process(file,{mode,crf:Number($("crf").value),preset:$("preset").value,onProgress:(p)=>setProgress(p*100)});
