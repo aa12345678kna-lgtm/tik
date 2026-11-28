@@ -1,4 +1,4 @@
-const CACHE_NAME = "ibrahim-studio-shell-v14";
+const CACHE_NAME = "ibrahim-studio-shell-v15";
 const ENGINE_CACHE_NAME = "ibrahim-ffmpeg-assets-v1";
 const APP_SHELL = [
   "./",
@@ -8,6 +8,7 @@ const APP_SHELL = [
   "./assets/css/site.css",
   "./assets/js/runtime-capabilities.js",
   "./assets/js/engine-loader.js",
+  "./assets/js/wudooh-engine.js",
   "./manifest.webmanifest",
   "./favicon.svg",
   "./assets/ibrahim-al-faris-logo.svg"
