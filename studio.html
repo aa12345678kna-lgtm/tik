@@ -76,8 +76,11 @@ function stats(id,rows){const box=$(id);box.replaceChildren();for(const [k,v] of
 function revokeResult(){if(result?.url)URL.revokeObjectURL(result.url);result=null;$("result").style.display="none";$("downloadBtn").removeAttribute("href");}
 function setStep(n){for(let i=1;i<=3;i++){$("step"+i).classList.toggle("active",i===n);$("step"+i).classList.toggle("done",i<n);}}
 function chooseFile(f){if(!f||busy)return;file=f;metadata=null;revokeResult();$("fileName").textContent=f.name;$("fileMeta").textContent=fmt(f.size);$("uploadSection").classList.add("hidden");$("fileSection").classList.remove("hidden");$("modeSection").classList.add("hidden");$("metadata").classList.add("hidden");if(previewURL)URL.revokeObjectURL(previewURL);previewURL=URL.createObjectURL(f);$("preview").src=previewURL;$("preview").classList.remove("hidden");$("log").textContent="تم اختيار الملف: "+f.name;setStep(2);}
-$("videoInput").addEventListener("change",e=>chooseFile(e.target.files?.[0]));\nfunction openVideoPicker(){if(!busy){const picker=$("videoInput");picker.value="";picker.click();}}
-$("changeBtn").addEventListener("click",openVideoPicker);\n$("uploadBox").addEventListener("click",openVideoPicker);\n$("uploadBox").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openVideoPicker();}});
+$("videoInput").addEventListener("change",e=>chooseFile(e.target.files?.[0]));
+function openVideoPicker(){if(!busy){const picker=$("videoInput");picker.value="";picker.click();}}
+$("changeBtn").addEventListener("click",openVideoPicker);
+$("uploadBox").addEventListener("click",openVideoPicker);
+$("uploadBox").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openVideoPicker();}});
 $("uploadBox").addEventListener("dragover",e=>{e.preventDefault();$("uploadBox").classList.add("drag");});
 $("uploadBox").addEventListener("dragleave",()=> $("uploadBox").classList.remove("drag"));
 $("uploadBox").addEventListener("drop",e=>{e.preventDefault();$("uploadBox").classList.remove("drag");chooseFile(e.dataTransfer?.files?.[0]);});
