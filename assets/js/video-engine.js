@@ -275,6 +275,15 @@ export class VideoEngine {
       this.onStatus("كتابة الفيديو في ذاكرة المتصفح...");
       await ffmpeg.writeFile(input, new Uint8Array(await file.arrayBuffer()));
       if (this.cancelled) throw new Error("تم إلغاء المعالجة.");
+      if (mode === "COMPRESS") {
+        const requestedEncoder = options.codec === "libx265" ? "libx265" : "libx264";
+        const logStart = this.logs.length;
+        await ffmpeg.exec(["-hide_banner", "-encoders"]);
+        const encoderList = this.logs.slice(logStart).join("\\n");
+        if (!encoderList.includes(requestedEncoder)) {
+          throw new Error(`ترميز ${requestedEncoder} غير متوفر في نسخة FFmpeg الحالية. اختر H.264 أو استخدم نسخة Core مبنية مع هذا الترميز.`);
+        }
+      }
       const args = this._buildArgs(input, output, mode, options, options.metadata);
       this.onStatus(mode === "COMPRESS" ? "إعادة ترميز الفيديو..." : "نسخ مسارات الفيديو والصوت...");
       const exitCode = await ffmpeg.exec(args);
