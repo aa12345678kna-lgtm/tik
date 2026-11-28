@@ -293,7 +293,7 @@ footer{font-size:10px;color:#778293;padding-top:15px}
 .mode .tag{position:absolute;top:-10px;inset-inline-end:18px;display:inline-block;color:#fff;background:#e05a6d;border-radius:999px;padding:3px 10px;font-size:10px;font-weight:700}
 .mode strong{display:block;margin:8px 0 0;padding-inline-start:36px;font-size:16px;font-weight:800;letter-spacing:.02em;line-height:1.4}
 .mode small{display:block;color:#a6a8b1;line-height:1.65;font-size:12px;padding-inline-end:2px}
-.mode:has(input[value="handbrake"]){display:none}
+
 @media(max-width:680px){.modes{grid-template-columns:1fr;gap:13px}.mode{min-height:132px}}
 
 
@@ -545,8 +545,9 @@ footer{line-height:2;border-top:1px solid #20242c;padding-top:18px}
 <label class="mode"><input type="radio" name="mode" value="classic" checked><strong>CLASSIC <span class="modeSuffix">SDR · HDR</span></strong><small>يحافظ على مساري الفيديو والصوت الأصليين دون إعادة ترميز، مع تهيئة MP4 وFast Start.</small><span class="tag">موصى به</span></label>
 <label class="mode"><input type="radio" name="mode" value="hevc-hdr"><strong>MAX HDR</strong><small>نسخ مسار الفيديو الأصلي لمقاطع HEVC/HDR دون إعادة ترميز. يتطلب مساراً صوتياً متوافقاً.</small></label>
 <label class="mode"><input type="radio" name="mode" value="maxquality"><strong>Anti Lag <span class="modeSuffix">MP4 · حتى 1080p60</span></strong><small>يعيد ترميز الفيديو إلى H.264 بدقة تصل إلى 1080p لتقليل حجم الملف؛ قد تتغير الجودة.</small></label>
-<label class="mode modeUnavailable" aria-disabled="true"><input type="radio" name="mode" value="handbrake" disabled><strong>HandBrake</strong><small>غير مفعّل حالياً: يحتاج خادماً خاصاً لمعالجة الفيديو، وهذا الموقع يعالج الملفات محلياً.</small></label>
+<label class="mode"><input type="radio" name="mode" value="handbrake"><strong>HandBrake · الخادم</strong><small>إعادة ترميز على خادم خارجي. عند اختيار هذا الوضع سيرتفع الفيديو مؤقتاً إلى الخادم.</small></label>
 </div>
+<div id="handbrakeSecurity" class="note hidden"><strong>فحص الحماية قبل رفع الفيديو</strong><div id="turnstileWidget" style="margin-top:10px"></div><span id="turnstileMessage">أكمل التحقق لتفعيل الرفع إلى الخادم.</span></div>
 <div id="modeHint" class="modeHint">افحص الفيديو أولاً حتى نتحقق من توافق طريقة التجهيز.</div><div class="actions"><button id="start" class="primary" disabled>ابدأ التجهيز</button><button id="cancel" class="danger hidden">إلغاء</button></div>
 <div id="progressWrap" class="hidden"><div class="progress"><div class="bar" id="bar"></div></div><div class="status" id="status">جارٍ التحضير...</div></div><div id="processIssue" class="processIssue hidden" role="status"><strong id="processIssueTitle"></strong><p id="processIssueMessage"></p><details><summary>سجل المعالجة الأخير</summary><pre id="ffmpegLog"></pre></details><div class="actions"><button id="copyFfmpegLog" class="quiet" type="button">نسخ السجل</button></div></div>
 </section>
@@ -562,7 +563,11 @@ footer{line-height:2;border-top:1px solid #20242c;padding-top:18px}
 <section class="card coverCard hidden" id="coverTools"><h3>صورة مصغّرة اختيارية</h3><p class="sub">اختر إطاراً من الفيديو واحفظه كصورة JPG منفصلة؛ لن تتغير بيانات الفيديو.</p><div class="actions coverChoices"><button id="thumbNo" class="quiet" type="button">لا، شكراً</button><button id="thumbYes" class="quiet" type="button">نعم، اختر إطاراً</button></div><div id="thumbPanel" class="hidden"><div class="coverBox"><canvas id="canvas" width="640" height="360"></canvas><div><div id="seekTime" class="status">اختر إطاراً من الفيديو</div><input id="seek" class="range" type="range" min="0" max="0" step="0.05" value="0"><div class="actions"><button id="prevFrame" class="quiet" type="button">− 0.05 ثانية</button><button id="nextFrame" class="quiet" type="button">+ 0.05 ثانية</button><button id="saveCover" class="primary" type="button" disabled>تنزيل JPG</button></div></div></div></div></section>
 <footer id="account"><strong>IBRAHIM AL FARIS · LOCAL VIDEO LAB</strong><br>جهّز مقاطعك لتيك توك من جهازك · © 2026</footer>
 </main>
+<script async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=turnstileReady"></script>
 <script>
+const TURNSTILE_SITE_KEY="0x4AAAAAAGW9QWK1akwI1y-7";
+let turnstileWidgetId=null,turnstileToken="";
+window.turnstileReady=()=>{if(window.turnstile&&turnstileWidgetId===null){turnstileWidgetId=window.turnstile.render("#turnstileWidget",{sitekey:TURNSTILE_SITE_KEY,callback:t=>{turnstileToken=t;document.getElementById("turnstileMessage").textContent="تم التحقق؛ يمكنك بدء الرفع.";}, "expired-callback":()=>{turnstileToken="";document.getElementById("turnstileMessage").textContent="انتهت صلاحية التحقق؛ أعد الفحص.";},"error-callback":()=>{turnstileToken="";document.getElementById("turnstileMessage").textContent="تعذّر تحميل فحص الحماية."}});}};
 const $=id=>document.getElementById(id);let file=null,objectUrl=null,outputUrl=null,ffmpeg=null,working=false,videoDuration=0,mediaInfoData=null,scanGeneration=0,mediaInfoFactoryPromise=null;
 const ENGINE_PLAN_MODULE_URL="./assets/js/engine-loader.js?v=20261128-public-labels-1";
 const HANDBRAKE_API_BASE=(window.IBRAHIM_HANDBRAKE_API||'').replace(/\/+$/,'');
@@ -816,16 +821,18 @@ const instance=new IbrahimEngine();window.IbrahimEngine=IbrahimEngine;window.Ibr
 async function runHandBrakeJob(inputFile){
  if(!HANDBRAKE_API_BASE)throw Error('خدمة HandBrake لم تُنشر أو لم يُضف رابطها بعد.');
  const controller=new AbortController();window.handbrakeAbortController=controller;window.handbrakeLogs=[];
- const form=new FormData();form.append('file',inputFile,inputFile.name);
+ if(!turnstileToken)throw Error('أكمل فحص الحماية قبل رفع الفيديو.');
+ const form=new FormData();form.append('file',inputFile,inputFile.name);form.append('turnstile_token',turnstileToken);
  setStatus('رفع الفيديو مؤقتاً إلى خادم HandBrake...',5);
  const created=await fetch(HANDBRAKE_API_BASE+'/api/jobs',{method:'POST',body:form,signal:controller.signal});
+ turnstileToken='';if(window.turnstile&&turnstileWidgetId!==null)window.turnstile.reset(turnstileWidgetId);
  const createdData=await created.json().catch(()=>({}));
  if(!created.ok)throw Error(createdData.detail||'تعذّر رفع الفيديو إلى خادم المعالجة.');
- const jobId=createdData.id;window.handbrakeJobId=jobId;
+ const jobId=createdData.id;const jobToken=createdData.access_token;if(!jobId||!jobToken)throw Error('استجابة الخادم غير مكتملة.');window.handbrakeJobId=jobId;window.handbrakeJobToken=jobToken;
  const started=Date.now();
  while(true){
   if(controller.signal.aborted)throw new DOMException('تم إلغاء العملية.','AbortError');
-  const response=await fetch(HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(jobId),{cache:'no-store',signal:controller.signal});
+  const response=await fetch(HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(jobId),{cache:'no-store',headers:{'X-Job-Token':jobToken},signal:controller.signal});
   const state=await response.json().catch(()=>({}));
   if(!response.ok)throw Error(state.detail||'تعذّر قراءة حالة المعالجة.');
   window.handbrakeLogs=state.logs||[];
@@ -835,13 +842,13 @@ async function runHandBrakeJob(inputFile){
   if(state.status==='cancelled')throw new DOMException('تم إلغاء العملية.','AbortError');
   if(state.status==='completed'){
    setStatus('استلام الفيديو الناتج من الخادم...',96);
-   const download=await fetch(HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(jobId)+'/download',{cache:'no-store',signal:controller.signal});
+   const download=await fetch(HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(jobId)+'/download',{cache:'no-store',headers:{'X-Job-Token':jobToken},signal:controller.signal});
    if(!download.ok)throw Error('اكتملت المعالجة لكن تعذّر تنزيل الملف الناتج.');
    const blob=await download.blob();
    const report=state.report||{};
    report.capabilities={};report.speedFactor=null;
    report.sourceDurationSeconds=report.sourceDurationSeconds||Number($('preview').duration)||0;
-   window.handbrakeJobId=null;
+   window.handbrakeJobId=null;window.handbrakeJobToken=null;
    const sourceInfo={width:$('preview').videoWidth,height:$('preview').videoHeight,duration:$('preview').duration,size:inputFile.size,name:inputFile.name};
    await finish(blob,inputFile.name.replace(/\.[^.]+$/,'')+'_handbrake.mp4',sourceInfo,'handbrake',report);
    return;
@@ -854,7 +861,9 @@ $('start').onclick=async()=>{
  if(!file||working)return;
  $('processIssue').classList.add('hidden');$('cancel').disabled=false;$('cancel').textContent='إلغاء';
  const selected=document.querySelector('input[name="mode"]:checked').value;
+ $('handbrakeSecurity').classList.toggle('hidden',selected!=='handbrake');
  if(selected==='handbrake'){
+  if(!turnstileToken){alert('أكمل فحص الحماية أولاً.');return;}
   if(!HANDBRAKE_API_BASE){alert('خادم HandBrake لم يُنشر بعد.');return;}
   const compatibility=modeCompatibility(selected);if(!compatibility.ok){alert(compatibility.reason);return;}
   working=true;$('start').disabled=true;$('cancel').classList.remove('hidden');$('progressWrap').classList.remove('hidden');$('result').classList.add('hidden');
@@ -948,7 +957,8 @@ $('again').onclick=()=>{$('result').classList.add('hidden');$('file').value='';$
     classic:en?['CLASSIC · SDR / HDR','Preserves the original video and audio streams without re-encoding. Keeps the source resolution, frame rate and original SDR/HDR stream.']:['CLASSIC · SDR / HDR','يحافظ على مساري الفيديو والصوت الأصليين دون إعادة ترميز، مع إبقاء الدقة ومعدل الإطارات ونوع SDR/HDR كما في المصدر.'],
     '720p60':en?['LITE720p60','Copies video and audio without re-encoding. It does not resize a 4K source to 720p; compatibility depends on the source and target player.']:['LITE720p60','ينسخ الفيديو والصوت دون إعادة ترميز. لا يحوّل مصدر 4K إلى 720p؛ التوافق يعتمد على الملف والمشغّل.'],
     'hevc-hdr':en?['MAX HDR','For verified HDR HEVC sources. Copies the original video stream without re-encoding; unavailable for SDR videos.']:['MAX HDR','لمقاطع HEVC التي ثبت أنها HDR؛ ينسخ مسار الفيديو الأصلي دون إعادة ترميز، ولا يناسب مقاطع SDR.'],
-    maxquality:en?['Anti Lag · MP4 · up to 1080p60','Creates a smaller H.264 MP4 by re-encoding. This may reduce quality compared with the original stream.']:['Anti Lag · MP4 · حتى 1080p60','ينشئ ملف H.264 أصغر بإعادة الترميز؛ وقد تقل الجودة مقارنة بمسار الفيديو الأصلي.']
+    maxquality:en?['Anti Lag · MP4 · up to 1080p60','Creates a smaller H.264 MP4 by re-encoding. This may reduce quality compared with the original stream.']:['Anti Lag · MP4 · حتى 1080p60','ينشئ ملف H.264 أصغر بإعادة الترميز؛ وقد تقل الجودة مقارنة بمسار الفيديو الأصلي.'],
+    handbrake:en?['HandBrake · Server','Uploads your video temporarily to the server for re-encoding.']:['HandBrake · الخادم','يرفع الفيديو مؤقتاً إلى الخادم لإعادة الترميز.']
    };
    modes.forEach(mode=>{
     const input=mode.querySelector('input[name="mode"]');
