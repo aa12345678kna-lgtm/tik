@@ -20,9 +20,17 @@ export class WudoohEngine {
   }
 
   _log(message) {
-    this.logs.push(String(message));
+    const line = String(message);
+    if (this._collectAdvancedFrames) {
+      const frame = line.match(/showinfo.*?n:\s*(\d+).*?pts_time:\s*(-?[\d.]+).*?iskey:\s*(\d+).*?type:\s*([IPB?])/i);
+      if (frame) this._advancedFrames.push({
+        n: Number(frame[1]), time: Number(frame[2]),
+        key: frame[3] === "1", type: frame[4].toUpperCase()
+      });
+    }
+    this.logs.push(line);
     if (this.logs.length > 500) this.logs.shift();
-    try { this.onLog?.(String(message)); } catch {}
+    try { this.onLog?.(line); } catch {}
   }
 
   async load(multiThread = true) {
@@ -151,6 +159,8 @@ export class WudoohEngine {
       if (!active) throw new Error("تعذّر تحميل محرك التحليل المتقدم.");
       this._log("بدء تحليل الإطارات: GOP / CFR / I-P-B...");
       this._log("تنبيه: هذا التحليل يفك ترميز الفيديو محلياً للقراءة فقط ولا ينشئ ملفاً جديداً.");
+      this._advancedFrames = [];
+      this._collectAdvancedFrames = true;
       const bytes = await fetchFile(file);
       await active.writeFile("advanced_input", bytes);
       wrote = true;
@@ -159,13 +169,7 @@ export class WudoohEngine {
         "-map", "0:v:0", "-an", "-sn", "-dn",
         "-vf", "showinfo", "-f", "null", "-"
       ]);
-      const report = this.logs.join("\n");
-      const frameRegex = /showinfo.*?n:\s*(\d+).*?pts_time:\s*(-?[\d.]+).*?iskey:\s*(\d+).*?type:\s*([IPB?])/gi;
-      const frames = [];
-      let match;
-      while ((match = frameRegex.exec(report)) !== null) {
-        frames.push({ n: Number(match[1]), time: Number(match[2]), key: match[3] === "1", type: match[4].toUpperCase() });
-      }
+      const frames = [...(this._advancedFrames || [])];
       if (!frames.length) {
         throw new Error("لم يستطع إصدار FFmpeg استخراج بيانات showinfo. انسخ السجل وأرسله للفحص.");
       }
@@ -201,6 +205,8 @@ export class WudoohEngine {
       return result;
     } finally {
       if (active && wrote) { try { await active.deleteFile("advanced_input"); } catch {} }
+      this._collectAdvancedFrames = false;
+      this._advancedFrames = [];
       this.busy = false;
     }
   }
