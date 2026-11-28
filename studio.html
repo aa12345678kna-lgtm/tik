@@ -3,151 +3,65 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0a0b0f">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<meta name="theme-color" content="#101114">
 <title>IBRAHIM AL FARIS — استوديو تجهيز الفيديو</title>
 <style>
-:root{color-scheme:dark;--bg:#0a0b0f;--card:#12141a;--border:#252830;--text:#f2f2f5;--muted:#9b9eaa;--pink:#ff4d6d;--orange:#ff8c5a;--green:#2ecc71}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.6;padding:16px;min-height:100vh}.container{max-width:820px;margin:0 auto}
-header{margin:0 0 25px;padding:8px 0 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:11px;color:#ff8ba4;letter-spacing:1.4px;font-weight:800}.brand strong{display:block;color:var(--text);font-size:17px;letter-spacing:0}.pill{font-size:11px;color:#9fe9d7;background:#10211e;border:1px solid #31534c;border-radius:99px;padding:6px 10px;white-space:nowrap}
-h1{font-size:1.9rem;margin:0 0 6px}.subtitle{color:var(--muted);font-size:.95rem;margin:0 0 17px}.steps{display:flex;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:9px;margin-bottom:20px}.step{flex:1;text-align:center;padding:9px 5px;border-radius:8px;font-size:13px;color:var(--muted)}.step.active{background:#1c1f28;color:#fff;font-weight:700}.step.done{color:var(--green)}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}.card h2,.card h3{font-size:16px;margin:0 0 6px}.muted,.hint{color:var(--muted);font-size:12px;line-height:1.8;margin:0 0 13px}
-.upload-box{position:relative;display:block;width:100%;font:inherit;color:inherit;border:1.5px dashed #3a3e4a;border-radius:12px;padding:35px 18px;text-align:center;cursor:pointer;transition:.2s}.upload-box:hover,.upload-box.drag{border-color:var(--pink);background:#15171e}.upload-box strong{display:block;margin:8px 0 4px;font-size:15px}.upload-box small{color:var(--muted);font-size:13px}input[type=file]{position:absolute;inset:0;width:100%;height:100%;opacity:.01;z-index:5;cursor:pointer;display:block}
-.file-info{display:flex;justify-content:space-between;align-items:center;background:#0e1016;padding:12px 14px;border-radius:10px;margin-bottom:14px;gap:12px}.file-info .name{font-weight:700;font-size:14px;word-break:break-all}.file-info .meta{color:var(--muted);font-size:12px;margin-top:2px}.preview{width:100%;max-height:350px;object-fit:contain;background:#050609;border-radius:10px;margin:10px 0}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.metric{background:#0e1016;border:1px solid #252830;border-radius:9px;padding:10px;min-width:0}.metric span{display:block;color:var(--muted);font-size:11px}.metric b{display:block;font-size:13px;overflow-wrap:anywhere;margin-top:3px}
-.metadata-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
-.meta-group{background:#0b0e14;border:1px solid #292e39;border-radius:12px;padding:12px;min-width:0}
-.meta-group h4{color:#ff9a68;font-size:13px;margin:0 0 9px}
-.meta-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid #ffffff0d;font-size:11px}
-.meta-row:last-child{border-bottom:0}.meta-row span{color:var(--muted);flex:0 0 40%}.meta-row b{direction:ltr;text-align:left;overflow-wrap:anywhere;font-weight:650}
-@media(max-width:520px){.metadata-groups{grid-template-columns:1fr}}
-.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0 18px}.mode{border:1px solid var(--border);border-radius:12px;padding:13px;cursor:pointer;transition:.2s;position:relative;background:#0e1015;min-height:105px}.mode:hover{border-color:#555}.mode.selected{border-color:var(--pink);background:#1a1217;box-shadow:0 0 0 1px var(--pink)}.mode input{accent-color:var(--pink)}.mode strong{display:block;margin:6px 0 4px;font-size:14px}.mode p{font-size:12px;color:var(--muted);line-height:1.55;margin:0}.tag{position:absolute;top:10px;left:10px;background:#3a1a24;color:#ff8ba4;font-size:10px;padding:2px 7px;border-radius:5px;font-weight:700}
-.fieldrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.fieldrow label{display:block;font-size:12px;color:#d7d9e0}.fieldrow select,.fieldrow input{width:100%;margin-top:5px;padding:10px;border:1px solid #363b48;border-radius:9px;background:#0b0d13;color:white;font:inherit}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 19px;border:0;border-radius:10px;font-weight:750;font-size:14px;cursor:pointer;transition:.15s;background:#1c1f28;color:white}.btn-primary{background:linear-gradient(90deg,var(--pink),var(--orange));color:white;width:100%}.btn-secondary{border:1px solid var(--border)}.btn-danger{background:#48232d}.btn:disabled{opacity:.5;cursor:not-allowed}.actions{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}.actions .btn{flex:1;min-width:130px}
-.progress-box{text-align:center;padding:20px 8px}.spinner{width:48px;height:48px;border:4px solid #2a2e38;border-top-color:var(--pink);border-radius:50%;margin:0 auto 14px;animation:spin .9s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.progress{height:9px;background:#2a2e38;border-radius:20px;overflow:hidden;margin:14px 0}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--orange));transition:width .2s}.percent{font-size:25px;font-weight:800}.status{color:#c5c9d2;font-size:12px;line-height:1.8;min-height:24px}.success{color:var(--green)}#result{display:none}.notice{font-size:11px;color:#ffc4b1;line-height:1.8;margin-top:10px}pre{direction:ltr;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow:auto;background:#090b10;border:1px solid #292d37;border-radius:9px;padding:11px;color:#c4cbd7;font-size:11px}.hidden{display:none!important}footer{text-align:center;color:#737783;font-size:11px;padding:20px 0;border-top:1px solid #20232b;margin-top:22px}
-@media(max-width:520px){body{padding:12px}.card{padding:15px}.modes,.fieldrow{grid-template-columns:1fr}.mode{min-height:0}.step{font-size:11px;padding:8px 3px}.grid{gap:7px}.metric{padding:8px}}
+:root{color-scheme:dark;--bg:#101114;--panel:#191b20;--line:#30333b;--text:#f5f5f6;--muted:#a6a8b1;--accent:#f07858;--green:#61d6a5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;line-height:1.65;padding:18px;min-height:100vh}.wrap{max-width:720px;margin:auto}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0 18px;border-bottom:1px solid var(--line);margin-bottom:26px}.brand{font-size:11px;letter-spacing:1.4px;color:#f5a18a;font-weight:800}.brand b{display:block;color:var(--text);font-size:16px;letter-spacing:0}.local{font-size:11px;color:#9ce6c8;border:1px solid #315b4c;background:#14231d;padding:6px 10px;border-radius:30px;white-space:nowrap}
+h1{font-size:clamp(25px,6vw,36px);line-height:1.25;margin:0 0 8px}.sub{color:var(--muted);margin:0 0 22px;font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}.step{border:1px solid var(--line);border-radius:10px;padding:10px 5px;text-align:center;color:var(--muted);font-size:12px;background:#15171b}.step.active{border-color:var(--accent);color:#fff;background:#28201e}.step.done{color:var(--green);border-color:#315b4c}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:18px;margin:14px 0}.card h2{font-size:16px;margin:0 0 6px}.hint{font-size:12px;color:var(--muted);margin:0 0 14px}
+.picker{position:relative;display:block;text-align:center;padding:32px 14px;border:1.5px dashed #555965;border-radius:12px;background:#14161a;cursor:pointer}.picker:active{border-color:var(--accent)}.plus{font-size:30px;color:var(--accent);line-height:1}.picker strong{display:block;margin:8px 0 4px}.picker small{color:var(--muted);font-size:12px}input[type=file]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.file{display:none;background:#121418;border:1px solid var(--line);border-radius:11px;padding:12px;margin-top:12px}.filename{font-size:13px;font-weight:700;overflow-wrap:anywhere}.filesize{font-size:11px;color:var(--muted)}video{width:100%;max-height:320px;object-fit:contain;background:#08090b;border-radius:10px;margin-top:12px}
+.btn{display:inline-flex;justify-content:center;align-items:center;border:0;border-radius:10px;padding:13px 16px;font:inherit;font-size:14px;font-weight:750;cursor:pointer;text-decoration:none}.primary{background:linear-gradient(100deg,#ed7658,#f29b69);color:#fff;width:100%;margin-top:15px}.secondary{background:#252830;color:#fff;border:1px solid #3a3e48}.danger{background:#48272a;color:#ffd8d8}.btn:disabled{opacity:.45;cursor:not-allowed}
+.progress-wrap{display:none;text-align:center;padding:14px 4px}.spinner{width:40px;height:40px;border:4px solid #363941;border-top-color:var(--accent);border-radius:50%;margin:0 auto 12px;animation:spin .9s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.barbg{height:8px;border-radius:20px;background:#343740;overflow:hidden;margin:13px 0}.bar{height:100%;width:0;background:linear-gradient(90deg,#ed7658,#f29b69);transition:width .2s}.status{font-size:12px;color:var(--muted);min-height:22px}.percent{font-size:22px;font-weight:800}
+.result{display:none}.success{color:var(--green);font-size:25px}.actions{display:flex;gap:9px;margin-top:12px}.actions>*{flex:1}.note{font-size:11px;color:var(--muted);line-height:1.8;margin-top:14px}pre{white-space:pre-wrap;direction:ltr;text-align:left;max-height:180px;overflow:auto;background:#0e1013;padding:10px;border-radius:9px;font-size:10px;color:#c8ccd4}.hidden{display:none!important}footer{text-align:center;color:#777b85;font-size:11px;padding:20px 0}
+@media(max-width:480px){body{padding:12px}.card{padding:14px}.actions{flex-direction:column}.step{font-size:11px}}
 </style>
 </head>
 <body>
-<main class="container">
-<header><div><div class="brand">IBRAHIM AL FARIS</div><strong>استوديو تجهيز الفيديو</strong></div><span class="pill" id="engineState">● المعالجة المحلية</span></header>
-<h1>تحسين الفيديو</h1><p class="subtitle">اختر مقطعك، حدد طريقة التجهيز، ثم نزّل الملف الناتج.</p>
-<div class="steps"><div class="step active" id="step1">1 · الفيديو</div><div class="step" id="step2">2 · الطريقة</div><div class="step" id="step3">3 · التنزيل</div></div>
-
-<section class="card" id="uploadSection"><label class="upload-box" id="uploadBox"> <div style="font-size:28px;color:var(--pink)">＋</div><strong>اختر فيديو من جهازك</strong><small>اضغط على هذا المربع لاختيار مقطع من الهاتف</small><input type="file" id="videoInput" accept="video/*,.mp4,.mov,.m4v,.webm,.mkv"></label></section>
-
-<section class="card hidden" id="fileSection">
-<div class="file-info"><div><div class="name" id="fileName">—</div><div class="meta" id="fileMeta">—</div></div><button class="btn btn-secondary" id="changeBtn" type="button">تغيير</button></div>
-<video id="preview" class="preview hidden" controls playsinline></video>
-<div class="actions"><button class="btn btn-primary" id="inspectBtn" type="button">فحص الفيديو الأساسي</button><button class="btn btn-secondary" id="advancedInspectBtn" type="button">تحليل متقدم: GOP / CFR / B-frames</button></div>
-<div id="metadata" class="grid hidden"></div>
-<div id="advancedMetadata" class="metadata-groups hidden"></div>
+<main class="wrap">
+<header><div class="brand">IBRAHIM AL FARIS<b>استوديو تجهيز الفيديو</b></div><span class="local">● المعالجة المحلية</span></header>
+<h1>جهّز مقطعك للرفع</h1>
+<p class="sub">اختر الفيديو الأصلي، نفحصه، ثم نجهّز نسخة دون إعادة ضغط الصورة أو الصوت.</p>
+<div class="steps"><div class="step active" id="s1">1 · اختيار</div><div class="step" id="s2">2 · تجهيز</div><div class="step" id="s3">3 · حفظ</div></div>
+<section class="card" id="chooseCard">
+<h2>الفيديو الأصلي</h2><p class="hint">اختر ملف الكاميرا الأصلي، وليس نسخة أُعيد إرسالها عبر تطبيق آخر.</p>
+<label class="picker" id="picker"><div class="plus">＋</div><strong>اختر الفيديو من جهازك</strong><small>MP4 أو MOV · HEVC أو H.264</small><input id="fileInput" type="file" accept="video/*,.mp4,.mov,.m4v"></label>
+<div class="file" id="fileInfo"><div class="filename" id="fileName"></div><div class="filesize" id="fileSize"></div><video id="preview" controls playsinline></video><div class="actions"><button class="btn secondary" id="changeBtn" type="button">تغيير الفيديو</button><button class="btn secondary" id="checkBtn" type="button">فحص الفيديو</button></div></div>
 </section>
-
-<section class="card hidden" id="modeSection">
-<h3>اختر طريقة التجهيز</h3><p class="muted">أوضاع النسخ تحافظ على ترميز المصدر ولا تعيد ضغط الصورة.</p>
-<div class="modes">
-<label class="mode selected"><input type="radio" name="mode" value="CLASSIC" checked><span class="tag">موصى به</span><strong>CLASSIC · SDR / HDR</strong><p>نسخ الفيديو والصوت الأساسيين دون إعادة ترميز، مع Fast Start.</p></label>
-<label class="mode"><input type="radio" name="mode" value="MAX"><strong>MAX · نسخ المسارات</strong><p>يحاول نسخ جميع مسارات الفيديو والصوت. قد يفشل إذا لم تتوافق مع MP4.</p></label>
-<label class="mode"><input type="radio" name="mode" value="LITE"><strong>LITE · 720p</strong><p>إعادة ترميز إلى 720p لتقليل الحجم؛ قد تفقد بعض التفاصيل.</p></label>
-<label class="mode"><input type="radio" name="mode" value="ANTILAG"><strong>Anti Lag · 1080p</strong><p>إعادة ترميز إلى 1080p؛ لا يضمن زيادة الجودة أو إزالة التقطيع.</p></label>
-<label class="mode"><input type="radio" name="mode" value="COMPRESS"><strong>COMPRESS · ضغط مخصص</strong><p>تحكم بترميز الضغط والجودة والسرعة.</p></label>
-</div>
-<div id="compressOptions" class="fieldrow hidden">
-<label>ترميز الضغط<select id="codec"><option value="libx264">H.264 — توافق أعلى</option><option value="libx265">H.265 — إذا كان مدعوماً</option></select></label>
-<label>الجودة CRF (16–30)<input id="crf" type="number" min="16" max="30" value="22"></label>
-<label>سرعة الضغط<select id="preset"><option value="fast">Fast</option><option value="medium">Medium</option><option value="veryfast">Very Fast</option><option value="slow">Slow</option></select></label>
-</div>
-<p class="hint">ملاحظة: CLASSIC وMAX لا يضيفان تفاصيل أو دقة. قد تعيد TikTok ضغط الفيديو بعد رفعه.</p>
-<div class="actions"><button class="btn btn-primary" id="startBtn" type="button">ابدأ التجهيز</button><button class="btn btn-danger hidden" id="cancelBtn" type="button">إلغاء العملية</button></div>
+<section class="card hidden" id="prepareCard">
+<h2>تجهيز الفيديو</h2><p class="hint">وضع Classic ينسخ مسار الفيديو والصوت كما هما، ويضيف Fast Start لتسهيل بدء تشغيل الملف.</p>
+<button class="btn primary" id="startBtn" type="button" disabled>جهّز الملف</button>
+<div class="progress-wrap" id="progress"><div class="spinner" id="spinner"></div><h2 id="progressTitle">جاري التجهيز…</h2><div class="status" id="status">خلّ الصفحة مفتوحة حتى يكتمل العمل.</div><div class="percent" id="percent">0%</div><div class="barbg"><div class="bar" id="bar"></div></div><button class="btn danger" id="cancelBtn" type="button">إلغاء التجهيز</button></div>
 </section>
-
-<section class="card hidden" id="progressSection"><div class="progress-box"><div class="spinner" id="spinner"></div><h3 id="progressTitle">جاري تحضير المحرك</h3><p class="status" id="status">اترك الصفحة مفتوحة حتى ينتهي التجهيز.</p><div class="percent" id="progressPercent">0%</div><div class="progress"><div class="bar" id="progressBar"></div></div></div></section>
-
-<section class="card" id="result"><div class="progress-box"><div class="success" style="font-size:28px">✓</div><h2>الفيديو جاهز</h2><p class="status" id="resultInfo">اكتملت المعالجة.</p></div><div id="resultStats" class="grid"></div><div class="actions"><a class="btn btn-primary" id="downloadBtn" href="#" download>تنزيل الفيديو</a><button class="btn btn-secondary" id="againBtn" type="button">تجهيز فيديو آخر</button></div></section>
-
-<section class="card"><h3>سجل المعالجة</h3><div class="actions"><button class="btn btn-secondary" id="copyLogBtn" type="button">نسخ السجل</button></div><pre id="log">لم يبدأ المحرك بعد.</pre></section>
-<footer>IBRAHIM AL FARIS · LOCAL VIDEO STUDIO · تتم المعالجة محلياً داخل المتصفح</footer>
+<section class="card result" id="result">
+<div class="success">✓ اكتمل التجهيز</div><p class="hint" id="resultText">ملفك جاهز للحفظ.</p>
+<a class="btn primary" id="download" href="#" download>حفظ الفيديو</a>
+<button class="btn secondary" id="again" type="button" style="width:100%;margin-top:9px">تجهيز فيديو آخر</button>
+</section>
+<section class="card"><h2>معلومات مهمة</h2><p class="hint">المعالجة تتم داخل المتصفح ولا نرفع الفيديو إلى خادمنا. قد تعيد TikTok معالجة الفيديو بعد رفعه، لذلك لا يمكن ضمان شكل الجودة النهائي داخل التطبيق.</p><details><summary style="cursor:pointer;font-size:13px">سجل المعالجة</summary><pre id="log">لم يبدأ المحرك بعد.</pre></details></section>
+<footer>IBRAHIM AL FARIS · LOCAL VIDEO STUDIO</footer>
 </main>
 <script type="module">
 import { WudoohEngine } from "./assets/js/wudooh-engine.js";
 const $=id=>document.getElementById(id);
-let engine=null,file=null,metadata=null,result=null,previewURL=null,busy=false;
-const fmt=n=>{if(!Number.isFinite(n))return "غير متاح";const units=["B","KB","MB","GB"];let i=0;while(n>=1024&&i<3){n/=1024;i++;}return n.toFixed(2)+" "+units[i];};
-function setStatus(s){$("status").textContent=s;}
-function setProgress(p){const n=Math.max(0,Math.min(99,Number(p)||0));$("progressBar").style.width=n+"%";$("progressPercent").textContent=Math.round(n)+"%";}
-function appendLog(s){const el=$("log");el.textContent+=(el.textContent?"\n":"")+s;el.scrollTop=el.scrollHeight;}
-function getEngine(){if(!engine){engine=new WudoohEngine();engine.onLog=appendLog;engine.onProgress=p=>setProgress(p*100);engine.onStatus=message=>setStatus(message);}return engine;}
-function stats(id,rows){const box=$(id);box.replaceChildren();for(const [k,v] of rows){const d=document.createElement("div");d.className="metric";const s=document.createElement("span");s.textContent=k;const b=document.createElement("b");b.textContent=v??"غير متاح";d.append(s,b);box.append(d);}}
-function renderMetadata(m){
- const groups=[
-  ["عام",[["الاسم",m.name],["الحجم",fmt(m.size)],["الحاوية",m.container],["المدة",m.duration.toFixed(2)+" ثانية"],["معدل البت الكلي",m.bitrate],["الدوران",m.rotation+"°"]]],
-  ["الفيديو",[["الترميز",m.videoCodec],["الملف التعريفي",m.videoProfile],["الدقة",m.width+" × "+m.height],["معدل الإطارات",m.fps],["صيغة البكسل",m.pixelFormat],["عمق البت",m.bitDepth],["معدل بت الفيديو",m.videoBitrate]]],
-  ["HDR والألوان",[["نوع النطاق",m.hdr],["تفاصيل اللون",m.colorDetails],["منحنى النقل",m.colorTransfer],["نطاق اللون",m.colorRange]]],
-  ["الصوت",[["الحالة",m.audioPresent],["الترميز",m.audioCodec],["القنوات",m.audioChannels],["التردد",m.audioSampleRate],["معدل البت",m.audioBitrate]]]
- ];
- const root=$("metadata");root.replaceChildren();root.className="metadata-groups";
- for(const [title,rows] of groups){const section=document.createElement("section");section.className="meta-group";const heading=document.createElement("h4");heading.textContent=title;section.append(heading);
-  for(const [label,value] of rows){const row=document.createElement("div");row.className="meta-row";const a=document.createElement("span");a.textContent=label;const b=document.createElement("b");b.textContent=value??"غير متاح";row.append(a,b);section.append(row);}
-  root.append(section);
- }
-}
-function revokeResult(){if(result?.url)URL.revokeObjectURL(result.url);result=null;$("result").style.display="none";$("downloadBtn").removeAttribute("href");}
-function setStep(n){for(let i=1;i<=3;i++){$("step"+i).classList.toggle("active",i===n);$("step"+i).classList.toggle("done",i<n);}}
-function chooseFile(f){if(!f||busy)return;file=f;metadata=null;revokeResult();$("fileName").textContent=f.name;$("fileMeta").textContent=fmt(f.size);$("uploadSection").classList.add("hidden");$("fileSection").classList.remove("hidden");$("modeSection").classList.remove("hidden");$("metadata").classList.add("hidden");if(previewURL)URL.revokeObjectURL(previewURL);previewURL=URL.createObjectURL(f);$("preview").src=previewURL;$("preview").classList.remove("hidden");$("log").textContent="تم اختيار الملف: "+f.name;setStep(2);}
-$("videoInput").addEventListener("change",e=>chooseFile(e.target.files?.[0]));
-function openVideoPicker(){if(!busy){$("videoInput").value="";$("videoInput").click();}}
-$("changeBtn").addEventListener("click",openVideoPicker);
-$("uploadBox").addEventListener("dragover",e=>{e.preventDefault();$("uploadBox").classList.add("drag");});
-$("uploadBox").addEventListener("dragleave",()=> $("uploadBox").classList.remove("drag"));
-$("uploadBox").addEventListener("drop",e=>{e.preventDefault();$("uploadBox").classList.remove("drag");chooseFile(e.dataTransfer?.files?.[0]);});
-$("inspectBtn").addEventListener("click",async()=>{if(!file||busy)return;busy=true;$("inspectBtn").disabled=true;$("modeSection").classList.add("hidden");$("log").textContent="";$("progressSection").classList.remove("hidden");$("progressTitle").textContent="جاري فحص الفيديو";try{const plan=await getEngine().load(true);metadata=await engine.inspect(file);renderMetadata(metadata);appendLog("اكتمل فحص الحاوية ومسارات الفيديو والصوت والألوان باستخدام FFmpeg.");$("metadata").classList.remove("hidden");$("modeSection").classList.remove("hidden");setStatus("اكتمل الفحص. اختر وضع التجهيز.");$("progressSection").classList.add("hidden");}catch(err){$("progressSection").classList.add("hidden");setStatus("تعذّر الفحص: "+(err?.message||String(err)));appendLog("ERROR: "+(err?.stack||err));}finally{busy=false;$("modeSection").classList.remove("hidden");$("inspectBtn").disabled=false;}});
-function renderAdvancedMetadata(m){
- const rows=[
-  ["الإطارات التي تم تحليلها",m.analyzedFrames],
-  ["الإطارات المفتاحية",m.keyframeCount],
-  ["متوسط GOP",m.gopAverage],
-  ["أقصر GOP",m.gopMin],
-  ["أطول GOP",m.gopMax],
-  ["انتظام الإطارات",m.cfr],
-  ["المعدل المقاس",m.measuredFps],
-  ["إطارات I",m.iFrames],
-  ["إطارات P",m.pFrames],
-  ["إطارات B",m.bFrames]
- ];
- const root=$("advancedMetadata");root.replaceChildren();root.className="metadata-groups";
- const section=document.createElement("section");section.className="meta-group";
- const heading=document.createElement("h4");heading.textContent="التحليل المتقدم للإطارات";section.append(heading);
- for(const [label,value] of rows){const row=document.createElement("div");row.className="meta-row";const a=document.createElement("span");a.textContent=label;const b=document.createElement("b");b.textContent=String(value??"غير متاح");row.append(a,b);section.append(row);}
- const note=document.createElement("p");note.className="hint";note.textContent="هذا الفحص يفك ترميز الفيديو محلياً للقراءة فقط؛ لا يغيّر الملف ولا يعيد ضغطه.";
- root.append(section,note);
-}
-$("advancedInspectBtn").addEventListener("click",async()=>{
- if(!file||busy)return;
- busy=true;$("advancedInspectBtn").disabled=true;$("inspectBtn").disabled=true;
- $("progressSection").classList.remove("hidden");$("progressTitle").textContent="جاري تحليل الإطارات";
- setStatus("قد يستغرق التحليل وقتاً أطول من الفحص الأساسي، خصوصاً مع فيديو 4K.");
- appendLog("بدء التحليل المتقدم...");
- try{
-  const report=await getEngine().inspectAdvanced(file);
-  renderAdvancedMetadata(report);
-  appendLog("اكتمل التحليل المتقدم.");
-  setStatus("اكتمل تحليل GOP وCFR وأنواع الإطارات.");
- }catch(err){
-  setStatus("تعذّر التحليل المتقدم: "+(err?.message||String(err)));
-  appendLog("ERROR: "+(err?.stack||err));
- }finally{
-  $("progressSection").classList.add("hidden");busy=false;
-  $("advancedInspectBtn").disabled=false;$("inspectBtn").disabled=false;
- }
-});
-document.querySelectorAll('input[name="mode"]').forEach(el=>el.addEventListener("change",()=>{document.querySelectorAll(".mode").forEach(m=>m.classList.toggle("selected",m.querySelector("input").checked));$("compressOptions").classList.toggle("hidden",document.querySelector('input[name="mode"]:checked').value!=="COMPRESS");}));
-$("startBtn").addEventListener("click",async()=>{if(!file||busy)return;busy=true;revokeResult();$("startBtn").disabled=true;$("cancelBtn").classList.remove("hidden");$("cancelBtn").disabled=false;$("progressSection").classList.remove("hidden");$("progressTitle").textContent="جاري تجهيز الفيديو";$("log").textContent="";setStatus("جارٍ بدء المعالجة...");setProgress(0);setStep(3);const mode=document.querySelector('input[name="mode"]:checked').value;$("modeSection").classList.add("hidden");try{const output=await getEngine().process(file,{mode,codec:$("codec").value,crf:Number($("crf").value),preset:$("preset").value,onProgress:p=>setProgress(p*100)});result=output;$("resultInfo").textContent="اكتملت المعالجة المحلية بنجاح.";stats("resultStats",[["حجم الأصل",fmt(output.inputBytes)],["حجم الناتج",fmt(output.outputBytes)],["فرق الحجم",(output.savedBytes>=0?"توفير ":"زيادة ")+fmt(Math.abs(output.savedBytes))],["زمن المعالجة",output.elapsedSeconds.toFixed(1)+" ثانية"],["الوضع",output.mode],["المحرك",output.engineMode]]);$("downloadBtn").href=output.url;$("downloadBtn").download=output.fileName;$("result").style.display="block";$("progressSection").classList.add("hidden");$("status").textContent="اكتملت المعالجة. نزّل الملف الناتج.";$("progressPercent").textContent="100%";$("progressBar").style.width="100%";setStep(3);}catch(err){const msg=err?.message||String(err);$("modeSection").classList.remove("hidden");setStatus(msg.includes("إلغاء")?"تم إلغاء العملية.":"فشلت المعالجة: "+msg);appendLog("ERROR: "+(err?.stack||msg));}finally{busy=false;}$("startBtn").disabled=false;$("cancelBtn").classList.add("hidden");});
-$("cancelBtn").addEventListener("click",async()=>{if(!busy||!engine)return;$("cancelBtn").disabled=true;setStatus("جارٍ إيقاف المحرك...");await engine.cancel();});
-$("againBtn").addEventListener("click",()=>{if(busy)return;revokeResult();file=null;metadata=null;$("videoInput").value="";$("fileSection").classList.add("hidden");$("modeSection").classList.add("hidden");$("uploadSection").classList.remove("hidden");$("progressSection").classList.add("hidden");$("metadata").classList.add("hidden");$("preview").removeAttribute("src");$("preview").classList.add("hidden");if(previewURL)URL.revokeObjectURL(previewURL);previewURL=null;$("log").textContent="اختر فيديو جديداً.";setStep(1);setProgress(0);});
-$("copyLogBtn").addEventListener("click",async()=>{const value=engine?.getLogs()||$("log").textContent;try{await navigator.clipboard.writeText(value);setStatus("تم نسخ سجل المعالجة.");}catch{setStatus("تعذّر النسخ التلقائي. يمكنك تحديد السجل ونسخه.");}});
-window.addEventListener("pagehide",()=>{try{engine?.destroy();}catch{}if(previewURL)URL.revokeObjectURL(previewURL);if(result?.url)URL.revokeObjectURL(result.url);});
+let engine=null,file=null,previewURL=null,busy=false,resultURL=null;
+const fmt=n=>{const u=["B","KB","MB","GB"];let i=0;while(n>=1024&&i<3){n/=1024;i++}return n.toFixed(2)+" "+u[i]};
+function log(t){$("log").textContent+=( $("log").textContent?"\n":"")+t}
+function setStep(n){for(let i=1;i<=3;i++){$("s"+i).classList.toggle("active",i===n);$("s"+i).classList.toggle("done",i<n)}}
+function getEngine(){if(!engine){engine=new WudoohEngine();engine.onLog=log;engine.onStatus=t=>$("status").textContent=t;engine.onProgress=p=>progress(p*100)}return engine}
+function progress(v){const n=Math.max(0,Math.min(100,Number(v)||0));$("bar").style.width=n+"%";$("percent").textContent=Math.round(n)+"%"}
+function clearResult(){if(resultURL)URL.revokeObjectURL(resultURL);resultURL=null;$("result").style.display="none";$("download").removeAttribute("href")}
+function selectFile(f){if(!f||busy)return;file=f;clearResult();$("fileName").textContent=f.name;$("fileSize").textContent=fmt(f.size);if(previewURL)URL.revokeObjectURL(previewURL);previewURL=URL.createObjectURL(f);$("preview").src=previewURL;$("fileInfo").style.display="block";$("prepareCard").classList.remove("hidden");$("startBtn").disabled=false;$("status").textContent="الفيديو جاهز للفحص والتجهيز.";$("log").textContent="تم اختيار الملف: "+f.name;setStep(2)}
+$("fileInput").addEventListener("change",e=>selectFile(e.target.files?.[0]));
+$("changeBtn").addEventListener("click",()=>{$("fileInput").value="";$("fileInput").click()});
+$("checkBtn").addEventListener("click",async()=>{if(!file||busy)return;busy=true;$("checkBtn").disabled=true;$("status").textContent="جاري فحص الملف…";$("progress").style.display="block";$("spinner").style.display="block";try{const m=await getEngine().inspect(file);$("status").textContent="الفحص اكتمل: "+m.videoCodec+" · "+m.width+"×"+m.height+" · "+m.fps;log("اكتمل فحص الفيديو والصوت.");}catch(e){$("status").textContent="تعذّر الفحص: "+(e.message||e);log("ERROR: "+(e.stack||e))}finally{$("progress").style.display="none";busy=false;$("checkBtn").disabled=false}});
+$("startBtn").addEventListener("click",async()=>{if(!file||busy)return;busy=true;clearResult();$("startBtn").disabled=true;$("progress").style.display="block";$("spinner").style.display="block";$("status").textContent="جاري بدء التجهيز…";$("progressTitle").textContent="جاري التجهيز…";progress(0);setStep(2);$("log").textContent="";try{const out=await getEngine().process(file,{mode:"CLASSIC",onProgress:p=>progress(p*100)});resultURL=out.url;$("download").href=resultURL;$("download").download=out.fileName;$("resultText").textContent="اكتمل النسخ دون إعادة ترميز. الحجم الناتج: "+fmt(out.outputBytes);$("result").style.display="block";$("progress").style.display="none";$("status").textContent="اكتمل التجهيز. احفظ الملف ثم ارفعه إلى TikTok.";progress(100);setStep(3);log("اكتمل إنشاء الملف: "+out.fileName)}catch(e){$("status").textContent="فشل التجهيز: "+(e.message||e);log("ERROR: "+(e.stack||e));}finally{busy=false;$("startBtn").disabled=false;$("spinner").style.display="none"}});
+$("cancelBtn").addEventListener("click",async()=>{if(!busy||!engine)return;$("cancelBtn").disabled=true;$("status").textContent="جاري إيقاف العملية…";await engine.cancel();});
+$("again").addEventListener("click",()=>{if(busy)return;clearResult();file=null;$("fileInput").value="";$("fileInfo").style.display="none";$("prepareCard").classList.add("hidden");$("status").textContent="اختر فيديو جديداً.";setStep(1);});
+window.addEventListener("pagehide",()=>{try{engine?.destroy()}catch{}if(previewURL)URL.revokeObjectURL(previewURL);if(resultURL)URL.revokeObjectURL(resultURL)});
 </script>
-<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}</script>
+<script>if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script>
 </body></html>
