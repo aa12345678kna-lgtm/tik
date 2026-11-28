@@ -1,6 +1,6 @@
 /**
  * WudoohEngine — محرك FFmpeg.wasm واحد لمعالجة الفيديو محلياً.
- * FFmpeg 0.12.6 + util 0.12.1
+ * FFmpeg 0.12.9 + util 0.12.1
  */
 import { FFmpeg } from "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.9/dist/esm/index.js";
 import { toBlobURL, fetchFile } from "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js";
@@ -74,29 +74,68 @@ export class WudoohEngine {
 
   async inspect(file) {
     if (!(file instanceof Blob)) throw new TypeError("اختر ملف فيديو أولاً.");
-    const url = URL.createObjectURL(file);
+    if (this.busy) throw new Error("المحرك مشغول حالياً.");
+    this.busy = true;
+    this.logs = [];
+    let wrote = false;
+    let active = null;
     try {
-      const video = document.createElement("video");
-      video.preload = "metadata";
-      video.muted = true;
-      video.src = url;
-      await new Promise((resolve, reject) => {
-        video.onloadedmetadata = resolve;
-        video.onerror = () => reject(new Error("تعذّرت قراءة خصائص الفيديو. جرّب ملف MP4 أو MOV متوافقاً مع المتصفح."));
-      });
+      if (!this.loaded) await this.load(true);
+      active = this.ffmpeg;
+      if (!active) throw new Error("تعذّر تحميل محرك فحص الفيديو.");
+      this._log("بدء فحص بيانات الملف باستخدام FFmpeg...");
+      const bytes = await fetchFile(file);
+      await active.writeFile("inspect_input", bytes);
+      wrote = true;
+      // FFmpeg returns a non-zero exit code for an input-only probe; its diagnostic
+      // output still contains the stream and container metadata we need.
+      await active.exec(["-hide_banner", "-i", "inspect_input"]);
+      const report = this.logs.join("\\n");
+      const videoLine = report.split("\\n").find(line => /Stream #\\d+:\\d+.*Video:/i.test(line)) || "";
+      const audioLine = report.split("\\n").find(line => /Stream #\\d+:\\d+.*Audio:/i.test(line)) || "";
+      const durationMatch = report.match(/Duration:\\s*(\\d+):(\\d+):([\\d.]+)/i);
+      const duration = durationMatch ? (+durationMatch[1] * 3600 + +durationMatch[2] * 60 + +durationMatch[3]) : 0;
+      const sizeMatch = report.match(/\\b(\\d{2,5})x(\\d{2,5})\\b/);
+      const codecMatch = videoLine.match(/Video:\\s*([^,\\s]+)(?:\\s*\\(([^)]*)\\))?/i);
+      const pixelMatch = videoLine.match(/Video:[^,]+,\\s*([^,\\s]+)/i);
+      const fpsMatch = videoLine.match(/([\\d.]+)\\s*fps/i);
+      const videoRateMatch = videoLine.match(/([\\d.]+)\\s*kb\\/s/i);
+      const audioCodecMatch = audioLine.match(/Audio:\\s*([^,\\s]+)(?:\\s*\\[([^\\]]+)\\])?/i);
+      const sampleMatch = audioLine.match(/(\\d+)\\s*Hz/i);
+      const audioRateMatch = audioLine.match(/([\\d.]+)\\s*kb\\/s/i);
+      const formatMatch = report.match(/Input #0,\\s*([^,\\s]+)/i);
+      const totalRateMatch = report.match(/bitrate:\\s*([\\d.]+\\s*\\w+\\/s)/i);
+      const colorText = (videoLine.match(/Video:[^,]+,[^,]+,\\s*([^,]+(?:,\\s*[^,]+){0,3})/i) || [,""])[1];
+      const transfer = (videoLine.match(/\\b(smpte2084|arib-std-b67|bt709|bt2020)\\b/i) || [,""])[1];
+      const hdr = /smpte2084|arib-std-b67/i.test(videoLine) ? "HDR" : /bt709/i.test(videoLine) ? "SDR" : "غير محدد";
+      const bitDepth = /p010|p012|10le|10be/i.test(videoLine) ? "10-bit أو أكثر" : pixelMatch ? "8-bit غالباً" : "غير متاح";
+      const channels = (audioLine.match(/\\b(mono|stereo|2\\.1|5\\.1|7\\.1)\\b/i) || [,"غير محدد"])[1];
+      const rotation = (report.match(/rotation of (-?\\d+(?:\\.\\d+)?)/i) || [,"0"])[1];
+      if (!videoLine) throw new Error("لم يتم العثور على مسار فيديو قابل للقراءة. جرّب ملف MP4 أو MOV.");
       return {
-        name: file.name || "video",
-        size: file.size,
-        width: video.videoWidth || 0,
-        height: video.videoHeight || 0,
-        duration: Number.isFinite(video.duration) ? video.duration : 0,
-        fps: "غير متاح من فحص المتصفح",
-        videoCodec: "غير متاح من فحص المتصفح",
-        audioPresent: "غير متاح من فحص المتصفح",
-        hdr: "غير متاح من فحص المتصفح"
+        name: file.name || "video", size: file.size,
+        width: sizeMatch ? Number(sizeMatch[1]) : 0,
+        height: sizeMatch ? Number(sizeMatch[2]) : 0,
+        duration, fps: fpsMatch ? fpsMatch[1] + " FPS" : "غير متاح",
+        videoCodec: codecMatch ? codecMatch[1] : "غير متاح",
+        videoProfile: codecMatch?.[2] || "غير متاح",
+        pixelFormat: pixelMatch?.[1] || "غير متاح",
+        bitDepth, colorDetails: colorText.trim() || "غير متاح",
+        colorTransfer: transfer || "غير متاح", hdr,
+        colorRange: /\\btv\\b/i.test(videoLine) ? "Limited (TV)" : /\\bpc\\b/i.test(videoLine) ? "Full (PC)" : "غير محدد",
+        audioPresent: audioLine ? "موجود" : "لا يوجد",
+        audioCodec: audioCodecMatch ? audioCodecMatch[1] : "لا يوجد",
+        audioChannels: audioLine ? channels : "لا يوجد",
+        audioSampleRate: sampleMatch ? sampleMatch[1] + " Hz" : "غير متاح",
+        audioBitrate: audioRateMatch ? audioRateMatch[1] + " kb/s" : "غير متاح",
+        container: formatMatch?.[1] || "غير متاح",
+        bitrate: totalRateMatch?.[1] || "غير متاح",
+        videoBitrate: videoRateMatch ? videoRateMatch[1] + " kb/s" : "غير متاح",
+        rotation, raw: report
       };
     } finally {
-      URL.revokeObjectURL(url);
+      if (active && wrote) { try { await active.deleteFile("inspect_input"); } catch {} }
+      this.busy = false;
     }
   }
 
