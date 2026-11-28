@@ -927,7 +927,7 @@ async function runHandBrakeJob(inputFile){
    await finish(blob,inputFile.name.replace(/\.[^.]+$/,'')+'_handbrake.mp4',sourceInfo,'handbrake',report);
    return;
   }
-  if(Date.now()-started>15*60*1000)throw Error('انتهت مهلة انتظار خادم المعالجة.');
+  if(Date.now()-started>60*60*1000)throw Error('انتهت مهلة انتظار خادم المعالجة بعد 60 دقيقة.');
   await new Promise(resolve=>setTimeout(resolve,1300));
  }
 }
