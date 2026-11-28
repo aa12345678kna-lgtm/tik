@@ -571,6 +571,7 @@ window.turnstileReady=()=>{if(window.turnstile&&turnstileWidgetId===null){turnst
 const $=id=>document.getElementById(id);
 document.querySelectorAll('input[name="mode"]').forEach(el=>el.addEventListener("change",()=>{const box=document.getElementById("handbrakeSecurity");if(box)box.classList.toggle("hidden",el.value!=="handbrake");}));let file=null,objectUrl=null,outputUrl=null,ffmpeg=null,working=false,videoDuration=0,mediaInfoData=null,scanGeneration=0,mediaInfoFactoryPromise=null;
 const ENGINE_PLAN_MODULE_URL="./assets/js/engine-loader.js?v=20261128-public-labels-1";
+window.IBRAHIM_HANDBRAKE_API=window.IBRAHIM_HANDBRAKE_API||"https://ibrahim-studio-handbrake.onrender.com";
 const HANDBRAKE_API_BASE=(window.IBRAHIM_HANDBRAKE_API||'').replace(/\/+$/,'');
 window.handbrakeJobId=null;window.handbrakeAbortController=null;window.handbrakeLogs=[];
 let enginePlanPromise=null;
