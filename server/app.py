@@ -199,7 +199,6 @@ async def health():
     }
 
 
-@app.post("/api/jobs")
 async def verify_turnstile(token: str, remote_ip: str | None) -> None:
     if not TURNSTILE_SECRET_KEY:
         raise HTTPException(503, "حماية Cloudflare غير مهيأة على الخادم.")
@@ -229,6 +228,7 @@ def require_job_access(job: dict[str, Any] | None, supplied_token: str | None) -
     return job
 
 
+@app.post("/api/jobs")
 async def create_job(request: Request, file: UploadFile = File(...), turnstile_token: str = Form(...)):
     client_ip = request.client.host if request.client else "unknown"
     await verify_turnstile(turnstile_token, client_ip)
