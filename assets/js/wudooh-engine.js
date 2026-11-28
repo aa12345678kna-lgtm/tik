@@ -258,7 +258,7 @@ export class WudoohEngine {
     return this._run(inputFile, [
       "-y", "-i", "input_video",
       "-map", "0:v:0", "-map", "0:a:0?",
-      "-c", "copy", "-movflags", "+faststart", "-f", "mp4", "output.mp4"
+      "-c", "copy", "-metadata", "encoder=WUDOOH https://wudooh.srabout.dev | Wudooh Classic", "-movflags", "+faststart", "-f", "mp4", "output.mp4"
     ], onProgress);
   }
 
