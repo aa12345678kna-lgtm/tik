@@ -2,7 +2,7 @@
  * WudoohEngine — محرك FFmpeg.wasm واحد لمعالجة الفيديو محلياً.
  * FFmpeg 0.12.6 + util 0.12.1
  */
-import { FFmpeg } from "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/esm/index.js";
+import { FFmpeg } from "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.9/dist/esm/index.js";
 import { toBlobURL, fetchFile } from "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js";
 
 export class WudoohEngine {
@@ -43,7 +43,11 @@ export class WudoohEngine {
           : "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm";
         const coreURL = await toBlobURL(`${base}/ffmpeg-core.js`, "text/javascript");
         const wasmURL = await toBlobURL(`${base}/ffmpeg-core.wasm`, "application/wasm");
-        const options = { coreURL, wasmURL };
+        const options = {
+          coreURL,
+          wasmURL,
+          classWorkerURL: new URL("./ffmpeg/worker.js", import.meta.url).href
+        };
         if (multiThread) {
           options.workerURL = await toBlobURL(`${base}/ffmpeg-core.worker.js`, "text/javascript");
         }
