@@ -10,7 +10,7 @@ from collections import defaultdict, deque
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, File, HTTPException, Request, UploadFile
+from fastapi import FastAPI, File, Form, Header, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from starlette.background import BackgroundTask
@@ -22,12 +22,15 @@ JOB_TTL_SECONDS = int(os.getenv("JOB_TTL_SECONDS", "900"))
 ALLOWED_EXTENSIONS = {".mp4", ".mov", ".m4v", ".mkv", ".webm"}
 ALLOWED_ORIGINS = [x.strip() for x in os.getenv("ALLOWED_ORIGINS", "https://tik-a8h.pages.dev").split(",") if x.strip()]
 
+TURNSTILE_SECRET_KEY = os.getenv("TURNSTILE_SECRET_KEY", "").strip()
+TURNSTILE_EXPECTED_HOSTNAME = os.getenv("TURNSTILE_EXPECTED_HOSTNAME", "tik-a8h.pages.dev").strip().lower()
+
 app = FastAPI(title="Ibrahim Studio HandBrake API", docs_url=None, redoc_url=None)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
     allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type"],
+    allow_headers=["Content-Type", "X-Job-Token"],
 )
 
 jobs: dict[str, dict[str, Any]] = {}
@@ -197,7 +200,39 @@ async def health():
 
 
 @app.post("/api/jobs")
-async def create_job(request: Request, file: UploadFile = File(...)):
+async def verify_turnstile(token: str, remote_ip: str | None) -> None:
+    if not TURNSTILE_SECRET_KEY:
+        raise HTTPException(503, "حماية Cloudflare غير مهيأة على الخادم.")
+    if not token or len(token) > 2048:
+        raise HTTPException(400, "أكمل فحص الحماية قبل رفع الفيديو.")
+    import httpx
+    payload = {"secret": TURNSTILE_SECRET_KEY, "response": token}
+    if remote_ip and remote_ip != "unknown":
+        payload["remoteip"] = remote_ip
+    try:
+        async with httpx.AsyncClient(timeout=8.0) as client:
+            response = await client.post("https://challenges.cloudflare.com/turnstile/v0/siteverify", data=payload)
+            response.raise_for_status()
+            result = response.json()
+    except Exception:
+        raise HTTPException(503, "تعذّر الاتصال بخدمة التحقق. حاول مرة أخرى.")
+    hostname = str(result.get("hostname", "")).lower()
+    if not result.get("success") or hostname != TURNSTILE_EXPECTED_HOSTNAME:
+        raise HTTPException(403, "فشل فحص الحماية أو أن اسم الموقع غير مطابق.")
+
+def require_job_access(job: dict[str, Any] | None, supplied_token: str | None) -> dict[str, Any]:
+    if not job:
+        raise HTTPException(404, "انتهت صلاحية المهمة أو لم يتم العثور عليها.")
+    expected = str(job.get("access_token", ""))
+    if not supplied_token or not secrets.compare_digest(expected, supplied_token):
+        raise HTTPException(403, "رمز الوصول للمهمة غير صالح.")
+    return job
+
+
+async def create_job(request: Request, file: UploadFile = File(...), turnstile_token: str = Form(...)):
+    client_ip = request.client.host if request.client else "unknown"
+    await verify_turnstile(turnstile_token, client_ip)
+
     client_ip = request.client.host if request.client else "unknown"
     now = time.time()
     recent = ip_requests[client_ip]
@@ -238,20 +273,18 @@ async def create_job(request: Request, file: UploadFile = File(...)):
         await file.close()
 
     jobs[job_id] = {
-        "id": job_id, "status": "queued", "progress": 0, "logs": [],
+        "id": job_id, "access_token": secrets.token_urlsafe(32), "status": "queued", "progress": 0, "logs": [],
         "created_at": now, "folder": str(folder), "source": str(source),
         "output": str(output), "source_bytes": size, "source_info": info,
         "process": None, "cancelled": False,
     }
     asyncio.create_task(execute_job(job_id))
-    return {"id": job_id, "status": "queued", "source": info}
+    return {"id": job_id, "access_token": jobs[job_id]["access_token"], "status": "queued", "source": info}
 
 
 @app.get("/api/jobs/{job_id}")
-async def get_job(job_id: str):
-    job = jobs.get(job_id)
-    if not job:
-        raise HTTPException(404, "انتهت صلاحية المهمة أو لم يتم العثور عليها.")
+async def get_job(job_id: str, x_job_token: str | None = Header(default=None)):
+    job = require_job_access(jobs.get(job_id), x_job_token)
     return {
         "id": job_id, "status": job["status"], "progress": job["progress"],
         "error": job.get("error"), "logs": job["logs"][-50:],
@@ -260,9 +293,9 @@ async def get_job(job_id: str):
 
 
 @app.get("/api/jobs/{job_id}/download")
-async def download_job(job_id: str):
-    job = jobs.get(job_id)
-    if not job or job.get("status") != "completed":
+async def download_job(job_id: str, x_job_token: str | None = Header(default=None)):
+    job = require_job_access(jobs.get(job_id), x_job_token)
+    if job.get("status") != "completed":
         raise HTTPException(409, "الفيديو لم يصبح جاهزاً للتنزيل.")
     output = Path(job["output"])
     if not output.exists():
@@ -276,10 +309,8 @@ async def download_job(job_id: str):
 
 
 @app.delete("/api/jobs/{job_id}")
-async def cancel_job(job_id: str):
-    job = jobs.get(job_id)
-    if not job:
-        return {"ok": True, "status": "expired"}
+async def cancel_job(job_id: str, x_job_token: str | None = Header(default=None)):
+    job = require_job_access(jobs.get(job_id), x_job_token)
     job["cancelled"] = True
     proc = job.get("process")
     if proc and proc.returncode is None:
