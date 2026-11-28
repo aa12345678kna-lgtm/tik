@@ -19,15 +19,28 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Check embedded studio JavaScript syntax
+      - name: Check studio and support JavaScript syntax
         run: |
           python - <<'PY'
           import re
           from pathlib import Path
-          html = Path("index.html").read_text(encoding="utf-8")
-          scripts = re.findall(r"<script>([\s\S]*?)</script>", html)
-          if not scripts:
-              raise SystemExit("No inline studio script found")
-          Path("/tmp/studio-inline.mjs").write_text(scripts[0], encoding="utf-8")
+
+          for html_path in (Path("studio.html"), Path("support/index.html")):
+              html = html_path.read_text(encoding="utf-8")
+              scripts = re.findall(r"<script\\b[^>]*>([\\s\\S]*?)</script>", html)
+              for index, script in enumerate(scripts):
+                  output = Path(f"/tmp/{html_path.parent.name or 'root'}-{index}.mjs")
+                  output.write_text(script, encoding="utf-8")
+                  print(f"Extracted {html_path} script #{index + 1} -> {output}")
+              if not scripts:
+                  print(f"No inline scripts in {html_path}; skipped.")
+
           PY
-          node --check /tmp/studio-inline.mjs
+          for file in /tmp/root-*.mjs /tmp/support-*.mjs; do
+            [ -f "$file" ] || continue
+            node --check "$file"
+          done
+          node --check assets/js/wudooh-engine.js
+          node --check assets/js/engine-loader.js
+          node --check assets/js/runtime-capabilities.js
+          node --check sw.js
