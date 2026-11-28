@@ -14,6 +14,7 @@ export class WudoohEngine {
     this.logs = [];
     this.onProgress = null;
     this.onLog = null;
+    this.onStatus = null;
     this.activeMode = "not-loaded";
     this._loadPromise = null;
   }
@@ -104,16 +105,25 @@ export class WudoohEngine {
     this.onProgress = onProgress || null;
     let ffmpegAtStart = null;
     let inputWritten = false;
+    const report = message => { try { this.onStatus?.(message); } catch {} };
     try {
-      if (!this.loaded) await this.load(true);
+      if (!this.loaded) {
+        report("جارٍ تحميل محرك FFmpeg لأول مرة...");
+        await this.load(true);
+      }
       if (this.cancelled || !this.ffmpeg) throw new Error("تم إلغاء العملية.");
       ffmpegAtStart = this.ffmpeg;
-      await ffmpegAtStart.writeFile("input_video", await fetchFile(inputFile));
+      report("جارٍ قراءة ملف الفيديو وتجهيزه...");
+      const inputData = await fetchFile(inputFile);
+      if (this.cancelled) throw new Error("تم إلغاء العملية.");
+      await ffmpegAtStart.writeFile("input_video", inputData);
       inputWritten = true;
       if (this.cancelled) throw new Error("تم إلغاء العملية.");
+      report("جارٍ نسخ الفيديو دون إعادة ترميز. قد تبقى النسبة 0% في وضع CLASSIC...");
       const exitCode = await ffmpegAtStart.exec(args);
       if (this.cancelled) throw new Error("تم إلغاء العملية.");
       if (exitCode !== 0) throw new Error(`فشلت المعالجة برمز ${exitCode}. راجع سجل المعالجة.`);
+      report("انتهى النسخ، جارٍ تجهيز الملف للتنزيل...");
       const data = await ffmpegAtStart.readFile("output.mp4");
       const blob = new Blob([data], { type: "video/mp4" });
       if (!blob.size) throw new Error("الملف الناتج فارغ.");
@@ -125,6 +135,7 @@ export class WudoohEngine {
       }
       this.busy = false;
       this.onProgress = null;
+      this.onStatus = null;
     }
   }
 
