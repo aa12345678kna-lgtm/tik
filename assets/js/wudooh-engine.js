@@ -52,6 +52,7 @@ export class WudoohEngine {
         if (this.ffmpeg === ffmpeg) this.ffmpeg = null;
         this.loaded = false;
         if (multiThread) {
+          this._loadPromise = null;
           return await this.load(false);
         }
         throw error;
@@ -92,7 +93,7 @@ export class WudoohEngine {
 
   async processClassic(inputFile, onProgress) {
     return this._run(inputFile, [
-      "-i", "input",
+      "-y", "-i", "input",
       "-c", "copy",
       "-movflags", "+faststart",
       "output.mp4"
@@ -106,7 +107,7 @@ export class WudoohEngine {
       scale = null,
       audioBitrate = "128k"
     } = options;
-    const args = ["-i", "input"];
+    const args = ["-y", "-i", "input"];
     if (scale) args.push("-vf", `scale=${scale}`);
     args.push(
       "-c:v", "libx264",
