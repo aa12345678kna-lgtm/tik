@@ -774,7 +774,7 @@ async function drawFrame(sec){const v=$('preview'),c=$('canvas'),ctx=c.getContex
 $('seek').oninput=e=>drawFrame(Number(e.target.value));$('thumbYes').onclick=()=>{$('thumbPanel').classList.remove('hidden');if($('preview').readyState>=2)drawFrame($('preview').currentTime||0)};$('thumbNo').onclick=()=>$('thumbPanel').classList.add('hidden');$('prevFrame').onclick=()=>drawFrame(Math.max(0,($('preview').currentTime||0)-.05));$('nextFrame').onclick=()=>drawFrame(Math.min(videoDuration||0,($('preview').currentTime||0)+.05));$('saveCover').onclick=()=>{$('canvas').toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='cover.jpg';a.click();URL.revokeObjectURL(a.href)},'image/jpeg',.94)};
 $('preview').addEventListener('loadeddata',()=>{$('saveCover').disabled=false});
 
-async function loadEngine(onProgress){if(window.IbrahimEngineInstance)return window.IbrahimEngineInstance;const enginePlan=await initializeEnginePlan();window.IbrahimEnginePlan={...enginePlan,requestedMode:enginePlan.mode,fallbackUsed:false,fallbackReason:window.IbrahimEnginePlan?.fallbackReason||''};const mod=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');const util=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js');const {FFmpeg}=mod;const {fetchFile,toBlobURL}=util;
+async function loadEngine(onProgress){if(window.IbrahimEngineInstance)return window.IbrahimEngineInstance;const enginePlan=await initializeEnginePlan();window.IbrahimEnginePlan={...enginePlan,requestedMode:enginePlan.mode,fallbackUsed:false,fallbackReason:window.IbrahimEnginePlan?.fallbackReason||''};const mod=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');const util=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js');const {FFmpeg}=mod;const {fetchFile}=util;
 function formatAnyError(err){
  if(!err)return 'Unknown error (empty/null)';
  if(typeof err==='string')return err;
@@ -785,7 +785,34 @@ function formatAnyError(err){
 class IbrahimEngine{
 constructor(){this.ffmpeg=new FFmpeg();this.loaded=false;this.busy=false;this.onProgress=onProgress;this.logs=[];this.cancelRequested=false;this.lastErrorReport=null;this.bindEvents();}
 bindEvents(){this.ffmpeg.on('log',({message})=>{this.logs.push(message);if(this.logs.length>250)this.logs.shift()});this.ffmpeg.on('progress',({progress})=>{if(this.onProgress)this.onProgress(Math.min(.99,Math.max(.01,progress||0)))});}
-async loadCore(multithread){const classWorkerURL=new URL('assets/ffmpeg/worker.js',document.baseURI).href;const base=multithread?'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.6/dist/esm':'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';const [coreURL,wasmURL]=await Promise.all([toBlobURL(base+'/ffmpeg-core.js','text/javascript'),toBlobURL(base+'/ffmpeg-core.wasm','application/wasm')]);const options={classWorkerURL,coreURL,wasmURL};if(multithread)options.workerURL=await toBlobURL(base+'/ffmpeg-core.worker.js','text/javascript');await this.ffmpeg.load(options);}
+async loadCore(multithread){
+ const classWorkerURL=new URL('assets/ffmpeg/worker.js',document.baseURI).href;
+ const base=multithread?'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.6/dist/esm':'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';
+ const cacheName='ibrahim-ffmpeg-assets-v1';
+ const cachedBlobURL=async(url,fallbackType)=>{
+  let blob=null,cacheHit=false;
+  if('caches' in window){
+   try{const cache=await caches.open(cacheName);const saved=await cache.match(url);if(saved){blob=await saved.blob();cacheHit=true;}}catch(error){console.warn('تعذّر قراءة نسخة FFmpeg المخزنة؛ سيتم التحميل من المصدر.',error);}
+  }
+  if(!blob){
+   const response=await fetch(url,{mode:'cors',cache:'force-cache'});
+   if(!response.ok)throw Error('تعذّر تحميل أحد ملفات محرك FFmpeg ('+response.status+').');
+   const savedResponse=response.clone();
+   blob=await response.blob();
+   if('caches' in window){try{const cache=await caches.open(cacheName);await cache.put(url,savedResponse);}catch(error){console.warn('تعذّر حفظ ملف FFmpeg في ذاكرة المتصفح؛ سيعمل المحرك لهذه الجلسة.',error);}}
+  }
+  if(!blob.type&&fallbackType)blob=new Blob([await blob.arrayBuffer()],{type:fallbackType});
+  return {url:URL.createObjectURL(blob),cacheHit};
+ };
+ const specs=[['ffmpeg-core.js','text/javascript'],['ffmpeg-core.wasm','application/wasm']];
+ if(multithread)specs.push(['ffmpeg-core.worker.js','text/javascript']);
+ const assets=await Promise.all(specs.map(([name,type])=>cachedBlobURL(base+'/'+name,type)));
+ const options={classWorkerURL,coreURL:assets[0].url,wasmURL:assets[1].url};
+ if(multithread)options.workerURL=assets[2].url;
+ window.IbrahimEnginePlan={...window.IbrahimEnginePlan,engineAssetCacheHit:assets.every(asset=>asset.cacheHit),engineAssetCacheName:cacheName};
+ try{await this.ffmpeg.load(options);}
+ catch(error){for(const asset of assets)URL.revokeObjectURL(asset.url);throw error;}
+}
 async load(){if(this.loaded)return;const wantsMulti=window.IbrahimEnginePlan?.mode==='multi-thread';setStatus(wantsMulti?'تهيئة المعالجة المتوازية لأول مرة...':'تهيئة نظام المعالجة لأول مرة؛ اترك الصفحة مفتوحة...',2);try{await this.loadCore(wantsMulti);this.loaded=true;this.activeMode=wantsMulti?'multi-thread':'single-thread';}catch(error){if(!wantsMulti)throw error;try{this.ffmpeg.terminate()}catch(e){}this.ffmpeg=new FFmpeg();this.bindEvents();window.IbrahimEnginePlan={...window.IbrahimEnginePlan,mode:'single-thread',fallbackUsed:true,fallbackReason:error?.message||String(error),reason:'تعذّرت تهيئة الوضع المتوازي؛ تم الرجوع تلقائياً إلى الوضع القياسي.'};setStatus('تعذّرت تهيئة الوضع المتوازي؛ جارٍ تشغيل الوضع الاحتياطي...',4);await this.loadCore(false);this.loaded=true;this.activeMode='single-thread';}}
 async process(inputFile,method){if(this.busy)throw Error('المعالج مشغول حالياً');this.busy=true;this.cancelRequested=false;this.lastErrorReport=null;const processStarted=performance.now();let loadSeconds=0,encodeSeconds=0;const ext=(inputFile.name.match(/\.[^.]+$/)||['.mp4'])[0].toLowerCase();const input='input'+ext,output='output.mp4';let wrote=false,ffmpegExitCode=null,writeSeconds=0,readSeconds=0;try{setStatus('تهيئة نظام المعالجة...',4);const loadStarted=performance.now();await this.load();loadSeconds=(performance.now()-loadStarted)/1000;setStatus('قراءة الفيديو داخل ذاكرة المعالجة المحلية...',7);const writeStarted=performance.now();await this.ffmpeg.writeFile(input,await fetchFile(inputFile));writeSeconds=(performance.now()-writeStarted)/1000;wrote=true;this.logs=[];if(method==='4k60'||method==='wudooh-x264'){setStatus(method==='wudooh-x264'?'فحص دعم مشفّر H.264 libx264...':'فحص دعم ترميز HEVC 10-bit...',9);await this.ffmpeg.exec(['-encoders']);const encoderList=this.logs.join('\n');const requiredEncoder=method==='wudooh-x264'?'libx264':'libx265';if(!encoderList.includes(requiredEncoder))throw Error('نسخة FFmpeg الحالية لا تحتوي مشفّر '+requiredEncoder+'؛ لم يتم إنشاء الملف.');this.logs=[];}setStatus('تجهيز مسارات الفيديو والصوت...',9);let args;
 if(method==='classic'){const sourceCodec=mediaInfoData?.videoCodec||'';const sourceIsHevc=/HEVC|H\\.265/i.test(sourceCodec),sourceIsH264=/AVC|H\\.264/i.test(sourceCodec);if(!sourceIsHevc&&!sourceIsH264)throw Error('تعذّر تحديد ترميز الفيديو من فحص MediaInfo؛ أُوقفت عملية Classic دون تخمين.');setStatus('نسخ فيديو '+(sourceIsHevc?'HEVC':'H.264')+' والصوت دون إعادة ترميز...',10);args=['-hide_banner','-y','-i',input,'-map','0:v:0','-map','0:a?','-map_metadata','0','-map_chapters','0','-c:v','copy','-c:a','copy','-video_track_timescale','90000'];if(sourceIsHevc)args.push('-tag:v','hvc1');args.push('-movflags','+faststart',output)}
