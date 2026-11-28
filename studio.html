@@ -1,1105 +1,124 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080b12">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090b12">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-<title>IBRAHIM STUDIO — استوديو تجهيز الفيديو</title>
+<title>IBRAHIM AL FARIS — استوديو تجهيز الفيديو</title>
 <style>
-:root{color-scheme:dark;--bg:#08090d;--line:#20242c;--muted:#a0a4ae;--text:#f5f5f7;--radius:13px}
-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:15px}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;min-height:100vh}
-.wrap{max-width:1040px;margin:auto;padding:0 16px 56px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 0 17px;border-bottom:1px solid #20232a;margin-bottom:0}.brand{display:flex;align-items:center;gap:11px}.logo{width:39px;height:39px;border-radius:10px;background:linear-gradient(135deg,#ff3c68,#ff8b58);display:grid;place-items:center;color:white;font-weight:900;font-size:14px}.eyebrow{color:#ff708d;font-size:10px;letter-spacing:1.5px;font-weight:800}.brand h1{font-size:16px;margin:2px 0}.pill{border:1px solid #2a4944;background:#10201e;color:#9fe9d7;border-radius:999px;padding:7px 11px;font-size:11px}
-nav{display:flex;gap:22px;align-items:center;overflow:auto;padding:14px 0 18px;white-space:nowrap;border-bottom:1px solid #171a20}nav a{color:#aeb2bb;text-decoration:none;font-size:12px}nav a:first-child{color:#ff7894}nav a:hover{color:#fff}
-h2{font-size:clamp(25px,5vw,33px);margin:22px 0 7px}.intro{color:var(--muted);margin:0 0 18px;line-height:1.9;font-size:13px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0 20px}.step{background:#101116;border:1px solid #242730;border-radius:9px;padding:11px;color:#c7c8ce;font-size:12px}.step b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#321b24;color:#ff8ba4;margin-left:7px}
-.card{background:#101116;border:1px solid #242730;border-radius:var(--radius);padding:20px;margin:13px 0;box-shadow:0 9px 28px #0002}.card h3{font-size:18px;margin:0 0 7px}.sub{color:var(--muted);font-size:12px;line-height:1.9;margin:0 0 16px}
-.drop{border:1px dashed #535866;border-radius:11px;padding:28px 14px;text-align:center;background:#0b0c11;cursor:pointer;transition:.2s}.drop:hover,.drop.drag{border-color:#ff6f91;background:#171016}.uploadIcon{font-size:28px;color:#ff7894}.drop strong{display:block;margin:8px}.drop small{color:var(--muted)}input[type=file]{display:none}
-.urlrow{display:flex;gap:9px;margin-top:13px}.urlrow input,.field{min-width:0;flex:1;background:#090a0e;border:1px solid #30333c;border-radius:9px;padding:12px;color:white;font:inherit;outline:none}.urlrow input:focus,.field:focus{border-color:#ff7894}
-button{font:inherit;cursor:pointer;border:0;border-radius:9px;padding:11px 16px;background:#252832;color:#fff;font-weight:700;transition:.15s}button:hover{filter:brightness(1.15)}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:linear-gradient(110deg,#f43e70,#ff875c);color:#fff}.quiet{background:#1a1d25;border:1px solid #30333c}.danger{background:#49252e}.note{color:var(--muted);font-size:11px;margin-top:11px;line-height:1.8}
-.preview{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px;align-items:start;margin-top:17px}video{width:100%;max-height:370px;background:#030609;border-radius:10px;object-fit:contain}.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}.metric{background:#0a0b10;border:1px solid #252832;border-radius:9px;padding:10px}.metric span{display:block;color:var(--muted);font-size:10px}.metric b{display:block;font-size:13px;margin-top:5px;overflow-wrap:anywhere}
-.modes{display:grid;grid-template-columns:1fr 1fr;gap:9px}.mode{position:relative;border:1px solid #292c35;border-radius:10px;padding:14px;background:#0b0c11;cursor:pointer;min-height:125px}.mode:has(input:checked){border-color:#f65b7f;background:#1b1118;box-shadow:inset 0 0 0 1px #f65b7f}.mode input{accent-color:#ff6687}.mode strong{display:block;margin:8px 0;font-size:14px}.mode small{color:#a6a8b1;line-height:1.8;display:block;font-size:11px}.tag{display:inline-block;color:#ff9cb1;background:#351923;border-radius:5px;padding:3px 7px;font-size:10px}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.progress{height:8px;border-radius:99px;background:#282b34;overflow:hidden;margin:13px 0}.bar{height:100%;width:0;background:linear-gradient(90deg,#f34e76,#ff9b54);transition:width .2s}.status{color:var(--muted);font-size:12px;line-height:1.8}.hidden{display:none!important}
-.coverBox{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center}.coverBox canvas{width:100%;border-radius:10px;background:#05080d}.range{width:100%;accent-color:#ff7894}
-.guide{display:grid;grid-template-columns:1fr 1fr;gap:9px}.guide article{background:#0b0c11;border:1px solid #252832;border-radius:9px;padding:13px}.guide b{display:block;margin-bottom:7px;font-size:13px}.guide p{color:var(--muted);font-size:11px;line-height:1.8;margin:0}
-footer{text-align:center;color:#727680;font-size:11px;margin-top:27px;padding:18px 0;border-top:1px solid #20232a}
-@media(max-width:680px){.wrap{padding:0 11px 40px}.top{padding-top:14px}.card{padding:15px}.preview{grid-template-columns:1fr}.modes{grid-template-columns:1fr}.urlrow{flex-direction:column}.coverBox,.guide{grid-template-columns:1fr}.steps{gap:6px}.step{padding:9px 5px;font-size:10px;text-align:center}.step b{margin:0 0 5px}.pill{font-size:10px;padding:7px 9px}nav{gap:18px}}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;min-height:100vh}
-.wrap{max-width:1120px;margin:auto;padding:0 18px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0 14px;border-bottom:1px solid #20242c;margin-bottom:18px}.brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#ff4772,#ff9b54);display:grid;place-items:center;color:white;font-weight:900;font-size:17px}.eyebrow{color:#ff7894;font-size:10px;letter-spacing:1.7px;font-weight:800}.brand h1{font-size:17px;margin:2px 0}.pill{border:1px solid #31514f;background:#102321;color:#a5f4e8;border-radius:999px;padding:8px 12px;font-size:12px}
-nav{display:flex;gap:19px;align-items:center;overflow:auto;padding:0 0 18px;white-space:nowrap}nav a{color:#b2b8c3;text-decoration:none;font-size:12px}nav a:first-child{color:#ff7995}nav a:hover{color:#fff}
-h2{font-size:clamp(26px,5vw,36px);margin:0 0 8px}.intro{color:var(--muted);margin:0 0 22px;line-height:1.85;font-size:14px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:20px 0}.step{background:#10141b;border:1px solid var(--line);border-radius:12px;padding:12px;color:#c3c8d1;font-size:13px}.step b{display:inline-grid;place-items:center;width:23px;height:23px;border-radius:7px;background:#47202e;color:#ff8ba4;margin-left:7px}
-.card{background:linear-gradient(155deg,#121720,#0d1118);border:1px solid #252c38;border-radius:var(--radius);padding:22px;margin:14px 0;box-shadow:0 12px 35px #0003}.card h3{font-size:19px;margin:0 0 7px}.sub{color:var(--muted);font-size:13px;line-height:1.8;margin:0 0 17px}
-.drop{border:1.5px dashed #495365;border-radius:14px;padding:30px 16px;text-align:center;background:#0a0e14;cursor:pointer;transition:.2s}.drop:hover,.drop.drag{border-color:#ff6f91;background:#1c1119}.uploadIcon{font-size:30px;color:#ff7894}.drop strong{display:block;margin:8px}.drop small{color:var(--muted)}input[type=file]{display:none}
-.urlrow{display:flex;gap:9px;margin-top:14px}.urlrow input,.field{min-width:0;flex:1;background:#080b10;border:1px solid #303744;border-radius:11px;padding:13px;color:white;font:inherit;outline:none}.urlrow input:focus,.field:focus{border-color:#ff7894}
-button{font:inherit;cursor:pointer;border:0;border-radius:11px;padding:12px 17px;background:#242b38;color:#fff;font-weight:700;transition:.15s}button:hover{filter:brightness(1.15)}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:linear-gradient(110deg,#fa4773,#ff9659);color:#fff}.quiet{background:#1a202b;border:1px solid #303846}.danger{background:#49252e}.note{color:var(--muted);font-size:12px;margin-top:12px;line-height:1.8}
-.preview{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:17px;align-items:start;margin-top:18px}video{width:100%;max-height:380px;background:#030609;border-radius:12px;object-fit:contain}.meta{display:grid;grid-template-columns:1fr 1fr;gap:9px}.metric{background:#0a0e14;border:1px solid #252d39;border-radius:11px;padding:11px}.metric span{display:block;color:var(--muted);font-size:11px}.metric b{display:block;font-size:14px;margin-top:5px;overflow-wrap:anywhere}
-.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mode{position:relative;border:1px solid #2b323e;border-radius:13px;padding:16px;background:#0b0f15;cursor:pointer;min-height:132px}.mode:has(input:checked){border-color:#ff6687;background:#20131b;box-shadow:inset 0 0 0 1px #ff6687}.mode input{accent-color:#ff6687}.mode strong{display:block;margin:8px 0}.mode small{color:var(--muted);line-height:1.7;display:block}.tag{display:inline-block;color:#ff9cb1;background:#3b1c29;border-radius:6px;padding:3px 7px;font-size:10px}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.progress{height:9px;border-radius:99px;background:#252b36;overflow:hidden;margin:14px 0}.bar{height:100%;width:0;background:linear-gradient(90deg,#f34e76,#ff9b54);transition:width .2s}.status{color:var(--muted);font-size:13px;line-height:1.7}.hidden{display:none!important}
-.processIssue{margin-top:12px;padding:12px;border:1px solid #65404a;border-radius:10px;background:#171016;color:#ffd7df;font-size:12px;line-height:1.8}.processIssue.cancelled{border-color:#455365;background:#101722;color:#d4deeb}.processIssue pre{direction:ltr;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;max-height:260px;overflow:auto;background:#080b10;color:#d7e0ec;border:1px solid #303744;border-radius:8px;padding:10px;font:11px/1.6 ui-monospace,monospace}
-.coverBox{display:grid;grid-template-columns:1fr 1fr;gap:15px;align-items:center}.coverBox canvas{width:100%;border-radius:12px;background:#05080d}.range{width:100%;accent-color:#ff7894}
-.guide{display:grid;grid-template-columns:1fr 1fr;gap:10px}.guide article{background:#0b0f15;border:1px solid #252d39;border-radius:12px;padding:14px}.guide b{display:block;margin-bottom:7px}.guide p{color:var(--muted);font-size:12px;line-height:1.7;margin:0}
-footer{text-align:center;color:#687180;font-size:12px;margin-top:30px}
-@media(max-width:680px){.wrap{padding:0 12px 42px}.top{padding-top:15px}.card{padding:17px}.preview{grid-template-columns:1fr}.modes{grid-template-columns:1fr}.urlrow{flex-direction:column}.coverBox,.guide{grid-template-columns:1fr}.steps{gap:6px}.step{padding:9px 6px;font-size:11px;text-align:center}.step b{margin:0 0 5px}.pill{font-size:10px;padding:7px 9px}}
-
-
-/* تقرير فحص الملف الحقيقي */
-.scanState{margin:12px 0;padding:11px 13px;border:1px solid #2b3543;border-radius:10px;background:#0b1119;color:#c7d2df;font-size:12px;line-height:1.8}
-#tiktokInspectResult .tiktokPreview{grid-column:1/-1;display:flex;gap:12px;align-items:flex-start}#tiktokInspectResult img{width:112px;max-width:32%;border-radius:9px;object-fit:cover}#tiktokInspectResult a{color:#ff9bb2;overflow-wrap:anywhere}
-.scanSummary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
-.scanChip{background:#0a0e14;border:1px solid #27303c;border-radius:10px;padding:10px;min-width:0}
-.scanChip span{display:block;color:var(--muted);font-size:10px}.scanChip b{display:block;margin-top:4px;font-size:13px;overflow-wrap:anywhere}
-.scanReport{margin-top:12px;border-top:1px solid #252d39;padding-top:10px}
-.scanReport details{background:#0b0f15;border:1px solid #252d39;border-radius:10px;margin:8px 0;overflow:hidden}
-.scanReport summary{padding:12px;cursor:pointer;font-size:13px;font-weight:750;list-style:none}
-.scanReport summary::-webkit-details-marker{display:none}.scanReport summary:after{content:"＋";float:left;color:#ff8ba4}.scanReport details[open] summary:after{content:"−"}
-.scanGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:0 10px 10px}
-.scanItem{background:#111722;border-radius:7px;padding:8px;min-width:0}
-.scanItem span{display:block;color:#9da8b7;font-size:10px}.scanItem b{display:block;font-size:12px;margin-top:4px;overflow-wrap:anywhere}
-.scanTrack{margin:8px 10px 10px;padding:10px;border:1px solid #293342;border-radius:8px}
-.modeHint{margin-top:12px;padding:10px 12px;border-radius:9px;background:#111722;color:#c7d2df;font-size:12px;line-height:1.8}
-@media(max-width:600px){.scanGrid{grid-template-columns:1fr 1fr}.scanSummary{grid-template-columns:1fr 1fr}}
-
-
-.deviceReport{margin:14px 0;background:#0c1119;border:1px solid #293342;border-radius:12px;padding:14px}
-.deviceReport h3{font-size:15px;margin:0 0 5px}.deviceReport .sub{margin-bottom:12px}
-.deviceRows{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.deviceRow{background:#111925;border:1px solid #263242;border-radius:9px;padding:10px;min-width:0}
-.deviceRow span{display:block;color:#9da8b7;font-size:10px}.deviceRow b{display:block;margin-top:5px;font-size:12px;overflow-wrap:anywhere}
-.deviceStatus{font-size:12px;line-height:1.8;margin:10px 0;color:#cbd5e1}
-.deviceActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-@media(max-width:600px){.deviceRows{grid-template-columns:1fr 1fr}}
-
-/* واجهة مبسطة على نمط Wudooh */
-#guide,#support{display:none!important}
-#videoInfo{display:block!important;margin-top:16px}.videoDetails{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}.videoDetails .metric{min-width:0}.videoActions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.fileName{overflow-wrap:anywhere}
-@media(max-width:600px){.videoDetails{grid-template-columns:1fr 1fr}}
-.wrap{max-width:850px}.top{margin-bottom:12px}.steps{margin:14px 0 18px}.card{padding:18px;margin:12px 0}.mode{min-height:105px;padding:13px}.modes{grid-template-columns:1fr 1fr}.intro{margin-bottom:14px}.drop{padding:26px 12px}.actions{margin-top:14px}
-@media(max-width:600px){.modes{grid-template-columns:1fr}.mode{min-height:unset}}
-
-/* تحسينات واجهة الجوال فقط — دون تغيير مسار المعالجة */
-.deviceKeyIndicators{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 2px}.deviceKey{min-width:0;padding:10px;border:1px solid #293746;border-radius:10px;background:#111925}.deviceKey span{display:block;color:#9da8b7;font-size:11px}.deviceKey b{display:block;margin-top:5px;font-size:12px;overflow-wrap:anywhere}.deviceKey .good{color:#9fe9d7}.deviceKey .warn{color:#ffc0c8}.deviceDetails{margin-top:10px;border-top:1px solid #293342;padding-top:9px}.deviceDetails summary{color:#cbd5e1;font-size:12px;cursor:pointer;padding:5px 0}.deviceDetails[open] summary{margin-bottom:9px}.deviceDetails .deviceRows{margin-top:8px}.steps{margin:10px 0 12px;gap:7px}.step{padding:8px 7px;font-size:12px}.card{padding:15px;margin:10px 0}.card h3{margin-top:0;margin-bottom:7px;font-size:16px}.card .sub{margin-top:0;margin-bottom:12px}.drop{padding:25px 14px;min-height:126px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}.drop strong{font-size:14px}.drop small{font-size:11px;color:#9da8b7}.preview{display:block;width:100%;max-height: min(56vh,440px);object-fit:contain;background:#05070b;border-radius:12px;margin:10px auto}.videoDetails{gap:7px!important;margin-top:10px!important}.videoDetails .metric{padding:9px!important}.mode{padding:13px!important;border-radius:12px}.mode strong{display:block;line-height:1.5}.mode small{display:block;line-height:1.65;margin-top:5px}.actions{gap:8px;margin-top:13px}.actions button{min-height:44px}.progress{height:10px;margin:12px 0}.status{font-size:13px;line-height:1.7}.processIssue{margin-top:12px}.processIssue pre{max-height:220px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:11px;line-height:1.55}.deviceStatus{margin:8px 0 10px}@media(max-width:600px){.wrap{padding-left:12px;padding-right:12px}.steps{margin:8px 0 10px}.step{font-size:11px;padding:7px 5px}.card{padding:14px;margin:9px 0}.deviceKeyIndicators{gap:6px}.deviceKey{padding:8px 7px}.deviceKey span{font-size:10px}.deviceKey b{font-size:11px}.deviceRows{grid-template-columns:1fr 1fr;gap:7px}.deviceRow{padding:8px}.drop{min-height:116px;padding:21px 10px}.videoDetails{grid-template-columns:1fr 1fr;gap:7px!important}.videoActions button,.deviceActions button{flex:1 1 auto;min-height:42px}.actions{display:flex}.actions #start{flex:1 1 100%}.actions #cancel{flex:1 1 100%}.modes{gap:9px}.mode{min-height:unset}.processIssue{padding:11px}.processIssue .actions button{width:100%}}@media(min-width:601px){.deviceKeyIndicators{max-width:620px}}
-
-/* UI-only refinement — no processing, FFmpeg, codec, engine, or report logic changes */
-:root{
- --ui-surface:#101720;--ui-surface-2:#0b1119;--ui-border:#283443;
- --ui-accent:#ff6687;--ui-accent-soft:#351b28;--ui-muted:#a8b3c2;
-}
-body{background:radial-gradient(ellipse at 50% -18%,#172231 0, #080c12 48%,#07090e 100%);line-height:1.55}
-.wrap{max-width:900px;padding-left:clamp(12px,3vw,22px);padding-right:clamp(12px,3vw,22px)}
-.top{padding:17px 0 15px;border-color:#26303c}
-.logo{box-shadow:0 5px 18px #ff477226}
-.brandLogo{display:block;width:min(360px,48vw);height:auto;max-height:76px;object-fit:contain;object-position:right center}
-.srOnly{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.brand h1{letter-spacing:.1px}
-.pill{white-space:nowrap}
-h2{letter-spacing:-.5px;line-height:1.2;margin-top:18px}
-.intro{max-width:650px;color:#b0bac8}
-.steps{gap:10px}
-.step{border-radius:12px;background:linear-gradient(145deg,#141d29,#0e141d);border-color:#2b3746;display:flex;align-items:center;min-height:48px}
-.step b{flex:0 0 24px;margin-left:9px}
-.card{background:linear-gradient(155deg,rgba(19,28,40,.97),rgba(11,16,24,.98));border-color:#293646;border-radius:15px;padding:clamp(15px,2.5vw,21px);box-shadow:0 12px 34px #0003}
-.card h3{font-size:17px;letter-spacing:.05px}
-.card .sub{color:var(--ui-muted)}
-.drop{border-color:#526174;background:linear-gradient(145deg,#0c131d,#0a0e15);border-radius:13px}
-.drop:hover,.drop.drag{border-color:var(--ui-accent);box-shadow:0 0 0 3px #ff668718}
-.videoDetails .metric,.metric{background:#0b121b;border-color:#2a3645;border-radius:10px}
-.videoDetails .metric b{font-size:13px}
-.mode{background:linear-gradient(150deg,#0d141e,#0a0f16);border-color:#2b3746;border-radius:13px;transition:border-color .16s,background .16s,transform .16s}
-.mode:hover{border-color:#596b80}
-.mode:has(input:checked){background:linear-gradient(145deg,#241521,#15121a);border-color:#ff6687;box-shadow:inset 0 0 0 1px #ff6687,0 8px 22px #ff668710}
-.mode strong{font-size:14px}
-.mode small{color:#aeb9c8}
-.tag{font-weight:750;letter-spacing:.15px}
-button{border-radius:10px;min-height:42px}
-.primary{box-shadow:0 6px 18px #f34e7626}
-.quiet{border-color:#344253}
-.actions{align-items:center}
-.progress{height:10px;background:#252f3d;border:1px solid #303b49}
-.bar{background:linear-gradient(90deg,#f34e76,#ff9b54)}
-.status{padding:2px 1px;color:#c5d0de}
-.scanState{background:#0d1621;border-color:#2d3c4d;border-radius:11px}
-.scanChip,.scanItem,.deviceRow,.deviceKey{background:#0d1520;border-color:#2a3747;border-radius:10px}
-.scanChip b,.scanItem b,.deviceRow b{line-height:1.55}
-.scanReport details,.deviceDetails{border-color:#2b3949;border-radius:11px}
-.scanReport summary,.deviceDetails summary{padding:13px;color:#e2e8f0}
-.processIssue{border-radius:12px;padding:14px}
-.processIssue pre{max-height:300px;border-color:#344254;border-radius:10px}
-#result{border-color:#3b4657}
-#result h4{margin:18px 0 10px;font-size:14px}
-#engineReport{gap:9px}
-#result .actions{margin-top:16px}
-#download{display:inline-flex;text-decoration:none}
-footer{padding:18px 0;color:#778394}
-:focus-visible{outline:2px solid #ff8aa4;outline-offset:3px}
-@media(max-width:600px){
- .wrap{padding-left:11px;padding-right:11px}
- .top{gap:9px}
- .brand{gap:9px}
- .brand h1{font-size:15px}
- .logo{width:39px;height:39px}
- .steps{gap:6px}
- .step{justify-content:center;min-height:47px;font-size:11px}
- .step b{margin-left:0}
- .card{border-radius:13px;padding:14px}
- .modes{grid-template-columns:1fr}
- .mode{padding:13px!important}
- .videoDetails{gap:7px!important}
- .videoDetails .metric{padding:9px!important}
- .deviceKeyIndicators{gap:6px}
- .deviceKey{padding:9px 7px}
- #engineReport{grid-template-columns:1fr 1fr}
- .processIssue pre{max-height:240px}
-}
-@media(min-width:601px){
- .modes{grid-template-columns:1fr 1fr}
- #engineReport{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-
-
-/* واجهة مبسطة ومنظمة — تغييرات عرض فقط */
-:root{
-  --bg:#090b10;
-  --line:#252b36;
-  --muted:#9da7b5;
-  --text:#f4f6fa;
-  --radius:14px;
-}
-body{background:radial-gradient(ellipse at 50% -18%,#1b2432 0%,#090b10 55%);color:var(--text)}
-.wrap{max-width:780px;padding:0 16px 48px}
-.top{padding:17px 0 13px;margin-bottom:16px;border-bottom:1px solid #252b36}
-.logo{width:40px;height:40px;border-radius:12px}
-.brand h1{font-size:16px;font-weight:750}
-.pill{font-size:11px;padding:7px 10px}
-h2{font-size:clamp(25px,5vw,32px);margin:2px 0 6px;letter-spacing:-.4px}
-.intro{font-size:13px;margin-bottom:14px;color:#aeb7c4}
-.steps{display:flex;gap:7px;margin:12px 0 15px}
-.step{flex:1;text-align:center;border-radius:9px;padding:8px 7px;background:#111722;border-color:#252e3b;font-size:11px;color:#d0d7e2}
-.step b{width:20px;height:20px;border-radius:7px;background:#38202b;color:#ff9bb0;margin-left:5px}
-.card{margin:10px 0;padding:17px;background:#10151e;border:1px solid #252e3b;border-radius:14px;box-shadow:0 8px 24px #0002}
-.card h3{font-size:16px;margin-bottom:6px}
-.sub{font-size:12px;line-height:1.75;margin-bottom:12px;color:#a5afbd}
-.drop{min-height:132px;padding:24px 14px;border:1.5px dashed #566276;border-radius:12px;background:#0b1018}
-.drop:hover,.drop.drag{border-color:#ff7894;background:#17131b}
-.uploadIcon{font-size:27px}
-.drop strong{font-size:14px;margin:6px 0}
-.drop small{font-size:11px;color:#9da8b7}
-.preview{max-height: min(58vh,430px);border-radius:12px;background:#05070b}
-.videoDetails,.meta{gap:7px}
-.metric{padding:10px;background:#0b111a;border-color:#273140;border-radius:10px}
-.metric span{font-size:10px;color:#9da8b7}
-.metric b{font-size:13px}
-.videoActions{gap:8px}
-.videoActions button,.deviceActions button{min-height:40px;padding:9px 13px}
-.modes{gap:8px}
-.mode{min-height:112px;padding:13px;background:#0b111a;border-color:#293342;border-radius:11px}
-.mode:has(input:checked){background:#1b141d;border-color:#ff718f;box-shadow:inset 0 0 0 1px #ff718f}
-.mode strong{font-size:13px;margin:7px 0 5px}
-.mode small{font-size:11px;line-height:1.65;color:#aab4c2}
-.tag{font-size:9px;padding:3px 6px}
-.modeHint{margin-top:10px;padding:10px 11px;background:#0d141e;border-color:#273342;font-size:11px}
-.actions{gap:8px;margin-top:12px}
-.actions button{min-height:43px;padding:10px 15px}
-.actions #start{min-width:150px}
-.primary{background:linear-gradient(110deg,#f04b76,#fa865d)}
-.quiet{background:#171e29;border-color:#303b4b}
-.danger{background:#43232c}
-.progress{height:9px;background:#252e3b}
-.bar{background:linear-gradient(90deg,#f04b76,#fa9a62)}
-.status{font-size:12px}
-.scanState{padding:10px 12px;background:#0c141e;border-color:#293747;font-size:11px}
-.scanChip,.scanItem{background:#0d141e;border-color:#293747}
-.scanChip{padding:9px}
-.scanChip span,.scanItem span{font-size:10px;color:#9da8b7}
-.scanChip b,.scanItem b{font-size:12px}
-.scanReport details{background:#0b111a;border-color:#293747}
-.scanReport summary{font-size:12px;padding:10px 12px}
-.deviceReport{padding:13px;margin:10px 0;background:#0e141d;border-color:#263241}
-.deviceReport h3{font-size:14px}
-.deviceReport .sub{font-size:11px;margin-bottom:8px}
-.deviceKeyIndicators{gap:6px}
-.deviceKey{padding:8px;background:#111a26;border-color:#293747}
-.deviceKey span{font-size:10px}
-.deviceKey b{font-size:11px}
-.deviceDetails summary{font-size:11px}
-.deviceRow{padding:8px;background:#111a26}
-.deviceRow span{font-size:10px}
-.deviceRow b{font-size:11px}
-.processIssue{border-radius:11px}
-#result{border-color:#3b4657}
-#result h4{font-size:14px;margin:14px 0 8px}
-#engineReport{gap:7px}
-footer{font-size:10px;color:#778293;padding-top:15px}
-@media(max-width:600px){
- .wrap{padding-left:12px;padding-right:12px}
- .top{padding-top:13px}
- .card{padding:14px;margin:9px 0}
- .steps{gap:5px;margin:9px 0 11px}
- .step{font-size:10px;padding:7px 4px}
- .step b{margin-left:0;margin-bottom:3px}
- .modes{grid-template-columns:1fr 1fr;gap:7px}
- .mode{min-height:118px;padding:10px}
- .mode strong{font-size:12px}
- .mode small{font-size:10px}
- .videoDetails{grid-template-columns:1fr 1fr}
- .deviceKeyIndicators{grid-template-columns:repeat(3,minmax(0,1fr))}
- .deviceKey{padding:7px 5px}
- .deviceKey span{font-size:9px}
- .deviceKey b{font-size:10px}
- .actions #start,.actions #cancel{flex:1 1 100%}
- .videoActions button,.deviceActions button{flex:1}
-}
-@media(max-width:360px){
- .modes{grid-template-columns:1fr}
- .pill{max-width:125px;white-space:nowrap}
-}
-
-
-/* Wudooh-style studio layout: presentation only */
-#deviceCheck,nav,#guide,#support{display:none!important}
-.urlrow{display:flex!important;gap:9px;margin-top:14px}
-.urlrow input{min-width:0;flex:1;background:#080b10;border:1px solid #303744;border-radius:10px;padding:12px;color:#fff;font:inherit}
-.urlrow button{white-space:nowrap}
-.coverCard{margin-top:12px}
-.coverChoices{margin-top:8px}
-#thumbPanel{margin-top:14px}
-#thumbPanel.hidden{display:none!important}
-.coverBox{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
-.coverBox canvas{width:100%;max-height:260px;object-fit:contain}
-.coverBox .actions{display:grid;grid-template-columns:1fr 1fr}
-.coverBox #saveCover{grid-column:1/-1}
-#modeHint{font-size:12px;padding:9px 11px;border-radius:9px}
-@media(max-width:600px){
- .urlrow{flex-direction:column}
- .coverBox{grid-template-columns:1fr}
- .coverBox canvas{max-height:220px}
- .coverBox .actions{grid-template-columns:1fr 1fr}
-}
-
-
-/* Bilingual interface control — presentation only */
-.topControls{display:flex;align-items:center;gap:8px}.languageToggle{min-height:38px;padding:8px 12px;border:1px solid #344253;border-radius:10px;background:#111925;color:#e7edf5;font-size:12px;font-weight:750}.languageToggle:focus-visible{outline:2px solid #ff7894;outline-offset:3px}@media(max-width:520px){.top{align-items:flex-start}.topControls{flex-direction:column;align-items:flex-end;gap:6px}.languageToggle{min-height:34px;padding:6px 10px}}
-/* Mode cards: match the supplied selection-card design; presentation only. */
-.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:stretch}
-.mode{position:relative;display:flex;flex-direction:column;gap:10px;min-height:156px;padding:20px 18px 18px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:#12141a;cursor:pointer;text-align:start;transition:border-color .2s ease,background-color .2s ease,box-shadow .2s ease;order:0}
-.mode:nth-child(2){order:1}
-.mode:nth-child(1){order:2}
-.mode:nth-child(4){order:3}
-.mode:nth-child(3){order:4}
-.mode:has(input:checked){background:#24161b;border-color:#e05a6d;box-shadow:inset 0 0 0 1px #e05a6d}
-.mode:hover{border-color:rgba(255,255,255,.22)}
-.mode input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
-.mode:focus-within{outline:2px solid #e05a6d;outline-offset:3px}
-.mode::after{content:"";position:absolute;inset-inline-start:18px;top:19px;width:18px;height:18px;border:2px solid rgba(255,255,255,.28);border-radius:50%;display:grid;place-items:center}
-.mode:has(input:checked)::after{border-color:#e05a6d;background:#e05a6d;box-shadow:inset 0 0 0 4px #24161b}
-.mode .tag{position:absolute;top:-10px;inset-inline-end:18px;display:inline-block;color:#fff;background:#e05a6d;border-radius:999px;padding:3px 10px;font-size:10px;font-weight:700}
-.mode strong{display:block;margin:8px 0 0;padding-inline-start:36px;font-size:16px;font-weight:800;letter-spacing:.02em;line-height:1.4}
-.mode small{display:block;color:#a6a8b1;line-height:1.65;font-size:12px;padding-inline-end:2px}
-
-@media(max-width:680px){.modes{grid-template-columns:1fr;gap:13px}.mode{min-height:132px}}
-
-
-
-/* Wudooh Local Lab visual refresh — keeps the existing real processing controls and handlers */
-:root{
- --lab-bg:#090a0e;--lab-surface:#111319;--lab-card:#151820;--lab-hover:#1a1e28;
- --lab-selected:#26151a;--lab-border:rgba(255,255,255,.09);--lab-border-strong:rgba(255,255,255,.17);
- --lab-accent:#ef4b5c;--lab-accent-soft:rgba(239,75,92,.16);--lab-muted:#9aa0ad;--lab-ok:#2ecc71;
-}
-html{scroll-padding-top:82px}
-body{background:radial-gradient(circle at 85% 4%,rgba(239,75,92,.12),transparent 42%),var(--lab-bg);color:#f5f6f8;line-height:1.5}
-.wrap{max-width:980px;padding:0 16px 48px}
-.top{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--lab-border);padding:10px 0;margin:0;gap:12px}
-.logo{width:auto;height:auto;min-width:0;padding:5px 11px;border-radius:7px;background:var(--lab-accent);font-size:14px;box-shadow:none}
-.eyebrow{font-size:10px;letter-spacing:1.2px}
-.brand h1{font-size:15px}
-.topControls{gap:8px}
-.pill{border:1px solid var(--lab-border);background:var(--lab-card);color:#d8e0e9;border-radius:9px;padding:7px 10px}
-.languageToggle{background:var(--lab-card);border:1px solid var(--lab-border);border-radius:8px;padding:7px 11px;min-height:36px;font-size:12px}
-nav{display:flex!important;gap:13px;align-items:center;overflow-x:auto;padding:10px 0 12px;margin:0 0 16px;border-bottom:1px solid var(--lab-border);white-space:nowrap}
-nav a{font-size:12px;color:var(--lab-muted)}
-nav a:first-child{color:#fff;background:var(--lab-accent-soft);border:1px solid rgba(239,75,92,.35);padding:5px 10px;border-radius:999px}
-h2{font-size:clamp(25px,4vw,31px);font-weight:800;line-height:1.25;margin:16px 0 5px}
-.intro{font-size:13px;color:var(--lab-muted);margin:0 0 16px}
-.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;background:var(--lab-surface);border:1px solid var(--lab-border);border-radius:14px;padding:9px;margin:14px 0 18px}
-.step{display:flex;align-items:center;justify-content:center;gap:7px;background:transparent;border:1px solid transparent;border-radius:10px;padding:8px;color:var(--lab-muted);font-size:12px}
-.step b{width:24px;height:24px;flex:0 0 24px;margin:0;border-radius:8px;background:#29202a;color:#ff9aa6}
-.card{background:var(--lab-surface);border:1px solid var(--lab-border);border-radius:16px;padding:18px;margin:12px 0;box-shadow:none}
-.card h3{font-size:17px;font-weight:800;margin:0 0 4px}
-.card .sub{font-size:12px;color:var(--lab-muted);margin:0 0 14px;line-height:1.7}
-.drop{border:1.5px dashed var(--lab-border-strong);border-radius:14px;background:var(--lab-card);padding:28px 16px;min-height:132px}
-.drop:hover,.drop.drag{border-color:var(--lab-accent);background:var(--lab-hover);box-shadow:none}
-.uploadIcon{width:38px;height:38px;display:grid;place-items:center;border-radius:50%;background:#ffffff0f;font-size:25px}
-.drop strong{font-size:14px;margin:4px}
-.drop small{font-size:11px;color:var(--lab-muted)}
-.urlrow{display:flex;gap:9px;margin-top:12px}
-.urlrow input,.field{background:var(--lab-bg);border:1px solid var(--lab-border);border-radius:10px;padding:11px 12px;font-size:13px}
-button{border-radius:9px;min-height:39px;padding:9px 13px;font-size:12px}
-button.primary,.primary{background:var(--lab-accent);box-shadow:none}
-button.quiet,.quiet{background:var(--lab-card);border:1px solid var(--lab-border);color:#f5f6f8}
-.preview{border-radius:12px;background:#05070b;max-height:420px}
-.videoDetails{gap:9px;margin-top:12px}
-.videoDetails .metric,.metric{background:var(--lab-card);border:1px solid var(--lab-border);border-radius:11px;padding:11px}
-.videoDetails .metric span,.metric span{color:var(--lab-muted)}
-.scanState{background:#0d1118;border:1px solid var(--lab-border);border-radius:11px}
-.scanChip,.scanItem,.deviceRow,.deviceKey{background:var(--lab-card);border-color:var(--lab-border)}
-.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
-.mode{min-height:124px;padding:16px;background:var(--lab-card);border:1px solid var(--lab-border);border-radius:14px}
-.mode:has(input:checked){background:var(--lab-selected);border-color:var(--lab-accent);box-shadow:inset 0 0 0 1px var(--lab-accent)}
-.mode strong{font-size:15px;line-height:1.4}
-.mode small{font-size:12px;color:var(--lab-muted);line-height:1.7}
-.mode .tag{background:var(--lab-accent);color:#fff;border-radius:999px;font-size:10px;padding:3px 9px}
-.modeHint{background:var(--lab-card);border:1px solid var(--lab-border);border-radius:10px;color:#cbd2dc}
-.actions{gap:8px}
-#start{width:100%;min-height:48px;font-size:14px;font-weight:800}
-.progress{height:9px;border-radius:99px;background:#292d36}
-.bar{background:linear-gradient(90deg,#ef4b5c,#ff8b62)}
-.status{font-size:12px;color:#d0d5df}
-.processIssue{border-radius:12px}
-.deviceReport{background:var(--lab-surface)}
-.deviceReport .deviceDetails{border-color:var(--lab-border)}
-#result{border-color:rgba(46,204,113,.3)}
-#download button{background:var(--lab-accent)}
-footer{border-top:1px solid var(--lab-border);padding-top:16px;color:#777e8b}
-@media(max-width:680px){
- .wrap{padding-left:12px;padding-right:12px}
- .top{padding:9px 0}
- .brand{gap:8px}
- .brand h1{font-size:13px}
- .brandLogo{width:min(260px,58vw);max-height:58px}
- .topControls{gap:6px}
- .topControls .pill{font-size:10px;padding:6px 8px}
- nav{gap:8px;padding:9px 0 11px}
- nav a{font-size:11px}
- .card{padding:15px;margin:10px 0}
- .steps{gap:5px;padding:7px}
- .step{font-size:11px;padding:7px 4px;gap:5px}
- .step b{width:21px;height:21px;flex-basis:21px}
- .modes{grid-template-columns:1fr;gap:12px}
- .mode{min-height:unset;padding:15px}
- .urlrow{flex-direction:column}
- .urlrow button{width:100%}
-}
-
-/* The eight processing cards follow their authored order. */
-.modes>.mode{order:0!important}
-
-/* WUDOOH-inspired studio layout */
-.mainNav{display:flex!important;gap:18px!important;align-items:center;overflow-x:auto;flex-wrap:nowrap!important;white-space:nowrap;border-bottom:1px solid #20242c;padding:13px 0 16px;margin:10px 0 24px!important}
-.mainNav a{color:#b5bdc9!important;text-decoration:none;font-size:12px;flex:0 0 auto}.mainNav a:hover{color:#fff!important}
-.heroTitle{margin:5px 0 18px}.heroEyebrow{font-size:10px;letter-spacing:1.6px;font-weight:800;color:#8da5c5;margin-bottom:8px}
-.heroTitle h2{margin:0 0 7px}.heroTitle .intro{margin-bottom:12px}
-.localNotice{display:inline-flex;align-items:center;gap:7px;border:1px solid #254c42;background:#0d211c;color:#9ce8cf;border-radius:8px;padding:8px 11px;font-size:11px;line-height:1.7}
-#deviceCheck,.coverCard{display:none!important}
-.modes{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-.mode{min-height:140px;padding:16px;display:flex;flex-direction:column;align-items:flex-start}
-.mode strong{font-size:15px;line-height:1.5;margin:8px 0}
-.mode small{font-size:12px;line-height:1.8}
-.mode .tag{margin-top:auto;padding:4px 8px}
-.modeSuffix{font-weight:500;color:#aeb8c7;font-size:12px}
-.mode:has(input[name="mode"]:checked){border-color:#e65c7d;background:#1a1118}
-#modeHint{margin-top:14px}
-#studio{scroll-margin-top:16px}
-#videoInfo{margin-top:16px}
-#result{scroll-margin-top:16px}
-footer{line-height:2;border-top:1px solid #20242c;padding-top:18px}
-@media(max-width:620px){.mainNav{gap:16px!important;margin-bottom:20px!important}.modes{grid-template-columns:1fr}.mode{min-height:unset}.heroTitle h2{font-size:28px}}
-
-/* Four clear preparation choices; advanced legacy methods remain in the engine but are hidden */
-.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.modes .mode[hidden]{display:none!important}
-.modes .mode:has(input[value="720p60"]){order:1}
-.modes .mode:has(input[value="classic"]){order:2}
-.modes .mode:has(input[value="hevc-hdr"]){order:3}
-.modes .mode:has(input[value="maxquality"]){order:4}
-.modes .mode:has(input[value="classic"]){border-color:#31514f}
-.modes .mode:has(input[value="classic"]) .tag{margin-top:10px}
-@media(max-width:620px){.modes{grid-template-columns:1fr}}
- 
-/* Landing page inspired by the supplied Wudooh page structure; engine untouched */
-.mainNav{display:flex!important;gap:clamp(12px,2vw,23px)!important;margin:0 0 25px!important;padding:0 0 15px!important;border-bottom:1px solid #283342!important}
-.mainNav a{flex:0 0 auto}
-.landingHero{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(22px,5vw,55px);align-items:center;padding:clamp(24px,5vw,58px) 0 28px}
-.landingEyebrow{font-size:10px;letter-spacing:1.7px;color:#ff8aa5;font-weight:850}
-.landingKicker{margin:13px 0 8px;color:#c3ccda;font-size:13px;font-weight:700}
-.landingHero h1{font-size:clamp(34px,6vw,58px);line-height:1.13;letter-spacing:-1.5px;margin:0 0 16px}
-.landingHero h1 span{color:#aebbd0}
-.landingLead{max-width:570px;color:#aeb8c7;font-size:14px;line-height:2;margin:0}
-.landingActions{display:flex;gap:10px;flex-wrap:wrap;margin:23px 0 13px}
-.landingPrimary,.landingSecondary{display:inline-flex;align-items:center;justify-content:center;min-height:45px;padding:11px 17px;border-radius:10px;text-decoration:none;font-weight:800;font-size:13px}
-.landingPrimary{color:#fff;background:linear-gradient(110deg,#f04475,#ff9659);box-shadow:0 8px 22px #f34e7625}
-.landingSecondary{color:#e5eaf2;border:1px solid #344253;background:#111923}
-.landingTrust{font-size:11px;color:#91a0b1;margin:0}
-.landingVisual{position:relative;min-width:0}
-.visualGlow{position:absolute;inset:10% 8%;background:#e94d7a;filter:blur(70px);opacity:.13}
-.visualPanel{position:relative;padding:15px;border:1px solid #344253;border-radius:19px;background:linear-gradient(145deg,#182333,#0b111a);box-shadow:0 25px 65px #0005;transform:rotate(-1deg)}
-.visualTop{display:flex;justify-content:space-between;gap:8px;color:#9eacbe;font-size:10px;font-weight:800;letter-spacing:1px;margin-bottom:13px}
-.liveDot{color:#a6edda;letter-spacing:0}
-.visualScreen{min-height:210px;border-radius:12px;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(circle at 60% 25%,#596d82 0,#25364a 26%,#111b2a 60%,#090e16 100%)}
-.visualScreen:before,.visualScreen:after{content:"";position:absolute;width:150%;height:1px;background:#ffffff16;transform:rotate(-28deg)}
-.visualScreen:after{transform:rotate(28deg)}
-.visualPlay{width:55px;height:55px;border-radius:50%;display:grid;place-items:center;background:#ffffff20;border:1px solid #ffffff55;color:white;z-index:1}
-.visualCaption{position:absolute;bottom:14px;right:15px;color:#fff;font-size:13px;font-weight:800}
-.visualStats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
-.visualStats div{background:#0b121c;border:1px solid #293747;border-radius:9px;padding:9px;min-width:0}
-.visualStats b,.visualStats small{display:block}.visualStats b{font-size:15px}.visualStats small{font-size:9px;color:#9eacbd;line-height:1.5;margin-top:3px}
-.landingHighlights{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0 50px}
-.landingHighlights div{padding:15px;border:1px solid #293747;border-radius:12px;background:#101722}
-.landingHighlights b,.landingHighlights span{display:block}.landingHighlights b{font-size:13px}.landingHighlights span{font-size:11px;color:#9eacbd;margin-top:5px;line-height:1.7}
-.landingSection{padding:25px 0 48px;scroll-margin-top:20px}
-.sectionHeading{text-align:center;margin:0 auto 20px;max-width:650px}
-.sectionHeading>span{font-size:11px;color:#ff8aa5;font-weight:800}
-.sectionHeading h2,.landingFeatureBand h2,.landingStudioHeading h2{font-size:clamp(23px,4vw,32px);margin:7px 0 9px}
-.sectionHeading p,.landingStudioHeading p{color:#aeb8c7;font-size:13px;line-height:1.8}
-.landingSteps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.landingSteps article{padding:18px;border:1px solid #293747;border-radius:13px;background:linear-gradient(145deg,#121b27,#0d131c)}
-.landingSteps i{display:inline-grid;place-items:center;width:35px;height:35px;border-radius:10px;background:#39202c;color:#ff9bb0;font-style:normal;font-weight:900;font-size:12px}
-.landingSteps h3{font-size:15px;margin:13px 0 6px}.landingSteps p{font-size:12px;color:#a6b2c2;line-height:1.8;margin:0}
-.landingFeatureBand{display:grid;grid-template-columns:.85fr 1.15fr;gap:22px;align-items:center;padding:25px;border:1px solid #2b394a;border-radius:17px;background:linear-gradient(130deg,#172231,#10151e);margin:0 0 35px}
-.landingFeatureBand p{font-size:13px;line-height:2;color:#aeb8c7}.landingFeatureBand>div:first-child>a{display:inline-block;color:#ff9ab0;text-decoration:none;font-size:13px;font-weight:800;margin-top:7px}
-.featureTiles{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.featureTiles div{padding:13px;border:1px solid #304052;border-radius:11px;background:#0c131d}
-.featureTiles b{display:block;color:#ff91aa;font-size:18px}.featureTiles strong,.featureTiles small{display:block}.featureTiles strong{font-size:12px;margin:6px 0}.featureTiles small{font-size:10px;color:#9eacbd;line-height:1.7}
-.landingLinks{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.landingLinks a{display:block;padding:16px;border:1px solid #2a3848;border-radius:12px;background:#101722;text-decoration:none;color:#eef2f8}
-.landingLinks b,.landingLinks span{display:block}.landingLinks b{font-size:13px}.landingLinks span{font-size:11px;color:#a3afbf;margin-top:7px}
-.landingStudioHeading{text-align:center;padding:20px 0 34px;border-top:1px solid #273342;border-bottom:1px solid #273342;margin-bottom:24px}
-.landingStudioHeading .landingPrimary{margin-top:8px}
-#studio{scroll-margin-top:18px}
-@media(max-width:680px){
- .landingHero{grid-template-columns:1fr;padding-top:25px;gap:22px}
- .landingHero h1{font-size:38px}
- .visualScreen{min-height:165px}
- .landingHighlights{gap:6px;margin-bottom:30px}
- .landingHighlights div{padding:10px 8px}
- .landingHighlights b{font-size:11px}.landingHighlights span{font-size:10px}
- .landingSteps{grid-template-columns:1fr}
- .landingFeatureBand{grid-template-columns:1fr;padding:17px}
- .landingLinks{grid-template-columns:1fr}
- .mainNav{overflow-x:auto;white-space:nowrap}
-}
-
+:root{color-scheme:dark;--bg:#090b12;--card:#121722;--line:#293342;--text:#f5f6fa;--muted:#aab3c1;--pink:#ff527d;--orange:#ff965b;--green:#70d9b4}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 85% 0,#281526 0,transparent 38%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.65;min-height:100vh}
+.wrap{max-width:900px;margin:auto;padding:0 15px 50px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 0;border-bottom:1px solid #252b36}.brand{display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--pink),var(--orange));font-weight:900}.eyebrow{font-size:10px;letter-spacing:1.4px;color:#ff8ca7;font-weight:800}.brand h1{font-size:15px;margin:2px 0}.pill{font-size:11px;color:#9fe9d7;background:#10211e;border:1px solid #31534c;border-radius:99px;padding:7px 10px;white-space:nowrap}
+nav{display:flex;gap:19px;overflow:auto;padding:13px 0;border-bottom:1px solid #202631;white-space:nowrap}nav a{color:#b5bdca;text-decoration:none;font-size:12px}nav a:hover{color:white}
+h2{font-size:clamp(26px,5vw,35px);margin:23px 0 7px}.intro{color:var(--muted);font-size:13px;margin:0 0 18px;line-height:1.9}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:15px 0}.step{background:#111722;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12px;color:#aeb8c7}.step.active{border-color:#a64b68;color:#fff;background:#21131d}.step.done{color:var(--green)}
+.card{background:linear-gradient(150deg,#141c28,#0e131c);border:1px solid var(--line);border-radius:15px;padding:18px;margin:12px 0;box-shadow:0 10px 28px #0003}.card h3{font-size:17px;margin:0 0 7px}.sub,.hint{color:var(--muted);font-size:12px;line-height:1.8;margin:0 0 14px}
+.drop{display:block;border:1.5px dashed #536176;border-radius:13px;background:#0b111a;padding:27px 13px;text-align:center;cursor:pointer}.drop:hover,.drop.drag{border-color:var(--pink);background:#1b111b}.drop strong{display:block;margin:7px}.drop small{color:var(--muted)}input[type=file]{display:none}
+.fileinfo{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;background:#0b111a;border:1px solid #273342;border-radius:11px;margin-bottom:14px}.fileinfo strong{overflow-wrap:anywhere}.fileinfo small{color:var(--muted)}
+.preview{width:100%;max-height:360px;object-fit:contain;background:#05070b;border-radius:11px;margin:10px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.metric{background:#0b111a;border:1px solid #273342;border-radius:10px;padding:10px;min-width:0}.metric span{display:block;color:var(--muted);font-size:10px}.metric b{display:block;font-size:13px;overflow-wrap:anywhere;margin-top:4px}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mode{display:block;cursor:pointer;border:1px solid #2b3543;border-radius:12px;padding:14px;background:#0b111a;min-height:112px}.mode:has(input:checked){border-color:var(--pink);background:#21131d;box-shadow:inset 0 0 0 1px var(--pink)}.mode input{accent-color:var(--pink)}.mode strong{display:block;margin:6px 0}.mode small{display:block;color:var(--muted);font-size:11px;line-height:1.7}.tag{font-size:10px;color:#ffabc0;background:#3b1c2a;border-radius:5px;padding:3px 7px}
+.fieldrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px}.fieldrow label{display:block;font-size:12px;color:#cbd3df}.fieldrow select,.fieldrow input{width:100%;margin-top:6px;padding:10px;border:1px solid #344153;border-radius:9px;background:#0a1018;color:white;font:inherit}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}button,.download{border:0;border-radius:10px;padding:12px 17px;font:inherit;font-weight:750;cursor:pointer;background:#252f3e;color:white;text-decoration:none}button.primary{background:linear-gradient(110deg,var(--pink),var(--orange));color:#fff;flex:1}button:disabled{opacity:.45;cursor:not-allowed}.danger{background:#49252e}.progress{height:10px;background:#283242;border-radius:99px;overflow:hidden;margin:13px 0}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--orange));transition:width .2s}.status{font-size:12px;color:#d0d8e4;min-height:25px;line-height:1.8}.notice{font-size:11px;color:#ffc9b1;line-height:1.8;margin-top:10px}
+#result{display:none}.success{color:var(--green)}pre{direction:ltr;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow:auto;background:#080c13;border:1px solid #283342;border-radius:9px;padding:11px;color:#b9c7d9;font-size:11px}
+footer{text-align:center;color:#737d8c;font-size:11px;padding:20px 0;border-top:1px solid #202631;margin-top:25px}
+@media(max-width:560px){.wrap{padding:0 11px 40px}.top{align-items:flex-start}.pill{font-size:10px}.card{padding:14px}.modes,.fieldrow{grid-template-columns:1fr}.mode{min-height:0}.steps{gap:5px}.step{font-size:10px;padding:8px 5px;text-align:center}.grid{gap:7px}.metric{padding:8px}.metric b{font-size:12px}}
 </style>
 </head>
-<body><main class="wrap">
-<header class="top"><div class="brand"><img class="brandLogo" src="./assets/ibrahim-al-faris-logo.svg" alt="إبراهيم ال فارس — IBRAHIM AL FARIS" width="360" height="90"><span class="srOnly">استوديو تحسين الفيديو</span></div><div class="topControls"><div class="pill" id="localProcessingLabel">● المعالجة المحلية</div><button class="languageToggle" id="languageToggle" type="button" aria-label="Switch interface language">English</button></div></header>
+<body>
+<main class="wrap">
+<header class="top"><div class="brand"><div class="logo">IF</div><div><div class="eyebrow">IBRAHIM AL FARIS</div><h1>استوديو تجهيز الفيديو</h1></div></div><span class="pill" id="engineState">● المعالجة المحلية</span></header>
+<nav><a href="./">⌂ الرئيسية</a><a href="./studio.html">▶ تحسين الفيديو</a><a href="./#features">✦ المميزات</a><a href="./#guide">؟ الدليل</a></nav>
+<h2>وضوح مقطعك. من متصفح جوالك.</h2>
+<p class="intro">اختر الفيديو، افحص خصائصه، ثم جهّزه للتنزيل. المعالجة المحلية تتم على جهازك ولا نرفع ملف الفيديو إلى خادم.</p>
+<div class="steps"><div class="step active" id="step1">① الفيديو</div><div class="step" id="step2">② الطريقة</div><div class="step" id="step3">③ التنزيل</div></div>
 
-<nav class="sub mainNav" aria-label="التنقل الرئيسي"><a href="./">⌂ الرئيسية</a><a href="#studio">▶ تحسين الفيديو</a><a href="#features">✦ المميزات</a><a href="./tiktok/">↑ رفع إلى TikTok</a><a href="./docs/">? الدليل</a><a href="./support/">✆ الدعم</a></nav>
-<div id="home"></div>
-<section class="landingHero" aria-labelledby="landingTitle">
- <div class="landingCopy">
-  <div class="landingEyebrow">IBRAHIM AL FARIS · LOCAL VIDEO STUDIO</div>
-  <p class="landingKicker">استوديو تجهيز الفيديو</p>
-  <h1 id="landingTitle">وضوح مقطعك.<br><span>من متصفح جوالك.</span></h1>
-  <p class="landingLead">جهّز مقطعك لتيك توك من المتصفح، مع فحص الدقة والإطارات والألوان قبل بدء المعالجة، وبحسب توافق الملف وطريقة التجهيز.</p>
-  <div class="landingActions"><a class="landingPrimary" href="#studio">ابدأ تجهيز الفيديو ↗</a><a class="landingSecondary" href="./docs/">اقرأ الدليل ←</a></div>
-  <p class="landingTrust">● المعالجة المحلية للطرق المدعومة · لا يحتاج حساباً أو كود تفعيل</p>
- </div>
- <div class="landingVisual" aria-label="مميزات الاستوديو">
-  <div class="visualGlow"></div><div class="visualPanel"><div class="visualTop"><span>IBRAHIM STUDIO</span><span class="liveDot">● محلي</span></div><div class="visualScreen"><div class="visualPlay">▶</div><div class="visualCaption">كل لقطة تستاهل</div></div><div class="visualStats"><div><b>4K</b><small>بحسب المصدر والوضع</small></div><div><b>60 FPS</b><small>بحسب توافق الملف</small></div><div><b>MP4</b><small>ملف جاهز للتنزيل</small></div></div></div>
- </div>
-</section>
-<section class="landingHighlights" aria-label="مميزات سريعة">
- <div><b>على جهازك</b><span>معالجة محلية للطرق المدعومة</span></div>
- <div><b>فحص أولاً</b><span>تفاصيل المصدر والتوافق قبل البدء</span></div>
- <div><b>تقرير حقيقي</b><span>سجل التنفيذ ونتيجة الملف الناتج</span></div>
-</section>
-<section class="landingSection" id="features">
- <div class="sectionHeading"><span>من المقطع إلى النسخة الجاهزة</span><h2>ثلاث خطوات. والباقي على الاستوديو.</h2></div>
- <div class="landingSteps">
-  <article><i>01</i><h3>اختر مقطعك</h3><p>اختر الفيديو من جهازك، وشاهد معاينته ومعلوماته الأساسية.</p></article>
-  <article><i>02</i><h3>نفحص التوافق أولاً</h3><p>نعرض الدقة ومعدل الإطارات والترميز والألوان، ونوضح الطرق المناسبة للمصدر.</p></article>
-  <article><i>03</i><h3>احفظ نسختك</h3><p>تابع التقدم والسجل، ثم افحص الناتج ونزّله إلى جهازك.</p></article>
- </div>
-</section>
-<section class="landingFeatureBand">
- <div><span class="landingEyebrow">MADE FOR YOUR NEXT CLIP</span><h2>لقطتك هي الأساس.</h2><p>ابدأ بوضع CLASSIC لنسخ مسار الفيديو والصوت المتوافق دون إعادة ترميز. استخدم أوضاع إعادة الترميز فقط عندما تحتاج تغييراً فعلياً، لأنها قد تؤثر في الجودة.</p><a href="#studio">افتح الاستوديو ↗</a></div>
- <div class="featureTiles"><div><b>◈</b><strong>حافظ على المصدر</strong><small>نسخ دون إعادة ترميز في وضع CLASSIC للملفات المدعومة.</small></div><div><b>▣</b><strong>تفاصيل قبل الإنتاج</strong><small>اعرف خصائص المقطع وحالة توافقه قبل البدء.</small></div><div><b>⇩</b><strong>نسختك عندك</strong><small>نزّل الملف الناتج وتحقق من تقرير التنفيذ الفعلي.</small></div><div><b>⌘</b><strong>خصوصية واضحة</strong><small>الفحص والمعالجة المحلية لا يرفعان ملفك إلى خادم.</small></div></div>
-</section>
-<section class="landingSection landingHelp">
- <div class="sectionHeading"><span>معك إلى آخر خطوة</span><h2>حفظت المقطع؟ كمّلها صح.</h2><p>روابط واضحة للحفظ والرفع، ودليل يساعدك إذا احتجت.</p></div>
- <div class="landingLinks"><a href="#studio"><b>▶ تحسين الفيديو</b><span>اختر طريقة التجهيز ونزّل الفيديو ↗</span></a><a href="./tiktok/"><b>↑ رفع إلى TikTok</b><span>افتح صفحة الرفع وخطوات الجوال ↗</span></a><a href="./docs/"><b>? الدليل</b><span>تعرف على طرق التجهيز والتوافق ↗</span></a><a href="./support/"><b>✆ الدعم</b><span>مساعدة عند مواجهة مشكلة ↗</span></a></div>
-</section>
-<div class="landingStudioHeading"><span class="landingEyebrow">IBRAHIM STUDIO · LOCAL PROCESSING</span><h2>جاهز لتجربة مقطعك؟</h2><p>اختر ملفاً قصيراً وابدأ من جهازك.</p><a class="landingPrimary" href="#studio">افتح الاستوديو ↓</a></div>
-<div class="heroTitle"><div class="heroEyebrow">IBRAHIM AL FARIS · LOCAL VIDEO LAB</div><h2>تحسين الفيديو</h2><p class="intro">اختر مقطعك، حدّد الطريقة المناسبة، ثم نزّل الملف الجاهز.</p><div class="localNotice">✓ المعالجة على جهازك · لا يُرفع الفيديو إلى أي خادم في طرق التجهيز المحلية</div></div>
-<div class="steps"><div class="step"><b>1</b> الفيديو</div><div class="step"><b>2</b> الطريقة</div><div class="step"><b>3</b> التنزيل</div></div>
-
-<section class="card deviceReport hidden" id="deviceCheck">
- <h3>فحص الجهاز والمتصفح</h3>
- <p class="sub">اختبار تلقائي قبل المعالجة المحلية. النتائج تُعرض على جهازك ولا تُرسل إلى أي خادم.</p>
- <div id="deviceStatus" class="deviceStatus">جارٍ فحص إمكانيات المتصفح...</div>
- <div id="deviceKeyIndicators" class="deviceKeyIndicators" aria-live="polite"></div>
- <details class="deviceDetails"><summary>التفاصيل الفنية وفحص الجهاز</summary>
-  <div id="deviceRows" class="deviceRows"></div>
-  <div class="deviceActions"><button id="copyDeviceReport" class="quiet" type="button">نسخ تقرير الجهاز</button><button id="recheckDevice" class="quiet" type="button">إعادة الفحص</button></div>
-  <p class="note">SharedArrayBuffer وعزل COOP/COEP من متطلبات وضع المعالجة المتوازي. يوضح التقرير وضع التنفيذ الفعلي ووقت المعالجة، وهل حدث رجوع تلقائي إلى الوضع القياسي. الذاكرة المعروضة تقديرية وقد يخفيها المتصفح.</p>
- </details>
+<section class="card" id="uploadCard">
+<h3>اختر الفيديو</h3><p class="sub">يدعم الملفات التي يستطيع متصفحك قراءتها مثل MP4 وMOV وWEBM.</p>
+<label class="drop" id="drop" for="videoInput"><div style="font-size:28px;color:#ff7898">＋</div><strong>اختر فيديو من جهازك</strong><small>اضغط هنا لاختيار الملف</small><input type="file" id="videoInput" accept="video/*"></label>
 </section>
 
-<section class="card" id="studio"><h3>اختر الفيديو</h3><p class="sub">اختر فيديو من جهازك للبدء.</p>
-<label class="drop" id="drop"><input id="file" type="file" accept="video/*"><span class="uploadIcon">＋</span><strong>اختر فيديو أو اسحب الملف هنا</strong><small>MP4 · MOV · WEBM</small></label>
-<div id="videoInfo" class="hidden"><video id="preview" class="preview" controls playsinline></video><h4 style="margin:14px 0 4px">تفاصيل المقطع</h4><p class="sub">تُقرأ مباشرة من الملف الموجود على جهازك.</p><div id="meta" class="videoDetails"></div><div id="scanState" class="scanState">اختر فيديو لبدء الفحص المحلي.</div><div id="scanSummary" class="scanSummary hidden"></div><div id="scanReport" class="scanReport hidden"></div><div class="videoActions"><button id="copyInfo" class="quiet">نسخ التفاصيل</button><button id="changeFile" class="quiet">تغيير الفيديو</button></div></div>
-<div class="urlrow"><input id="videoUrl" type="url" placeholder="ألصق رابطاً مباشراً لملف فيديو" aria-label="رابط مباشر للفيديو"><button id="useUrl">استخدام الفيديو</button></div><p class="note">الرابط يُقرأ من مصدره داخل متصفحك. قد تمنع بعض المواقع الوصول المباشر.</p>
+<section class="card" id="fileCard" hidden>
+<div class="fileinfo"><div><strong id="fileName">—</strong><br><small id="fileSize">—</small></div><button id="changeFile" type="button">تغيير الفيديو</button></div>
+<video id="preview" class="preview" controls playsinline hidden></video>
+<div class="actions"><button class="primary" id="inspectBtn" type="button">فحص الفيديو</button></div>
+<div id="metadata" class="grid" hidden style="margin-top:12px"></div>
 </section>
-<section class="card"><h3>اختر طريقة التجهيز</h3><p class="sub">اختر النتيجة المناسبة لمقطعك.</p>
+
+<section class="card" id="modeCard" hidden>
+<h3>اختر طريقة التجهيز</h3><p class="sub">اختر ما يناسب هدفك. أوضاع النسخ تحافظ على ترميز المصدر ولا تعيد ضغطه.</p>
 <div class="modes">
-<label class="mode"><input type="radio" name="mode" value="720p60"><strong>COPY FAST · MP4</strong><small>نسخ سريع لمسارات الفيديو والصوت دون إعادة ترميز. يحافظ على دقة المصدر ومعدل الإطارات؛ لا يغيّر الدقة إلى 720p.</small></label>
-<label class="mode"><input type="radio" name="mode" value="classic" checked><strong>CLASSIC <span class="modeSuffix">SDR · HDR</span></strong><small>يحافظ على مساري الفيديو والصوت الأصليين دون إعادة ترميز، مع تهيئة MP4 وFast Start.</small><span class="tag">موصى به</span></label>
-<label class="mode"><input type="radio" name="mode" value="hevc-hdr"><strong>MAX HDR</strong><small>نسخ مسار الفيديو الأصلي لمقاطع HEVC/HDR دون إعادة ترميز. يتطلب مساراً صوتياً متوافقاً.</small></label>
-<label class="mode"><input type="radio" name="mode" value="maxquality"><strong>Anti Lag <span class="modeSuffix">MP4 · حتى 1080p60</span></strong><small>يعيد ترميز الفيديو إلى H.264 بدقة تصل إلى 1080p لتقليل حجم الملف؛ قد تتغير الجودة.</small></label>
-<label class="mode"><input type="radio" name="mode" value="handbrake"><strong>HandBrake · الخادم</strong><small>إعادة ترميز على خادم خارجي. عند اختيار هذا الوضع سيرتفع الفيديو مؤقتاً إلى الخادم.</small></label>
+<label class="mode"><input type="radio" name="mode" value="CLASSIC" checked><span class="tag">موصى به</span><strong>CLASSIC · نسخ سريع</strong><small>ينسخ الفيديو والصوت الأساسيين دون إعادة ترميز، مع Fast Start للملفات المدعومة.</small></label>
+<label class="mode"><input type="radio" name="mode" value="MAX"><strong>MAX · الحفاظ على المصدر</strong><small>ينسخ كل المسارات المتاحة ويحافظ على الترميز الأصلي قدر الإمكان، بما فيها HEVC وبيانات HDR الموجودة.</small></label>
+<label class="mode"><input type="radio" name="mode" value="COMPRESS"><strong>COMPRESS · ضغط الفيديو</strong><small>يعيد ترميز الفيديو لتقليل الحجم. قد تتغير الجودة أو الألوان، وقد لا يتوفر الترميز في نسخة المحرك.</small></label>
 </div>
-<div id="handbrakeSecurity" class="note"><strong>فحص الحماية قبل رفع الفيديو</strong><div id="turnstileWidget" style="margin-top:10px"></div><span id="turnstileMessage">أكمل التحقق لتفعيل الرفع إلى الخادم.</span></div>
-<div id="modeHint" class="modeHint">افحص الفيديو أولاً حتى نتحقق من توافق طريقة التجهيز.</div><div class="actions"><button id="start" class="primary" disabled>ابدأ التجهيز</button><button id="cancel" class="danger hidden">إلغاء</button></div>
-<div id="progressWrap" class="hidden"><div class="progress"><div class="bar" id="bar"></div></div><div class="status" id="status">جارٍ التحضير...</div></div><div id="processIssue" class="processIssue hidden" role="status"><strong id="processIssueTitle"></strong><p id="processIssueMessage"></p><details><summary>سجل المعالجة الأخير</summary><pre id="ffmpegLog"></pre></details><div class="actions"><button id="copyFfmpegLog" class="quiet" type="button">نسخ السجل</button></div></div>
+<div id="compressOptions" class="fieldrow" hidden>
+<label>ترميز الضغط<select id="codec"><option value="libx264">H.264 — توافق أعلى</option><option value="libx265">H.265 — حجم أصغر إذا كان مدعوماً</option></select></label>
+<label>الجودة (CRF)<input id="crf" type="number" min="16" max="30" value="22"></label>
+<label>سرعة الضغط<select id="preset"><option value="fast">Fast — متوازن</option><option value="medium">Medium — أبطأ وأكفأ</option><option value="veryfast">Very Fast — أسرع</option><option value="slow">Slow — أبطأ</option></select></label>
+</div>
+<p class="hint" style="margin-top:12px">مهم: MAX وCLASSIC لا يرفعان دقة الفيديو ولا يضيفان تفاصيل جديدة. وقد تعيد TikTok ضغط الفيديو بعد رفعه.</p>
+<div class="actions"><button class="primary" id="startBtn" type="button">ابدأ التجهيز</button><button id="cancelBtn" class="danger" type="button" hidden>إلغاء العملية</button></div>
 </section>
-<section class="card hidden" id="result"><h3>3 · الفيديو جاهز</h3><p class="sub" id="resultText">اكتملت العملية.</p><h4>تقرير التنفيذ الفعلي</h4><div id="engineReport" class="scanSummary"></div><div class="actions"><a id="download" download="ibrahim-studio.mp4"><button class="primary">تنزيل الفيديو</button></a><button id="again" class="quiet">تجهيز فيديو آخر</button></div></section>
-<section class="card" id="tiktokInspector">
- <h3>افحص فيديو TikTok</h3>
- <p class="sub">الصق رابط فيديو عام لقراءة البيانات التي يتيحها TikTok عبر خدمة oEmbed. لا يتم تنزيل الفيديو أو رفع ملفاتك.</p>
- <div class="urlrow"><input id="tiktokInspectUrl" type="url" inputmode="url" placeholder="https://www.tiktok.com/@user/video/..." aria-label="رابط فيديو TikTok"><button id="inspectTikTok" type="button">افحص الرابط</button></div>
- <p class="note">يتطلب اتصالاً بالإنترنت. قد لا تتوفر بعض البيانات، وقد تمنع روابط vm.tiktok.com المختصرة أو إعدادات الخصوصية الفحص.</p>
- <div id="tiktokInspectStatus" class="scanState" role="status" aria-live="polite">بانتظار رابط TikTok.</div>
- <div id="tiktokInspectResult" class="scanSummary hidden"></div>
+
+<section class="card" id="progressCard" hidden>
+<h3 id="progressTitle">جاري تجهيز الفيديو</h3><div class="progress"><div class="bar" id="progressBar"></div></div><p class="status" id="status" role="status">يرجى إبقاء الصفحة مفتوحة.</p>
 </section>
-<section class="card coverCard hidden" id="coverTools"><h3>صورة مصغّرة اختيارية</h3><p class="sub">اختر إطاراً من الفيديو واحفظه كصورة JPG منفصلة؛ لن تتغير بيانات الفيديو.</p><div class="actions coverChoices"><button id="thumbNo" class="quiet" type="button">لا، شكراً</button><button id="thumbYes" class="quiet" type="button">نعم، اختر إطاراً</button></div><div id="thumbPanel" class="hidden"><div class="coverBox"><canvas id="canvas" width="640" height="360"></canvas><div><div id="seekTime" class="status">اختر إطاراً من الفيديو</div><input id="seek" class="range" type="range" min="0" max="0" step="0.05" value="0"><div class="actions"><button id="prevFrame" class="quiet" type="button">− 0.05 ثانية</button><button id="nextFrame" class="quiet" type="button">+ 0.05 ثانية</button><button id="saveCover" class="primary" type="button" disabled>تنزيل JPG</button></div></div></div></div></section>
-<footer id="account"><strong>IBRAHIM AL FARIS · LOCAL VIDEO LAB</strong><br>جهّز مقاطعك لتيك توك من جهازك · © 2026</footer>
+
+<section class="card" id="result">
+<h3 class="success">✓ الفيديو جاهز</h3><p class="sub" id="resultInfo">اكتملت المعالجة.</p>
+<div class="grid" id="resultStats"></div><div class="actions"><a class="download primary" id="downloadBtn" href="#" download>تنزيل الفيديو</a><button id="againBtn" type="button">تجهيز فيديو آخر</button></div>
+</section>
+
+<section class="card"><h3>سجل المعالجة</h3><div class="actions"><button id="copyLogBtn" type="button">نسخ السجل</button></div><pre id="log">لم يبدأ المحرك بعد.</pre></section>
+<footer>IBRAHIM AL FARIS · LOCAL VIDEO ENGINE · المعالجة داخل متصفحك</footer>
 </main>
-<script async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=turnstileReady"></script>
-<script>
-const TURNSTILE_SITE_KEY="0x4AAAAAAGW9QWK1akwI1y-7";
-let turnstileWidgetId=null,turnstileToken="";
-window.turnstileReady=()=>{if(window.turnstile&&turnstileWidgetId===null){turnstileWidgetId=window.turnstile.render("#turnstileWidget",{sitekey:TURNSTILE_SITE_KEY,callback:t=>{turnstileToken=t;document.getElementById("turnstileMessage").textContent="تم التحقق؛ يمكنك بدء الرفع.";}, "expired-callback":()=>{turnstileToken="";document.getElementById("turnstileMessage").textContent="انتهت صلاحية التحقق؛ أعد الفحص.";},"error-callback":()=>{turnstileToken="";document.getElementById("turnstileMessage").textContent="تعذّر تحميل فحص الحماية."}});const selected=document.querySelector('input[name="mode"]:checked')?.value;document.getElementById("handbrakeSecurity").classList.toggle("hidden",selected!=="handbrake");}};
-const $=id=>document.getElementById(id);
-document.querySelectorAll('input[name="mode"]').forEach(el=>el.addEventListener("change",()=>{const box=document.getElementById("handbrakeSecurity");if(box)box.classList.toggle("hidden",el.value!=="handbrake");}));let file=null,objectUrl=null,outputUrl=null,ffmpeg=null,working=false,videoDuration=0,mediaInfoData=null,scanGeneration=0,mediaInfoFactoryPromise=null;
-const ENGINE_PLAN_MODULE_URL="./assets/js/engine-loader.js?v=20261128-public-labels-1";
-window.IBRAHIM_HANDBRAKE_API=window.IBRAHIM_HANDBRAKE_API||"https://ibrahim-studio-handbrake.onrender.com";
-const HANDBRAKE_API_BASE=(window.IBRAHIM_HANDBRAKE_API||'').replace(/\/+$/,'');
-window.handbrakeJobId=null;window.handbrakeAbortController=null;window.handbrakeLogs=[];
-let enginePlanPromise=null;
-function initializeEnginePlan(){
- if(!enginePlanPromise){
-  enginePlanPromise=import(ENGINE_PLAN_MODULE_URL).then(({getEnginePlan})=>{
-   const plan=getEnginePlan();
-   window.IbrahimEnginePlan={...plan,requestedMode:plan.mode,fallbackUsed:false,fallbackReason:""};
-   return window.IbrahimEnginePlan;
-  }).catch(error=>{
-   const message=error?.message||String(error);
-   window.IbrahimEnginePlan={mode:"single-thread",requestedMode:"single-thread",capabilities:{secureContext:window.isSecureContext===true,wasm:typeof WebAssembly==="object",sharedArrayBuffer:typeof SharedArrayBuffer!=="undefined",crossOriginIsolated:window.crossOriginIsolated===true,hardwareConcurrency:navigator.hardwareConcurrency??null},threadedBundleAvailable:false,reason:"تعذّر إعداد خطة المعالجة: "+message,fallbackUsed:false,fallbackReason:""};
-   return window.IbrahimEnginePlan;
-  });
- }
- return enginePlanPromise;
-}
-const fmt=n=>{if(!Number.isFinite(n))return '—';if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';return (n/1048576).toFixed(2)+' MB'};
-const time=s=>{if(!Number.isFinite(s))return '—';return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')};
-const ENGINE_REPORT_KEY='ibrahimStudioLastEngineReport';
-function getLastEngineReport(){try{return JSON.parse(localStorage.getItem(ENGINE_REPORT_KEY)||'null')}catch(e){return null}}
-function saveEngineReport(report){try{localStorage.setItem(ENGINE_REPORT_KEY,JSON.stringify(report))}catch(e){console.warn('تعذّر حفظ تقرير المحرك محلياً',e)}}
-function executionModeLabel(mode){return mode==='multi-thread'?'متعدد الخيوط':mode==='single-thread'?'خيط واحد':mode||'غير متاح'}
-function engineReportRows(report){if(!report)return [];const server=report.activeMode==='server-handbrake';const isClassicCopy=report.processingMode==='classic';const speed=Number.isFinite(report.speedFactor)?report.speedFactor.toFixed(2)+'× من مدة الفيديو':'غير متاح';const encodeSpeed=Number.isFinite(report.encodeSpeedFactor)?report.encodeSpeedFactor.toFixed(2)+'× من مدة الفيديو':'غير متاح';const mode=server?'HandBrakeCLI على الخادم':executionModeLabel(report.activeMode);const processing=server?'HandBrake · إعادة ترميز خادمية':(isClassicCopy?'CLASSIC · نسخ مباشر دون إعادة ترميز':(report.processingMode||'غير متاح'));const na=server?'غير منطبق على المعالجة الخادمية':null;return [['وضع التنفيذ الفعلي',mode],['وضع المعالجة',processing],['خطة التنفيذ قبل البدء',server?'خادم HandBrake':executionModeLabel(report.plannedMode)],['سبب اختيار وضع المعالجة',report.planReason||'غير متاح'],['HTTPS في وقت الاختيار',na|| (report.capabilities?.secureContext?'نعم':'لا')],['WebAssembly في وقت الاختيار',na||(report.capabilities?.wasm?'نعم':'لا')],['SharedArrayBuffer في وقت الاختيار',na||(report.capabilities?.sharedArrayBuffer?'نعم':'لا')],['COOP/COEP في وقت الاختيار',na||(report.capabilities?.crossOriginIsolated?'مفعّل':'غير مفعّل')],['عدد الأنوية المنطقية',server?'موارد الخادم حسب خطة الاستضافة':(report.capabilities?.hardwareConcurrency??'غير متاح')],['الرجوع التلقائي للاحتياطي',report.fallbackUsed?'نعم':'لا'],['سبب الرجوع',report.fallbackReason||'لا يوجد'],['مدة المعالجة الكلية',Number.isFinite(report.processingSeconds)?report.processingSeconds.toFixed(2)+' ثانية':'غير متاح'],[isClassicCopy?'مدة تنفيذ FFmpeg (نسخ وتجهيز الحاوية)':'مدة تنفيذ الترميز',Number.isFinite(report.encodeSeconds)?report.encodeSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة تهيئة المعالجة',Number.isFinite(report.loadSeconds)?report.loadSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة كتابة ملف المصدر',Number.isFinite(report.writeSeconds)?report.writeSeconds.toFixed(2)+' ثانية':'غير متاح'],['مدة قراءة الملف الناتج',Number.isFinite(report.readSeconds)?report.readSeconds.toFixed(2)+' ثانية':'غير متاح'],['الوقت الآخر داخل المعالجة',Number.isFinite(report.otherSeconds)?report.otherSeconds.toFixed(2)+' ثانية':'غير متاح'],['حجم الملف الناتج',Number.isFinite(report.outputBytes)?fmt(report.outputBytes):'غير متاح'],['حاوية الملف الناتج',report.outputContainer||'MP4'],['ملفات محرك FFmpeg المخزّنة',report.engineAssetCacheHit===true?'استُخدمت النسخة المحفوظة':'تم التحميل من المصدر أو تعذّر تأكيد التخزين'],['أداة التنفيذ',report.tool||'FFmpeg.wasm'],['سرعة المعالجة الكلية',speed],['سرعة تنفيذ FFmpeg',encodeSpeed]]}
-function renderEngineReport(report){const target=$('engineReport');if(!target||!report)return;target.innerHTML=engineReportRows(report).map(([k,v])=>'<div class="scanChip"><span>'+esc(k)+'</span><b>'+esc(v)+'</b></div>').join('')}
-
-function setStatus(t,p){$('status').textContent=t;if(p!==undefined)$('bar').style.width=Math.max(0,Math.min(100,p))+'%'}
-
-let deviceReportData=null;
-function runDeviceCheck(){
- const nav=navigator,wasm=typeof WebAssembly==='object'&&typeof WebAssembly.validate==='function',sab=typeof SharedArrayBuffer!=='undefined',isolated=window.crossOriginIsolated===true,secure=window.isSecureContext===true;
- const memory=Number.isFinite(nav.deviceMemory)?nav.deviceMemory+' GB تقريباً':'غير متاح من المتصفح';
- const cores=Number.isFinite(nav.hardwareConcurrency)?nav.hardwareConcurrency+' معالج منطقي':'غير متاح';
- const screenSize=screen.width+' × '+screen.height+' CSS px · DPR '+(window.devicePixelRatio||1);
- const lastEngineReport=getLastEngineReport();
- const rows=[
-  ['اتصال آمن HTTPS',secure?'مدعوم':'غير آمن / غير متاح',secure],
-  ['WebAssembly',wasm?'مدعوم':'غير مدعوم',wasm],
-  ['SharedArrayBuffer',sab?'مدعوم':'غير متاح',sab],
-  ['عزل المتصفح COOP/COEP',isolated?'مفعّل':'غير مفعّل',isolated],
-  ['الذاكرة التقريبية',memory,null],
-  ['عدد المعالجات المنطقية',cores,null],
-  ['أبعاد الشاشة',screenSize,null],
-  ['المتصفح',nav.userAgent||'غير متاح',null],
-  ['لغة الجهاز',nav.language||'غير متاح',null],
-  ['خطة المعالجة الحالية',window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode||'لم يبدأ التحميل بعد',null],
-  ['سبب اختيار وضع المعالجة',window.IbrahimEnginePlan?.reason||'لم يتم إعداد خطة المعالجة بعد',null],
-  ['شرط COOP/COEP وقت الاختيار',window.IbrahimEnginePlan?.capabilities?.crossOriginIsolated?'مفعّل':'غير مفعّل أو غير معروف',null],
-  ['دعم المعالجة متعددة الخيوط',window.IbrahimEnginePlan?.threadedBundleAvailable?'مفعّلة':'غير مفعّلة أو غير معروفة',null],
-  ['آخر وضع تنفيذ فعلي',lastEngineReport?executionModeLabel(lastEngineReport.activeMode):'لم يُسجل تصدير بعد',null],
-  ['الرجوع للاحتياطي في آخر تصدير',lastEngineReport?(lastEngineReport.fallbackUsed?'نعم':'لا'):'غير متاح',null],
-  ['مدة آخر معالجة',lastEngineReport&&Number.isFinite(lastEngineReport.processingSeconds)?lastEngineReport.processingSeconds.toFixed(2)+' ثانية':'غير متاح',null],
-  ['سرعة آخر معالجة',lastEngineReport&&Number.isFinite(lastEngineReport.speedFactor)?lastEngineReport.speedFactor.toFixed(2)+'×':'غير متاح',null]
- ];
- deviceReportData={secure,wasm,sab,isolated,memory,cores,screenSize,rows,lastEngineReport};
- $('deviceRows').innerHTML=rows.map(([k,v,ok])=>'<div class="deviceRow"><span>'+esc(k)+'</span><b>'+esc(v)+(ok===true?' ✓':ok===false?' ✕':'')+'</b></div>').join('');
- const mtReady=sab&&isolated&&!!window.IbrahimEnginePlan?.threadedBundleAvailable;
- $('deviceKeyIndicators').innerHTML=[
-  ['المعالجة المتوازية',mtReady?'جاهزة':'غير جاهزة',mtReady],
-  ['COOP / COEP',isolated?'مفعّل':'غير مفعّل',isolated],
-  ['نمط التنفيذ',executionModeLabel(window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode)||'قيد التهيئة',null]
- ].map(([k,v,ok])=>'<div class="deviceKey"><span>'+esc(k)+'</span><b class="'+(ok===true?'good':ok===false?'warn':'')+'">'+esc(v)+'</b></div>').join('');
- const canProcess=secure&&wasm;
- $('deviceStatus').textContent=canProcess?'✓ المتصفح يوفّر المتطلبات الأساسية للمعالجة المحلية. '+(!sab?'المعالجة متعددة الخيوط غير متاحة، وسيعمل الوضع الحالي بخيط واحد.':'دعم SharedArrayBuffer متاح.'):'لا يمكن بدء المعالجة: يلزم اتصال HTTPS ودعم WebAssembly.';
- $('deviceStatus').style.color=canProcess?'#9fe9d7':'#ffc0c8';
- updateModeHint();
- return canProcess;
-}
-function deviceReportText(){
- if(!deviceReportData)runDeviceCheck();
- return ['تقرير تشخيص Ibrahim Studio',...deviceReportData.rows.map(([k,v])=>k+': '+v),'تقرير آخر تصدير: '+(deviceReportData.lastEngineReport?'محفوظ محلياً':'لا يوجد بعد'),'الفيديو لا يُرسل عند إجراء هذا الفحص.'].join('\n');
-}
-
-
-const esc=v=>String(v??'غير متاح').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const val=(o,...keys)=>{for(const k of keys){const x=o?.[k];if(x!==undefined&&x!==null&&String(x).trim()!=='')return String(x)}return 'غير متاح'};
-const tracksOf=r=>Array.isArray(r?.media?.track)?r.media.track:[];
-const firstTrack=(r,type)=>tracksOf(r).find(t=>t['@type']===type)||{};
-const fmtDuration=v=>{const n=Number(v);return Number.isFinite(n)?time(n):'غير متاح'};
-const humanBytes=v=>{const n=Number(v);return Number.isFinite(n)?fmt(n):'غير متاح'};
-const codecName=t=>{const x=(val(t,'Format')+' '+val(t,'CodecID')+' '+val(t,'Format_Commercial')).toLowerCase();if(x.includes('hevc')||x.includes('h.265')||x.includes('hvc1')||x.includes('hev1'))return 'HEVC / H.265';if(x.includes('avc')||x.includes('h.264')||x.includes('avc1'))return 'AVC / H.264';return val(t,'Format','CodecID')};
-function hdrInfo(v){const transfer=val(v,'colour_primaries','ColorPrimaries','colour_primaries');const tr=val(v,'transfer_characteristics','TransferCharacteristics','transfer_characteristics');const hdr=val(v,'HDR_Format','HDR_Format_Commercial','HDR_Format_String');const txt=(hdr+' '+tr).toLowerCase();const yes=(hdr!=='غير متاح')||/smpte.?2084|pq|arib.?std.?b67|hlg/.test(txt);return {yes,label:yes?(hdr!=='غير متاح'?hdr:(/hlg|arib/.test(txt)?'HLG':'HDR / PQ')):'SDR',transfer:tr,primaries:val(v,'colour_primaries','ColorPrimaries'),matrix:val(v,'matrix_coefficients','MatrixCoefficients'),range:val(v,'colour_range','ColorRange'),wide:/bt.?2020|2020/i.test(transfer+' '+tr+' '+val(v,'matrix_coefficients','MatrixCoefficients'))};}
-async function getMediaInfo(fileToScan){
- if(!mediaInfoFactoryPromise)mediaInfoFactoryPromise=import('https://cdn.jsdelivr.net/npm/mediainfo.js@0.3.8/dist/esm-bundle/index.js').then(m=>m.default||m.mediaInfoFactory);
- const factory=await mediaInfoFactoryPromise;
- const mi=await factory({format:'object',full:true,chunkSize:1024*1024});
- try{return await mi.analyzeData(fileToScan.size,async(size,offset)=>new Uint8Array(await fileToScan.slice(offset,offset+size).arrayBuffer()))}
- finally{mi.close()}
-}
-function field(label,value){return '<div class="scanItem"><span>'+esc(label)+'</span><b>'+esc(value)+'</b></div>'}
-function section(title,items){return '<details><summary>'+esc(title)+'</summary><div class="scanGrid">'+items.map(x=>field(x[0],x[1])).join('')+'</div></details>'}
-function renderReport(result,f,v){
- const tracks=tracksOf(result),g=firstTrack(result,'General'),videos=tracks.filter(t=>t['@type']==='Video'),audios=tracks.filter(t=>t['@type']==='Audio'),video=videos[0]||{},audio=audios[0]||{},hdr=hdrInfo(video);
- const width=Number(val(video,'Width').replace(/[^0-9.]/g,''))||v.videoWidth,height=Number(val(video,'Height').replace(/[^0-9.]/g,''))||v.videoHeight;
- const fps=val(video,'FrameRate'),fpsNum=parseFloat(fps),frameMode=val(video,'FrameRate_Mode');
- const summary=[['النطاق الديناميكي',hdr.label],['الدقة',(width&&height)?width+' × '+height:'غير متاح'],['معدل الإطارات',fps==='غير متاح'?'غير متاح':fps+' FPS'],['عمق البت',val(video,'BitDepth')==='غير متاح'?'غير متاح':val(video,'BitDepth')+' bit'],['ترميز الفيديو',codecName(video)],['مسارات الفيديو والصوت',videos.length+' فيديو · '+audios.length+' صوت']];
- $('scanSummary').innerHTML=summary.map(x=>'<div class="scanChip"><span>'+esc(x[0])+'</span><b>'+esc(x[1])+'</b></div>').join('');
- const general=[['اسم الملف',f.name],['الحجم',humanBytes(val(g,'FileSize')==='غير متاح'?f.size:g.FileSize)],['الحاوية',val(g,'Format')+' · '+val(g,'Format_Profile')],['معرّف الحاوية',val(g,'CodecID')],['المدة',fmtDuration(g.Duration)],['معدل البت الكلي',val(g,'OverallBitRate')==='غير متاح'?'غير متاح':(Number(g.OverallBitRate)/1000000).toFixed(2)+' Mbps'],['تاريخ الإنشاء',val(g,'Encoded_Date','Tagged_Date')],['ترتيب الملف',String(val(g,'IsStreamable')).toLowerCase()==='yes'?'Fast start / قابل للبث':'غير محدد']];
- const videoItems=[['الترميز',codecName(video)+' ['+val(video,'CodecID')+']'],['البروفايل',val(video,'Format_Profile')],['الدقة',width+' × '+height],['الاتجاه',height>width?'عمودي (Portrait)':width>height?'أفقي (Landscape)':'مربع / غير محدد'],['الدوران',val(video,'Rotation')],['عمق البت',val(video,'BitDepth')],['تجزئة الألوان',val(video,'ChromaSubsampling')],['معدل بت الفيديو',val(video,'BitRate')],['مدة الفيديو',fmtDuration(video.Duration)],['عدد الإطارات',val(video,'FrameCount')],['معدل الإطارات',fps],['نوع المعدل',frameMode==='غير متاح'?'غير متاح':frameMode+(frameMode.toLowerCase().includes('constant')?' (CFR)':frameMode.toLowerCase().includes('variable')?' (VFR)':'')],['Timescale',val(video,'TimeCodeScale','TimeScale','Time_Base')],['حجم الإطار الأقصى',val(video,'MaxFrameSize')],['GOP / الإطارات المفتاحية',val(video,'GOP_OpenClosed','Format_Settings_GOP')],['B-frames',val(video,'Format_Settings_BFrames')]];
- const colorItems=[['النوع',hdr.label],['الألوان الأساسية (Primaries)',hdr.primaries],['منحنى النقل (Transfer)',hdr.transfer],['المصفوفة (Matrix)',hdr.matrix],['النطاق (Range)',hdr.range],['مجال ألوان واسع',hdr.wide?'نعم':'غير مثبت'],['HDR metadata',val(video,'HDR_Format','HDR_Format_Commercial')],['شاشة الماستر ST 2086',val(video,'MasteringDisplay_ColorPrimaries','MasteringDisplay_Luminance')],['MaxCLL / MaxFALL',val(video,'MaxCLL','MaxFALL')],['Dolby Vision',val(video,'HDR_Format_Compatibility')]];
- const audioItems=audios.map((a,i)=>({title:'الصوت '+(i+1),items:[['الترميز',val(a,'Format')+' ['+val(a,'CodecID')+']'],['القنوات',val(a,'ChannelLayout','Channels')],['التردد',val(a,'SamplingRate')],['معدل البت',val(a,'BitRate')],['المدة',fmtDuration(a.Duration)]]}));
- $('scanReport').innerHTML=section('عام',general)+videos.map((t,i)=>section('الفيديو '+(i+1),i===0?videoItems:[['الترميز',codecName(t)],['الدقة',val(t,'Width')+' × '+val(t,'Height')],['FPS',val(t,'FrameRate')]])).join('')+section('الإطارات والتوقيت',videoItems.filter(x=>['عدد الإطارات','معدل الإطارات','نوع المعدل','Timescale','حجم الإطار الأقصى','GOP / الإطارات المفتاحية','B-frames'].includes(x[0])))+section('HDR والألوان',colorItems)+audioItems.map(a=>section(a.title,a.items)).join('')+(tracks.filter(t=>!['General','Video','Audio'].includes(t['@type'])).length?section('مسارات أخرى',tracks.filter(t=>!['General','Video','Audio'].includes(t['@type'])).map(t=>[val(t,'@type'),val(t,'Format')])):'');
- $('scanSummary').classList.remove('hidden');$('scanReport').classList.remove('hidden');
- mediaInfoData={result,tracks,g,video,audio,videos,audios,width,height,fps:fpsNum,frameMode,hdr,videoCodec:codecName(video)};
- updateModeHint();
-}
-async function scanFile(f,token,v){
- mediaInfoData=null;$('start').disabled=true;$('scanSummary').classList.add('hidden');$('scanReport').classList.add('hidden');$('scanState').textContent='جارٍ فحص الحاوية والمسارات والترميز محلياً...';
- try{const result=await getMediaInfo(f);if(token!==scanGeneration)return;renderReport(result,f,v);$('scanState').textContent='✓ اكتمل فحص الملف نفسه على جهازك. لم يتم رفع الفيديو.';updateModeHint()}
- catch(e){if(token!==scanGeneration)return;console.error(e);$('scanState').textContent='تعذّر تحليل الملف: '+(e.message||e)+'. لم نعرض معلومات تخمينية؛ جرّب MP4 أو MOV.';$('start').disabled=true;mediaInfoData=null}
-}
-function setFile(f,url){
- file=f;mediaInfoData=null;const token=++scanGeneration;
- if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=url||URL.createObjectURL(f);$('preview').src=objectUrl;$('videoInfo').classList.remove('hidden');$('drop').classList.add('hidden');$('start').disabled=true;$('result').classList.add('hidden');$('meta').innerHTML='جارٍ قراءة معلومات الفيديو...';$('scanState').textContent='جارٍ فحص الملف محلياً...';
- $('preview').onloadedmetadata=()=>{if(token!==scanGeneration)return;const v=$('preview');videoDuration=v.duration;const ratio=v.videoHeight?(v.videoWidth/v.videoHeight).toFixed(3):'—';const modified=f.lastModified?new Date(f.lastModified).toLocaleString('ar-IQ'):'غير متاح';const items=[['اسم الملف',f.name],['الدقة',v.videoWidth+' × '+v.videoHeight+' بكسل'],['المدة',time(v.duration)],['حجم الملف',fmt(f.size)],['صيغة الملف',f.type||f.name.split('.').pop().toUpperCase()],['نسبة الأبعاد',ratio],['تاريخ الملف',modified]];$('meta').innerHTML=items.map(x=>'<div class="metric"><span>'+esc(x[0])+'</span><b class="fileName">'+esc(x[1])+'</b></div>').join('');$('seek').max=Math.max(0,v.duration||0);$('seek').value=0;drawFrame(0);scanFile(f,token,v)};
-}
-function modeCompatibility(mode){
- if(!mediaInfoData)return {ok:false,reason:'انتظر اكتمال فحص الفيديو.'};
- const d=mediaInfoData;
- if(!d.videos.length)return {ok:false,reason:'لم يتم العثور على مسار فيديو.'};
- if(mode==='handbrake')return {ok:true,reason:'تم فحص الفيديو؛ سيُرفع مؤقتاً إلى خادم HandBrake لإعادة الترميز.'};
- const isHevc=/HEVC|H\.265/i.test(d.videoCodec),isH264=/AVC|H\.264/i.test(d.videoCodec);
- if(mode==='classic'){if(!isHevc&&!isH264)return {ok:false,reason:'تعذّر إثبات أن ترميز المصدر HEVC أو H.264؛ لن نخمن نوع الترميز. جرّب ملفاً مدعوماً.'};return {ok:true,reason:isHevc?'تم التعرّف على HEVC من فحص الملف؛ سيُنسخ الفيديو والصوت دون إعادة ترميز مع وسم hvc1 وFast Start.':'تم التعرّف على H.264 من فحص الملف؛ سيُنسخ الفيديو والصوت دون إعادة ترميز دون فرض وسم hvc1، مع Fast Start.'};}
- if(mode==='wudooh-x264'){if(d.hdr.yes)return {ok:false,reason:'وضع WUDOOH x264 الحالي يخرج SDR ‏8-bit؛ لا نريد تحويل HDR دون tone mapping صحيح. اختر حفظ HEVC/HDR.'};return {ok:true,reason:'سيتم فحص libx264 ثم إعادة الترميز إلى 2160×3840 و60 FPS وCRF 1. قد يكون الملف الناتج كبيراً جداً وقد تكون المعالجة بطيئة على الهاتف.'};}
- if(mode==='studio4k'){if(d.hdr.yes)return {ok:false,reason:'هذا التنفيذ المحلي يستخدم H.264 SDR؛ لا نريد تحويل HDR دون tone mapping صحيح. اختر حفظ HEVC/HDR.'};return {ok:true,reason:'سيُعاد ترميز SDR محلياً بجودة عالية حتى 4K مع الحفاظ على توقيت المصدر؛ قد يستغرق وقتاً.'};}
- if(mode==='maxquality'){if(d.hdr.yes)return {ok:false,reason:'المصدر HDR؛ لا تستخدم تحويل H.264 SDR حتى لا تتغير الألوان. اختر حفظ HEVC/HDR.'};return Number.isFinite(d.fps)?{ok:true,reason:'سيُعاد الترميز إلى H.264 حتى 1080p مع الحفاظ على توقيت إطارات المصدر.'}:{ok:false,reason:'تعذّر قراءة FPS؛ لا يمكن تأكيد توقيت الإطارات.'};}
- if(mode==='fpsmethod')return {ok:true,reason:'سيتم نسخ مسار الصورة دون إعادة ترميز وإعادة تنظيم حاوية MP4؛ لن تُنشأ إطارات جديدة.'};
- if(mode==='hevc-hdr'){
-  if(!isHevc)return {ok:false,reason:'هذا الوضع يحتاج مسار فيديو HEVC / H.265.'};
-  if(!d.hdr.yes)return {ok:false,reason:'لم يثبت أن الفيديو يحتوي HDR؛ لن ندّعي حفظ HDR لملف SDR.'};
-  return {ok:true,reason:'سيتم نسخ فيديو HEVC/HDR الأصلي دون إعادة ترميز، مع نسخة AAC بديلة للصوت عند توفره.'};
- }
- if(mode==='sdr-high'){
-  if(d.hdr.yes)return {ok:false,reason:'المصدر HDR. اختر وضع HEVC/HDR أو حوّله إلى SDR بأداة تدعم tone mapping.'};
-  return {ok:true,reason:'سيُعاد ترميز فيديو SDR محلياً باستخدام H.264 بجودة عالية.'};
- }
- if(mode==='sdr-copy'){
-  if(!isH264)return {ok:false,reason:'هذا الوضع ينسخ H.264 فقط دون إعادة ترميز؛ ترميز المصدر الحالي غير متوافق.'};
-  if(d.hdr.yes)return {ok:false,reason:'المصدر HDR وليس SDR؛ لن نعرضه كملف SDR.'};
-  return {ok:true,reason:'سيتم نسخ مسار H.264 كما هو، مع تجهيز الصوت بصيغة AAC عند الحاجة.'};
- }
- if(mode==='4k60')return {ok:true,reason:'سيتم فحص وجود مشفّر libx265 أولاً؛ إذا لم يكن متاحاً ستتوقف العملية برسالة واضحة دون ملف مزيف.'};
- if(mode==='720p60'){
-  if(!Number.isFinite(d.fps))return {ok:false,reason:'تعذّر قراءة FPS لهذا الملف.'};
-  if(d.width>1280||d.height>1280||Math.min(d.width,d.height)>720)return {ok:false,reason:'هذا الوضع ينسخ الصورة كما هي؛ اختر ملفاً لا يتجاوز 720p.'};
-  if(d.fps>60.01)return {ok:false,reason:'المصدر أعلى من 60 FPS ولا يمكن خفضه مع نسخ الصورة دون إعادة ترميز.'};
-  return {ok:true,reason:'سيتم نسخ المسارات إلى حاوية MP4 دون إعادة ترميز؛ لا يتم تغيير الدقة أو إنشاء 60 إطاراً.'};
- }
- return {ok:false,reason:'طريقة التجهيز غير معروفة.'};
-}
-function updateModeHint(){
- const selected=document.querySelector('input[name="mode"]:checked')?.value||'classic',check=modeCompatibility(selected);const deviceOK=selected==='handbrake'?Boolean(HANDBRAKE_API_BASE):(deviceReportData?deviceReportData.secure&&deviceReportData.wasm:(window.isSecureContext===true&&typeof WebAssembly==='object'));
- $('modeHint').textContent=check.reason;$('modeHint').style.border='1px solid '+(check.ok?'#31514f':'#65404a');$('modeHint').style.color=check.ok?'#a5f4e8':'#ffc0c8';$('start').disabled=!check.ok||!deviceOK||working;
-}
-
-$('file').onchange=e=>{if(e.target.files[0])setFile(e.target.files[0])};
-$('drop').onclick=e=>{if(e.target.tagName!=='INPUT')$('file').click()};
-$('drop').ondragover=e=>{e.preventDefault();$('drop').classList.add('drag')};$('drop').ondragleave=()=>$('drop').classList.remove('drag');
-$('drop').ondrop=e=>{e.preventDefault();$('drop').classList.remove('drag');const f=e.dataTransfer.files[0];if(f&&String(f.type||'').startsWith('video/'))setFile(f)};
-$('useUrl').onclick=async()=>{const u=$('videoUrl').value.trim();if(!u)return alert('ألصق رابط الفيديو أولاً');$('useUrl').disabled=true;$('useUrl').textContent='جارٍ القراءة...';try{const r=await fetch(u);if(!r.ok)throw Error('تعذّر جلب الملف');const b=await r.blob();if(!String(b.type||'').startsWith('video/')&&!/\.mp4([?#]|$)/i.test(u))throw Error('الرابط لا يبدو ملف فيديو');setFile(new File([b],'remote-video.mp4',{type:b.type||'video/mp4'}))}catch(e){alert('لم أستطع قراءة الرابط. قد يمنع المصدر الوصول من المتصفح (CORS). اختر الملف من جهازك بدلاً من ذلك.')}finally{$('useUrl').disabled=false;$('useUrl').textContent='استخدام الرابط'}};
-$('inspectTikTok').onclick=async()=>{
- const input=$('tiktokInspectUrl'),button=$('inspectTikTok'),status=$('tiktokInspectStatus'),result=$('tiktokInspectResult');
- const raw=String(input?.value||'').trim();
- result.classList.add('hidden');result.innerHTML='';
- if(!raw){status.textContent='ألصق رابط فيديو TikTok أولاً.';return;}
- let parsed;
- try{parsed=new URL(raw);}catch(_){status.textContent='الرابط غير صالح. تأكد من نسخه كاملاً.';return;}
- if(!/^https?:$/.test(parsed.protocol)||!/(^|\.)tiktok\.com$/i.test(parsed.hostname)){status.textContent='هذا ليس رابط TikTok صالحاً.';return;}
- button.disabled=true;button.textContent='جارٍ الفحص...';status.textContent='جارٍ طلب البيانات العامة المتاحة من TikTok...';
+<script type="module">
+import { VideoEngine } from "./assets/js/video-engine.js";
+const $ = (id) => document.getElementById(id);
+let file = null, metadata = null, result = null, previewURL = null, engine = null, busy = false;
+const formatSize = (n) => { if(!Number.isFinite(n)) return "غير متاح"; const u=["B","KB","MB","GB"]; let i=0; while(n>=1024&&i<u.length-1){n/=1024;i++;} return n.toFixed(2)+" "+u[i]; };
+const setStatus = (s) => { $("status").textContent = s; };
+const setProgress = (p) => { $("progressBar").style.width = Math.max(0,Math.min(100,p))+"%"; };
+const appendLog = (line) => { const el=$("log"); el.textContent += (el.textContent ? "\n" : "") + line; el.scrollTop=el.scrollHeight; };
+const showStats = (id, rows) => { const box=$(id); box.replaceChildren(); rows.forEach(([k,v])=>{const d=document.createElement("div");d.className="metric";const s=document.createElement("span");s.textContent=k;const b=document.createElement("b");b.textContent=v??"غير متاح";d.append(s,b);box.append(d);}); };
+function createEngine(){ if(engine) return engine; engine=new VideoEngine({preferMultiThread:true,onProgress:(p)=>setProgress(p*100),onStatus:(s)=>setStatus(s),onLog:(line)=>appendLog(line)}); return engine; }
+function resetResult(){ if(result?.url) URL.revokeObjectURL(result.url); result=null; $("result").style.display="none"; $("downloadBtn").removeAttribute("href"); }
+function selectFile(next){ if(!next)return; if(busy)return; file=next; metadata=null; resetResult(); $("fileName").textContent=file.name; $("fileSize").textContent=formatSize(file.size); $("uploadCard").hidden=true; $("fileCard").hidden=false; $("modeCard").hidden=true; $("metadata").hidden=true; $("step1").classList.add("done"); $("step2").classList.remove("done"); $("step2").classList.add("active"); $("step3").classList.remove("active","done"); if(previewURL)URL.revokeObjectURL(previewURL); previewURL=URL.createObjectURL(file); $("preview").src=previewURL; $("preview").hidden=false; $("log").textContent="تم اختيار الملف: "+file.name; }
+$("videoInput").addEventListener("change",e=>selectFile(e.target.files?.[0]));
+$("changeFile").addEventListener("click",()=>{if(!busy)$("videoInput").click();});
+$("drop").addEventListener("dragover",e=>{e.preventDefault();$("drop").classList.add("drag");});
+$("drop").addEventListener("dragleave",()=> $("drop").classList.remove("drag"));
+$("drop").addEventListener("drop",e=>{e.preventDefault();$("drop").classList.remove("drag");const f=e.dataTransfer?.files?.[0];if(f)selectFile(f);});
+$("inspectBtn").addEventListener("click",async()=>{
+ if(!file||busy)return; busy=true;$("inspectBtn").disabled=true;$("modeCard").hidden=true;$("log").textContent="";
  try{
-  const endpoint='https://www.tiktok.com/oembed?url='+encodeURIComponent(parsed.href);
-  const response=await fetch(endpoint,{method:'GET',headers:{'Accept':'application/json'}});
-  if(!response.ok)throw new Error('TikTok oEmbed returned HTTP '+response.status);
-  const data=await response.json();
-  const title=String(data.title||'العنوان غير متاح');
-  const author=String(data.author_name||'غير متاح');
-  const authorUrl=String(data.author_url||'');
-  const provider=String(data.provider_name||'TikTok');
-  const thumb=String(data.thumbnail_url||'');
-  const safeThumb=/^https:\/\//i.test(thumb)?thumb:'';
-  const safeAuthorUrl=/^https:\/\//i.test(authorUrl)?authorUrl:'';
-  const escText=v=>String(v).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  result.innerHTML=(safeThumb?'<div class="tiktokPreview"><img src="'+escText(safeThumb)+'" alt="صورة الفيديو المصغرة"><div><b>'+escText(title)+'</b><p class="sub">الناشر: '+(safeAuthorUrl?'<a href="'+escText(safeAuthorUrl)+'" target="_blank" rel="noopener noreferrer">'+escText(author)+'</a>':escText(author))+'</p></div></div>':'')+
-   '<div class="scanChip"><span>المنصة</span><b>'+escText(provider)+'</b></div>'+
-   '<div class="scanChip"><span>اسم الناشر</span><b>'+escText(author)+'</b></div>'+
-   '<div class="scanChip"><span>عنوان الفيديو</span><b>'+escText(title)+'</b></div>'+
-   '<div class="scanChip"><span>معرّف الفيديو</span><b>'+escText((parsed.pathname.match(/\/video\/(\d+)/)||[])[1]||'غير ظاهر في الرابط')+'</b></div>';
-  result.classList.remove('hidden');status.textContent='اكتمل الفحص. هذه هي البيانات التي أتاحها TikTok؛ قد لا تتوفر المشاهدات أو الإعجابات عبر هذه الخدمة.';
- }catch(error){
-  status.textContent='تعذّر جلب بيانات الرابط من TikTok. قد يكون السبب رابطاً مختصراً أو فيديو خاصاً أو قيود CORS/الشبكة. لم يتم تنزيل الفيديو أو رفعه.';
- }finally{button.disabled=false;button.textContent='افحص الرابط';}
-};
-$('changeFile').onclick=()=>$('file').click();
-document.querySelectorAll('input[name="mode"]').forEach(el=>el.addEventListener('change',updateModeHint));
-$('recheckDevice').onclick=async()=>{await initializeEnginePlan();runDeviceCheck()};
-$('copyDeviceReport').onclick=()=>{const report=deviceReportText();if(navigator.clipboard?.writeText)navigator.clipboard.writeText(report).then(()=>$('deviceStatus').textContent='تم نسخ التقرير. لم يُرسل إلى أي جهة.').catch(()=>alert(report));else alert(report)};
-initializeEnginePlan().then(()=>runDeviceCheck()).catch(()=>runDeviceCheck());
-$('copyInfo').onclick=()=>{const t=[...$('meta').querySelectorAll('.metric')].map(x=>x.innerText.replace('\n',': ')).join('\n');navigator.clipboard?.writeText(t).then(()=>alert('تم نسخ التفاصيل')).catch(()=>alert(t))};
-async function drawFrame(sec){const v=$('preview'),c=$('canvas'),ctx=c.getContext('2d');if(!v.videoWidth)return;try{v.currentTime=Math.min(sec,Math.max(0,v.duration-.05));await new Promise(resolve=>v.onseeked=resolve);const scale=Math.min(c.width/v.videoWidth,c.height/v.videoHeight),w=v.videoWidth*scale,h=v.videoHeight*scale;ctx.fillStyle='#05080d';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(v,(c.width-w)/2,(c.height-h)/2,w,h);$('seekTime').textContent='الإطار عند '+time(v.currentTime)}catch(e){}}
-$('seek').oninput=e=>drawFrame(Number(e.target.value));$('thumbYes').onclick=()=>{$('thumbPanel').classList.remove('hidden');if($('preview').readyState>=2)drawFrame($('preview').currentTime||0)};$('thumbNo').onclick=()=>$('thumbPanel').classList.add('hidden');$('prevFrame').onclick=()=>drawFrame(Math.max(0,($('preview').currentTime||0)-.05));$('nextFrame').onclick=()=>drawFrame(Math.min(videoDuration||0,($('preview').currentTime||0)+.05));$('saveCover').onclick=()=>{$('canvas').toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='cover.jpg';a.click();URL.revokeObjectURL(a.href)},'image/jpeg',.94)};
-$('preview').addEventListener('loadeddata',()=>{$('saveCover').disabled=false});
-
-async function loadEngine(onProgress){if(window.IbrahimEngineInstance)return window.IbrahimEngineInstance;const enginePlan=await initializeEnginePlan();window.IbrahimEnginePlan={...enginePlan,requestedMode:enginePlan.mode,fallbackUsed:false,fallbackReason:window.IbrahimEnginePlan?.fallbackReason||''};const mod=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');const util=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js');const {FFmpeg}=mod;const {fetchFile}=util;
-function formatAnyError(err){
- if(!err)return 'Unknown error (empty/null)';
- if(typeof err==='string')return err;
- if(typeof err.message==='string'&&err.message.length)return err.message;
- if(err.error&&typeof err.error.message==='string')return err.error.message;
- try{return JSON.stringify(err)}catch(_){return String(err)}
-}
-class IbrahimEngine{
-constructor(){this.ffmpeg=new FFmpeg();this.loaded=false;this.busy=false;this.onProgress=onProgress;this.logs=[];this.cancelRequested=false;this.lastErrorReport=null;this.bindEvents();}
-bindEvents(){this.ffmpeg.on('log',({message})=>{this.logs.push(message);if(this.logs.length>250)this.logs.shift()});this.ffmpeg.on('progress',({progress})=>{if(this.onProgress)this.onProgress(Math.min(.99,Math.max(.01,progress||0)))});}
-async loadCore(multithread){
- const classWorkerURL=new URL('assets/ffmpeg/worker.js',document.baseURI).href;
- const base=multithread?'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.6/dist/esm':'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';
- const cacheName='ibrahim-ffmpeg-assets-v1';
- const cachedBlobURL=async(url,fallbackType)=>{
-  let blob=null,cacheHit=false;
-  if('caches' in window){
-   try{const cache=await caches.open(cacheName);const saved=await cache.match(url);if(saved){blob=await saved.blob();cacheHit=true;}}catch(error){console.warn('تعذّر قراءة نسخة FFmpeg المخزنة؛ سيتم التحميل من المصدر.',error);}
-  }
-  if(!blob){
-   const response=await fetch(url,{mode:'cors',cache:'force-cache'});
-   if(!response.ok)throw Error('تعذّر تحميل أحد ملفات محرك FFmpeg ('+response.status+').');
-   const savedResponse=response.clone();
-   blob=await response.blob();
-   if('caches' in window){try{const cache=await caches.open(cacheName);await cache.put(url,savedResponse);}catch(error){console.warn('تعذّر حفظ ملف FFmpeg في ذاكرة المتصفح؛ سيعمل المحرك لهذه الجلسة.',error);}}
-  }
-  if(!blob.type&&fallbackType)blob=new Blob([await blob.arrayBuffer()],{type:fallbackType});
-  return {url:URL.createObjectURL(blob),cacheHit};
- };
- const specs=[['ffmpeg-core.js','text/javascript'],['ffmpeg-core.wasm','application/wasm']];
- if(multithread)specs.push(['ffmpeg-core.worker.js','text/javascript']);
- const assets=await Promise.all(specs.map(([name,type])=>cachedBlobURL(base+'/'+name,type)));
- const options={classWorkerURL,coreURL:assets[0].url,wasmURL:assets[1].url};
- if(multithread)options.workerURL=assets[2].url;
- window.IbrahimEnginePlan={...window.IbrahimEnginePlan,engineAssetCacheHit:assets.every(asset=>asset.cacheHit),engineAssetCacheName:cacheName};
- try{await this.ffmpeg.load(options);}
- catch(error){for(const asset of assets)URL.revokeObjectURL(asset.url);throw error;}
-}
-async load(){if(this.loaded)return;const wantsMulti=window.IbrahimEnginePlan?.mode==='multi-thread';setStatus(wantsMulti?'تهيئة المعالجة المتوازية لأول مرة...':'تهيئة نظام المعالجة لأول مرة؛ اترك الصفحة مفتوحة...',2);try{await this.loadCore(wantsMulti);this.loaded=true;this.activeMode=wantsMulti?'multi-thread':'single-thread';}catch(error){if(!wantsMulti)throw error;try{this.ffmpeg.terminate()}catch(e){}this.ffmpeg=new FFmpeg();this.bindEvents();window.IbrahimEnginePlan={...window.IbrahimEnginePlan,mode:'single-thread',fallbackUsed:true,fallbackReason:error?.message||String(error),reason:'تعذّرت تهيئة الوضع المتوازي؛ تم الرجوع تلقائياً إلى الوضع القياسي.'};setStatus('تعذّرت تهيئة الوضع المتوازي؛ جارٍ تشغيل الوضع الاحتياطي...',4);await this.loadCore(false);this.loaded=true;this.activeMode='single-thread';}}
-async process(inputFile,method){if(this.busy)throw Error('المعالج مشغول حالياً');this.busy=true;this.cancelRequested=false;this.lastErrorReport=null;const processStarted=performance.now();let loadSeconds=0,encodeSeconds=0;const ext=(inputFile.name.match(/\.[^.]+$/)||['.mp4'])[0].toLowerCase();const input='input'+ext,output='output.mp4';let wrote=false,ffmpegExitCode=null,writeSeconds=0,readSeconds=0;try{setStatus('تهيئة نظام المعالجة...',4);const loadStarted=performance.now();await this.load();loadSeconds=(performance.now()-loadStarted)/1000;setStatus('قراءة الفيديو داخل ذاكرة المعالجة المحلية...',7);const writeStarted=performance.now();await this.ffmpeg.writeFile(input,await fetchFile(inputFile));writeSeconds=(performance.now()-writeStarted)/1000;wrote=true;this.logs=[];if(method==='4k60'||method==='wudooh-x264'){setStatus(method==='wudooh-x264'?'فحص دعم مشفّر H.264 libx264...':'فحص دعم ترميز HEVC 10-bit...',9);await this.ffmpeg.exec(['-encoders']);const encoderList=this.logs.join('\n');const requiredEncoder=method==='wudooh-x264'?'libx264':'libx265';if(!encoderList.includes(requiredEncoder))throw Error('نسخة FFmpeg الحالية لا تحتوي مشفّر '+requiredEncoder+'؛ لم يتم إنشاء الملف.');this.logs=[];}setStatus('تجهيز مسارات الفيديو والصوت...',9);let args;
-if(method==='classic'){const sourceCodec=mediaInfoData?.videoCodec||'';const sourceIsHevc=/HEVC|H\\.265/i.test(sourceCodec),sourceIsH264=/AVC|H\\.264/i.test(sourceCodec);if(!sourceIsHevc&&!sourceIsH264)throw Error('تعذّر تحديد ترميز الفيديو من فحص MediaInfo؛ أُوقفت عملية Classic دون تخمين.');setStatus('نسخ فيديو '+(sourceIsHevc?'HEVC':'H.264')+' والصوت دون إعادة ترميز...',10);args=['-hide_banner','-y','-i',input,'-map','0:v:0','-map','0:a?','-map_metadata','0','-map_chapters','0','-c:v','copy','-c:a','copy','-video_track_timescale','90000'];if(sourceIsHevc)args.push('-tag:v','hvc1');args.push('-movflags','+faststart',output)}
-else if(method==='fpsmethod'){setStatus('نسخ الصورة وإعادة تنظيم حاوية MP4 دون إعادة ترميز...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-map_metadata','0','-map_chapters','0','-c','copy','-video_track_timescale','90000','-movflags','+faststart',output]}
-else if(method==='hevc-hdr'){setStatus('حفظ مسار HEVC/HDR الأصلي دون إعادة ترميز...',10);args=['-i',input,'-map','0:v:0','-map','0:a:0?','-map','0:a:0?','-map_metadata','0','-map_chapters','0','-c:v','copy','-c:a:0','copy','-c:a:1','aac','-b:a:1','192k','-movflags','+faststart',output];}
-else if(method==='sdr-copy'){setStatus('نسخ صورة H.264 SDR وتجهيز الصوت...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-map_metadata','0','-map_chapters','0','-c:v','copy','-c:a','aac','-b:a','192k','-movflags','+faststart',output]}
-else if(method==='720p60'){setStatus('نسخ مسارات الفيديو والصوت إلى MP4 دون إعادة ترميز...',10);args=['-hide_banner','-y','-i',input,'-map','0:v:0','-map','0:a?','-map_metadata','0','-map_chapters','0','-c','copy','-video_track_timescale','90000'];if(/HEVC|H\\.265/i.test(mediaInfoData?.videoCodec||''))args.push('-tag:v','hvc1');args.push('-movflags','+faststart',output)}
-else if(method==='studio4k'){setStatus('إعادة ترميز محلية عالية الجودة حتى 4K مع الحفاظ على توقيت المصدر...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-vf',"scale=w='min(3840,iw)':h='min(3840,ih)':force_original_aspect_ratio=decrease:force_divisible_by=2",'-c:v','libx264','-preset','veryfast','-crf','18','-pix_fmt','yuv420p','-fps_mode','passthrough','-c:a','aac','-b:a','192k','-movflags','+faststart',output]}
-else if(method==='wudooh-x264'){setStatus('ترميز H.264 عمودي 4K60 بإعدادات x264 عالية الجودة...',10);args=['-i',input,'-map','0:v:0','-map','0:a:0?','-map','0:a:0?','-map_metadata','0','-map_chapters','0','-vf','fps=60,scale=2160:3840:force_original_aspect_ratio=decrease:force_divisible_by=2,pad=2160:3840:(ow-iw)/2:(oh-ih)/2,format=yuv420p','-c:v','libx264','-preset','medium','-crf','1','-profile:v','high','-level:v','5.2','-refs','3','-bf','3','-g','250','-keyint_min','25','-sc_threshold','40','-me_method','hex','-subq','7','-me_range','16','-trellis','1','-8x8dct','1','-threads','18','-x264-params','cabac=1:ref=3:deblock=1,0,0:partitions=i4x4,i8x8,p8x8,b8x8:me=hex:subme=7:psy=1:psy-rd=1.00,0.00:mixed-refs=1:me-range=16:chroma-me=1:trellis=1:8x8dct=1:cqm=0:deadzone=21,11:fast-pskip=1:chroma-qp-offset=-2:threads=18:lookahead-threads=3:sliced-threads=0:nr=0:decimate=1:interlaced=0:bluray-compat=0:constrained-intra=0:bframes=3:b-pyramid=2:b-adapt=1:b-bias=0:direct=1:weightb=1:open-gop=0:weightp=2:keyint=250:min-keyint=25:scenecut=40:intra-refresh=0:rc-lookahead=40:mbtree=1:crf=1','-pix_fmt','yuv420p','-fps_mode','cfr','-r','60','-c:a:0','aac','-b:a:0','188k','-ar:a:0','44100','-ac:a:0','2','-c:a:1','aac','-b:a:1','188k','-ar:a:1','44100','-ac:a:1','2','-video_track_timescale','19200','-movflags','+faststart',output]}
-else if(method==='maxquality'){setStatus('إعادة ترميز H.264 عالي الجودة حتى 1080p مع الحفاظ على توقيت المصدر...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-vf',"scale=w='min(1920,iw)':h='min(1920,ih)':force_original_aspect_ratio=decrease:force_divisible_by=2",'-c:v','libx264','-preset','veryfast','-crf','18','-pix_fmt','yuv420p','-fps_mode','passthrough','-c:a','aac','-b:a','192k','-movflags','+faststart',output]}
-else if(method==='sdr-high'){setStatus('إعادة ترميز SDR بجودة عالية باستخدام H.264...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-c:v','libx264','-preset','veryfast','-crf','18','-pix_fmt','yuv420p','-fps_mode','passthrough','-c:a','aac','-b:a','192k','-movflags','+faststart',output]}
-else if(method==='4k60'){setStatus('تصدير عمودي HEVC 10-bit بمقاس 2160×3840 و60 FPS...',10);args=['-i',input,'-map','0:v:0','-map','0:a?','-vf','fps=60,scale=2160:3840:force_original_aspect_ratio=decrease,pad=2160:3840:(ow-iw)/2:(oh-ih)/2,format=yuv420p10le','-c:v','libx265','-preset','ultrafast','-crf','25','-tag:v','hvc1','-c:a','aac','-b:a','192k','-movflags','+faststart',output]}
-else throw Error('طريقة التجهيز غير مدعومة.');
-try{await this.ffmpeg.deleteFile(output)}catch(_){}
-if(!args.includes('-y'))args.unshift('-y');
-// Add a container-level encoder label only; codec, x264, threads and stream-copy options remain unchanged.
-args.splice(args.length-1,0,'-metadata','encoder=IBRAHIM AL FARIS | LOCAL VIDEO STUDIO');
-const encodeStarted=performance.now();
-try{ffmpegExitCode=await this.ffmpeg.exec(args)}catch(error){
- throw new Error('FFmpeg execution failed: '+formatAnyError(error)+' | Last logs: '+this.logs.slice(-30).join(' || '));
-}
-encodeSeconds=(performance.now()-encodeStarted)/1000;
-if(ffmpegExitCode!==0)throw new Error('FFmpeg exited with code '+String(ffmpegExitCode)+' | Last logs: '+this.logs.slice(-40).join(' || '));
-setStatus('قراءة الملف الناتج...',98);
-let data;const readStarted=performance.now();
-try{data=await this.ffmpeg.readFile(output)}catch(error){
- throw new Error('FFmpeg output read failed: '+formatAnyError(error)+' | Last logs: '+this.logs.slice(-30).join(' || '));
-}finally{readSeconds=(performance.now()-readStarted)/1000;}
-if(!data||data.byteLength<=1024)throw new Error('Invalid FFmpeg output: '+(data?.byteLength||0)+' bytes; refusing to publish an incomplete video. | Last logs: '+this.logs.slice(-40).join(' || '));
-const blob=new Blob([data],{type:'video/mp4'});
-if(blob.size<=1024)throw new Error('Output blob is too small ('+blob.size+' bytes); refusing to mark it as complete.');
-const processingSeconds=(performance.now()-processStarted)/1000;const sourceSeconds=Number(videoDuration)||0;this.lastRunReport={timestamp:new Date().toISOString(),processingMode:method,plannedMode:window.IbrahimEnginePlan?.requestedMode||window.IbrahimEnginePlan?.mode||'غير متاح',planReason:window.IbrahimEnginePlan?.reason||'',capabilities:window.IbrahimEnginePlan?.capabilities||{},activeMode:this.activeMode||'غير متاح',fallbackUsed:window.IbrahimEnginePlan?.fallbackUsed===true,fallbackReason:window.IbrahimEnginePlan?.fallbackReason||'',processingSeconds,encodeSeconds,ffmpegExitCode,loadSeconds,speedFactor:sourceSeconds>0&&processingSeconds>0?sourceSeconds/processingSeconds:null,encodeSpeedFactor:sourceSeconds>0&&encodeSeconds>0?sourceSeconds/encodeSeconds:null,writeSeconds,readSeconds,otherSeconds:Math.max(0,processingSeconds-loadSeconds-encodeSeconds-writeSeconds-readSeconds),sourceDurationSeconds:sourceSeconds,sourceBytes:inputFile.size,outputBytes:blob.size,outputContainer:'MP4',engineAssetCacheHit:window.IbrahimEnginePlan?.engineAssetCacheHit===true};saveEngineReport(this.lastRunReport);try{await this.ffmpeg.deleteFile(output);if(wrote)await this.ffmpeg.deleteFile(input)}catch(e){}return blob;
-}catch(error){this.lastErrorReport={cancelled:this.cancelRequested===true,message:error?.message||String(error),name:error?.name||'Error',logs:this.logs.slice(-50),processingMode:method,activeMode:this.activeMode||window.IbrahimEnginePlan?.mode||'غير متاح',timestamp:new Date().toISOString()};throw error;}finally{this.busy=false;}}
-}
-const instance=new IbrahimEngine();window.IbrahimEngine=IbrahimEngine;window.IbrahimEngineInstance=instance;return instance;}
-async function fetchHandBrakeWithRetry(url,options,attempts=6){
- let lastError;
- for(let attempt=0;attempt<attempts;attempt++){
-  if(options?.signal?.aborted)throw new DOMException('تم إلغاء العملية.','AbortError');
-  try{return await fetch(url,options)}
-  catch(error){
-   lastError=error;
-   if(options?.signal?.aborted)throw new DOMException('تم إلغاء العملية.','AbortError');
-   if(!(error instanceof TypeError)||attempt===attempts-1)throw error;
-   setStatus('انقطع الاتصال مؤقتاً؛ جارٍ إعادة الاتصال بالخادم ('+(attempt+1)+'/'+attempts+')...',Math.min(96,8+Math.round((window.handbrakeLastProgress||0)*.78)));
-   await new Promise((resolve,reject)=>{
-    const timer=setTimeout(resolve,2500);
-    options.signal?.addEventListener('abort',()=>{clearTimeout(timer);reject(new DOMException('تم إلغاء العملية.','AbortError'))},{once:true});
-   });
-  }
- }
- throw lastError||Error('تعذّر الاتصال بخادم المعالجة.');
-}
-async function downloadHandBrakeBlobWithRetry(url,options,attempts=5){
- let lastError;
- for(let attempt=0;attempt<attempts;attempt++){
-  try{
-   const response=await fetchHandBrakeWithRetry(url,options,2);
-   if(!response.ok)throw Error('اكتملت المعالجة لكن تعذّر تنزيل الملف الناتج (HTTP '+response.status+').');
-   return await response.blob();
-  }catch(error){
-   lastError=error;
-   if(options?.signal?.aborted||error?.name==='AbortError')throw error;
-   if(attempt===attempts-1)throw error;
-   setStatus('اكتملت المعالجة؛ تعذّر استلام الملف مؤقتاً، جارٍ إعادة التنزيل ('+(attempt+1)+'/'+attempts+')...',96);
-   await new Promise((resolve,reject)=>{
-    const timer=setTimeout(resolve,2500);
-    options.signal?.addEventListener('abort',()=>{clearTimeout(timer);reject(new DOMException('تم إلغاء العملية.','AbortError'))},{once:true});
-   });
-  }
- }
- throw lastError||Error('تعذّر تنزيل الملف الناتج.');
-}
-async function runHandBrakeJob(inputFile){
- if(!HANDBRAKE_API_BASE)throw Error('خدمة HandBrake لم تُنشر أو لم يُضف رابطها بعد.');
- const controller=new AbortController();window.handbrakeAbortController=controller;window.handbrakeLogs=[];
- if(!turnstileToken)throw Error('أكمل فحص الحماية قبل رفع الفيديو.');
- const form=new FormData();form.append('file',inputFile,inputFile.name);form.append('turnstile_token',turnstileToken);
- setStatus('رفع الفيديو مؤقتاً إلى خادم HandBrake...',5);
- const uploadResult=await new Promise((resolve,reject)=>{
-  const xhr=new XMLHttpRequest();window.handbrakeUploadXhr=xhr;
-  xhr.open('POST',HANDBRAKE_API_BASE+'/api/jobs');
-  xhr.upload.onprogress=event=>{
-   if(event.lengthComputable){
-    const percent=Math.round(event.loaded/event.total*100);
-    setStatus('رفع الفيديو إلى الخادم... '+percent+'%',5+Math.round(percent*.5));
-   }else setStatus('جارٍ رفع الفيديو إلى خادم HandBrake...',5);
-  };
-  xhr.onload=()=>{
-   let data={};try{data=JSON.parse(xhr.responseText||'{}')}catch{}
-   resolve({ok:xhr.status>=200&&xhr.status<300,data});
-  };
-  xhr.onerror=()=>reject(Error('انقطع الاتصال أثناء رفع الفيديو إلى الخادم.'));
-  xhr.onabort=()=>reject(new DOMException('تم إلغاء العملية.','AbortError'));
-  controller.signal.addEventListener('abort',()=>xhr.abort(),{once:true});
-  if(controller.signal.aborted){xhr.abort();return;}
-  xhr.send(form);
- });
- window.handbrakeUploadXhr=null;
- turnstileToken='';if(window.turnstile&&turnstileWidgetId!==null)window.turnstile.reset(turnstileWidgetId);
- const createdData=uploadResult.data;
- if(!uploadResult.ok)throw Error(createdData.detail||'تعذّر رفع الفيديو إلى خادم المعالجة.');
- const jobId=createdData.id;const jobToken=createdData.access_token;if(!jobId||!jobToken)throw Error('استجابة الخادم غير مكتملة.');window.handbrakeJobId=jobId;window.handbrakeJobToken=jobToken;
- const started=Date.now();
- while(true){
-  if(controller.signal.aborted)throw new DOMException('تم إلغاء العملية.','AbortError');
-  let response;
-  for(let attempt=0;attempt<20;attempt++){
-   try{
-    response=await fetch(HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(jobId),{cache:'no-store',headers:{'X-Job-Token':jobToken},signal:controller.signal});
-    break;
-   }catch(error){
-    if(controller.signal.aborted)throw new DOMException('تم إلغاء العملية.','AbortError');
-    if(!(error instanceof TypeError)||attempt===19)throw Error('انقطع الاتصال بخادم المعالجة بعد عدة محاولات. قد تكون الخدمة أعادت التشغيل؛ أعد المحاولة بعد التأكد من حالة الخادم.');
-    setStatus('انقطع الاتصال مؤقتاً؛ جارٍ إعادة الاتصال بالخادم ('+(attempt+1)+'/20)...',Math.min(92,8+Math.round((window.handbrakeLastProgress||0)*.78)));
-    await new Promise((resolve,reject)=>{
-     const timer=setTimeout(resolve,3000);
-     controller.signal.addEventListener('abort',()=>{clearTimeout(timer);reject(new DOMException('تم إلغاء العملية.','AbortError'))},{once:true});
-    });
-   }
-  }
-  const state=await response.json().catch(()=>({}));
-  window.handbrakeLastProgress=state.progress||window.handbrakeLastProgress||0;
-  if(!response.ok)throw Error(state.detail||'تعذّر قراءة حالة المعالجة.');
-  window.handbrakeLogs=state.logs||[];
-  const labels={queued:'الفيديو في قائمة الانتظار على الخادم...',processing:'HandBrake يعيد ترميز الفيديو على الخادم...',completed:'اكتمل الترميز؛ جارٍ استلام الفيديو...',failed:'فشلت معالجة HandBrake.',cancelled:'تم إلغاء المعالجة.'};
-  setStatus(labels[state.status]||'جارٍ تنفيذ المعالجة على الخادم...',Math.min(92,8+Math.round((state.progress||0)*.78)));
-  if(state.status==='failed')throw Error(state.error||'فشل HandBrake في إنشاء الملف.');
-  if(state.status==='cancelled')throw new DOMException('تم إلغاء العملية.','AbortError');
-  if(state.status==='completed'){
-   setStatus('استلام الفيديو الناتج من الخادم...',96);
-   const downloadUrl=HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(jobId)+'/download';
-   const blob=await downloadHandBrakeBlobWithRetry(downloadUrl,{cache:'no-store',headers:{'X-Job-Token':jobToken},signal:controller.signal});
-   const report=state.report||{};
-   report.capabilities={};report.speedFactor=null;
-   report.sourceDurationSeconds=report.sourceDurationSeconds||Number($('preview').duration)||0;
-   window.handbrakeJobId=null;window.handbrakeJobToken=null;
-   const sourceInfo={width:$('preview').videoWidth,height:$('preview').videoHeight,duration:$('preview').duration,size:inputFile.size,name:inputFile.name};
-   await finish(blob,inputFile.name.replace(/\.[^.]+$/,'')+'_handbrake.mp4',sourceInfo,'handbrake',report);
-   return;
-  }
-  if(Date.now()-started>60*60*1000)throw Error('انتهت مهلة انتظار خادم المعالجة بعد 60 دقيقة.');
-  await new Promise(resolve=>setTimeout(resolve,1300));
- }
-}
-$('start').onclick=async()=>{
- if(!file||working)return;
- $('processIssue').classList.add('hidden');$('cancel').disabled=false;$('cancel').textContent='إلغاء';
- const selected=document.querySelector('input[name="mode"]:checked').value;
- $('handbrakeSecurity').classList.toggle('hidden',selected!=='handbrake');
- if(selected==='handbrake'){
-  if(!turnstileToken){alert('أكمل فحص الحماية أولاً.');return;}
-  if(!HANDBRAKE_API_BASE){alert('خادم HandBrake لم يُنشر بعد.');return;}
-  const compatibility=modeCompatibility(selected);if(!compatibility.ok){alert(compatibility.reason);return;}
-  working=true;$('start').disabled=true;$('cancel').classList.remove('hidden');$('progressWrap').classList.remove('hidden');$('result').classList.add('hidden');
-  try{await runHandBrakeJob(file)}
-  catch(e){
-   const cancelled=e?.name==='AbortError';
-   showProcessIssue({cancelled,message:e?.message||String(e),logs:window.handbrakeLogs||[]});
-   setStatus(cancelled?'تم إلغاء المعالجة يدوياً.':'فشلت معالجة HandBrake؛ راجع سجل المعالجة.',0);
-  }
-  finally{working=false;window.handbrakeAbortController=null;$('cancel').classList.add('hidden');updateModeHint()}
-  return;
- }
- await initializeEnginePlan();const deviceOK=runDeviceCheck();
- if(!deviceOK){alert('المتصفح يحتاج اتصال HTTPS ودعم WebAssembly قبل المعالجة.');return;}
- const compatibility=modeCompatibility(selected);if(!compatibility.ok){updateModeHint();alert(compatibility.reason);return;}
- working=true;let engine=null;$('start').disabled=true;$('cancel').classList.remove('hidden');$('progressWrap').classList.remove('hidden');$('result').classList.add('hidden');
+  setStatus("تحميل محرك الفيديو وقراءة خصائص الملف...");
+  const plan=await createEngine().load();
+  metadata=await engine.inspect(file);
+  showStats("metadata",[["الأبعاد",metadata.width+" × "+metadata.height],["المدة",Number(metadata.duration).toFixed(2)+" ثانية"],["معدل الإطارات",metadata.fps||"غير معروف"],["ترميز الفيديو",metadata.videoCodec],["الصوت",metadata.audioPresent?"موجود":"غير مرصود"],["HDR",metadata.hdr?"مرصود من بيانات الألوان":"لم يتم رصده"],["حجم الملف",formatSize(metadata.size)],["وضع المحرك",plan.mode]]);
+  $("metadata").hidden=false;$("modeCard").hidden=false;$("step2").classList.add("active");setStatus("اكتمل الفحص. اختر وضع المعالجة.");
+ }catch(err){setStatus("تعذّر فحص الفيديو: "+(err?.message||String(err)));appendLog("ERROR: "+(err?.stack||err));}
+ finally{busy=false;$("inspectBtn").disabled=false;}
+});
+document.querySelectorAll('input[name="mode"]').forEach(el=>el.addEventListener("change",()=>{$("compressOptions").hidden=document.querySelector('input[name="mode"]:checked').value!=="COMPRESS";}));
+$("startBtn").addEventListener("click",async()=>{
+ if(!file||busy)return; busy=true;resetResult();$("startBtn").disabled=true;$("cancelBtn").hidden=false;$("progressCard").hidden=false;$("log").textContent="";setProgress(0);$("step3").classList.add("active");
+ const mode=document.querySelector('input[name="mode"]:checked').value;
  try{
-  if(outputUrl)URL.revokeObjectURL(outputUrl);
-  const sourceInfo={width:$('preview').videoWidth,height:$('preview').videoHeight,duration:$('preview').duration,size:file.size,name:file.name};
-  engine=await loadEngine(p=>setStatus('جاري تنفيذ المعالجة المحلية...',Math.round(p*100)));
-  const method=selected;
-  const blob=await engine.process(file,method);
-  await finish(blob,file.name.replace(/\.[^.]+$/,'')+'_ibrahim.mp4',sourceInfo,method,engine.lastRunReport);
- }catch(e){
-  console.error(e);const report=engine?.lastErrorReport||{cancelled:false,message:e?.message||String(e),logs:engine?.logs?.slice(-50)||[]};
-  showProcessIssue(report);setStatus(report.cancelled?'تم إلغاء المعالجة يدوياً.':'فشلت المعالجة؛ راجع سجل FFmpeg لمعرفة السبب.',0)
- }finally{working=false;$('cancel').classList.add('hidden');updateModeHint()}
-};
-async function finish(blob,name,sourceInfo,method,engineReport){renderEngineReport(engineReport);runDeviceCheck();outputUrl=URL.createObjectURL(blob);$('download').href=outputUrl;$('download').download=name;$('resultText').textContent='جارٍ فحص أبعاد الملف الناتج...';$('result').classList.remove('hidden');$('cancel').classList.add('hidden');$('coverTools').classList.remove('hidden');$('thumbPanel').classList.remove('hidden');const checkVideo=document.createElement('video');checkVideo.preload='metadata';checkVideo.muted=true;checkVideo.src=outputUrl;try{await new Promise((resolve,reject)=>{checkVideo.onloadedmetadata=resolve;checkVideo.onerror=()=>reject(Error('تعذّر قراءة بيانات الملف الناتج في المتصفح'))});const same=checkVideo.videoWidth===sourceInfo.width&&checkVideo.videoHeight===sourceInfo.height;const lines=['اكتملت المعالجة المحلية.','الأصل: '+sourceInfo.width+'×'+sourceInfo.height+' · الناتج: '+checkVideo.videoWidth+'×'+checkVideo.videoHeight,'حجم الأصل: '+fmt(sourceInfo.size)+' · حجم الناتج: '+fmt(blob.size),'مدة الناتج: '+time(checkVideo.duration)];if(['classic','fpsmethod','hevc-hdr','sdr-copy','720p60'].includes(method)){lines.push(method==='classic'?'تم نسخ مساري الفيديو والصوت دون إعادة ترميز؛ بقي ترميز الفيديو الأصلي كما هو.':'تم نسخ مسار الصورة دون إعادة ترميزه؛ هذا لا يثبت وحده توافق الملف مع TikTok أو ظهور HDR في كل مشغل.');if(method==='720p60')lines.push('الحاوية الفعلية MP4؛ تم نسخ مسارات الفيديو والصوت دون إعادة ترميز، ولم يتم تغيير دقة المصدر أو توليد إطارات.');if(method==='classic')lines.push('يحافظ هذا الوضع على مسار المصدر قبل الرفع؛ قد يعيد TikTok ضغط الفيديو بعد رفعه، لذلك لا يمكن ضمان جودة العرض النهائية على المنصة.')}else{lines.push('هذا الوضع أعاد ترميز الفيديو؛ قد تختلف الجودة والألوان عن الأصل.');if(method==='4k60')lines.push('تم طلب HEVC 10-bit بمقاس 2160×3840 و60 FPS؛ يعتمد النجاح على دعم libx265 الفعلي.');if(method==='studio4k')lines.push('الحد الأقصى 4K لا يضيف تفاصيل غير موجودة في الفيديو الأصلي.');} $('resultText').textContent=lines.join(' | ');setStatus(same?'اكتمل التجهيز وفُحصت أبعاد الفيديو':'اكتمل التجهيز؛ الأبعاد مختلفة عن الأصل',100)}catch(e){$('resultText').textContent='فشل التحقق من صلاحية الفيديو الناتج: '+(e?.message||String(e));$('result').classList.add('hidden');setStatus('فشل التحقق من الفيديو الناتج؛ لم يتم اعتماده كملف جاهز',0);throw e}finally{checkVideo.removeAttribute('src');checkVideo.load()}}
-function showProcessIssue(report){const box=$('processIssue');if(!box)return;const cancelled=report?.cancelled===true;box.classList.remove('hidden');box.classList.toggle('cancelled',cancelled);$('processIssueTitle').textContent=cancelled?'تم الإلغاء يدوياً':'فشل فعلي في المعالجة';$('processIssueMessage').textContent=(report?.message||'لا توجد رسالة خطأ إضافية.')+(cancelled?' — هذا الإنهاء ناتج عن طلب الإلغاء، وليس دليلاً بحد ذاته على عطل في الترميز أو الذاكرة.':' — لم يتم افتراض أن الذاكرة هي السبب.');$('ffmpegLog').textContent=(report?.logs||[]).slice(-50).join('\n')||'لم تصل رسائل سجل من أداة المعالجة قبل توقف العملية.';const logDetails=box.querySelector('details');if(logDetails)logDetails.open=true;box.scrollIntoView({behavior:'smooth',block:'nearest'});}
-$('copyFfmpegLog').onclick=()=>{const value=$('ffmpegLog').textContent||'';if(navigator.clipboard?.writeText)navigator.clipboard.writeText(value).then(()=>alert('تم نسخ سجل المعالجة')).catch(()=>alert(value));else alert(value)};
-$('cancel').onclick=()=>{
- if(window.handbrakeJobId){
-  const id=window.handbrakeJobId;window.handbrakeJobId=null;
-  if(HANDBRAKE_API_BASE)fetch(HANDBRAKE_API_BASE+'/api/jobs/'+encodeURIComponent(id),{method:'DELETE'}).catch(()=>{});
-  if(window.handbrakeAbortController)window.handbrakeAbortController.abort();
-  $('cancel').disabled=true;$('cancel').textContent='جارٍ الإلغاء...';setStatus('جارٍ إلغاء مهمة HandBrake على الخادم...',0);return;
- }
- if(window.handbrakeAbortController){
-  window.handbrakeAbortController.abort();$('cancel').disabled=true;$('cancel').textContent='جارٍ الإلغاء...';setStatus('جارٍ إلغاء رفع الفيديو أو المعالجة...',0);return;
- }
- const active=window.IbrahimEngineInstance;
- if(active){active.cancelRequested=true;active.lastErrorReport={cancelled:true,message:'طلب المستخدم إيقاف المعالجة.',name:'AbortError',logs:active.logs.slice(-50),processingMode:document.querySelector('input[name="mode"]:checked')?.value||'غير معروف',activeMode:active.activeMode||window.IbrahimEnginePlan?.mode||'غير متاح',timestamp:new Date().toISOString()};try{active.ffmpeg.terminate()}catch(e){}window.IbrahimEngineInstance=null}
- $('cancel').disabled=true;$('cancel').textContent='جارٍ الإلغاء...';setStatus('جارٍ إيقاف المعالجة بناءً على طلبك...',0)
-};
-$('again').onclick=()=>{$('result').classList.add('hidden');$('file').value='';$('videoInfo').classList.add('hidden');$('drop').classList.remove('hidden');$('start').disabled=true;mediaInfoData=null;scanGeneration++;$('scanState').textContent='اختر فيديو لبدء الفحص المحلي.';$('scanSummary').classList.add('hidden');$('scanReport').classList.add('hidden');file=null;if(objectUrl)URL.revokeObjectURL(objectUrl);$('preview').removeAttribute('src');$('meta').innerHTML='';$('saveCover').disabled=true;$('canvas').getContext('2d').clearRect(0,0,640,360);};
+  const output=await createEngine().process(file,{mode,codec:$("codec").value,crf:Number($("crf").value),preset:$("preset").value,metadata});
+  result=output;$("resultInfo").textContent="اكتملت المعالجة المحلية بنجاح.";
+  showStats("resultStats",[["حجم الأصل",formatSize(output.inputBytes)],["حجم الناتج",formatSize(output.outputBytes)],["فرق الحجم",(output.savedBytes>=0?"توفير ":"زيادة ")+formatSize(Math.abs(output.savedBytes))],["زمن المعالجة",output.elapsedSeconds.toFixed(1)+" ثانية"],["الوضع",output.mode],["المحرك",output.engineMode]]);
+  $("downloadBtn").href=output.url;$("downloadBtn").download=output.fileName;$("result").style.display="block";$("step3").classList.add("done");setProgress(100);setStatus("اكتملت المعالجة. نزّل الفيديو الناتج.");
+ }catch(err){setStatus((err?.message||String(err))+" — لم يكتمل إنشاء الملف.");appendLog("ERROR: "+(err?.stack||err));}
+ finally{busy=false;$("startBtn").disabled=false;$("cancelBtn").hidden=true;}
+});
+$("cancelBtn").addEventListener("click",()=>{if(engine&&busy){engine.cancel();setStatus("تم إرسال طلب إلغاء المعالجة.");$("cancelBtn").disabled=true;}});
+$("againBtn").addEventListener("click",()=>{if(busy)return;resetResult();file=null;metadata=null;$("videoInput").value="";$("fileCard").hidden=true;$("modeCard").hidden=true;$("uploadCard").hidden=false;$("progressCard").hidden=true;$("metadata").hidden=true;$("step1").classList.remove("done");$("step2").classList.remove("active","done");$("step3").classList.remove("active","done");$("log").textContent="اختر فيديو جديداً.";setProgress(0);if(previewURL)URL.revokeObjectURL(previewURL);previewURL=null;$("preview").removeAttribute("src");$("preview").hidden=true;});
+$("copyLogBtn").addEventListener("click",async()=>{const value=engine?.getLog()||$("log").textContent;try{await navigator.clipboard.writeText(value);setStatus("تم نسخ سجل المعالجة.");}catch{setStatus("تعذّر النسخ التلقائي؛ حدّد السجل وانسخه يدوياً.");}});
+window.addEventListener("pagehide",()=>{try{engine?.destroy();}catch{} if(previewURL)URL.revokeObjectURL(previewURL);});
 </script>
-<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}
-
-/* Arabic/English interface toggle. Presentation-only: does not touch media processing. */
-(()=>{
- const toggle=document.getElementById('languageToggle');
- const classicDefault=document.querySelector('input[name="mode"][value="classic"]');if(classicDefault)classicDefault.checked=true;
- if(!toggle)return;
- const set=(selector,value)=>{const el=document.querySelector(selector);if(el)el.textContent=value};
- const apply=(language)=>{
-  const en=language==='en';
-  document.documentElement.lang=en?'en':'ar';
-  document.documentElement.dir=en?'ltr':'rtl';
-  toggle.textContent=en?'العربية':'English';
-  toggle.setAttribute('aria-label',en?'Switch interface language to Arabic':'Switch interface language to English');
-  document.title=en?'IBRAHIM STUDIO — Video Preparation Studio':'IBRAHIM STUDIO — استوديو تجهيز الفيديو';
-  set('.brand h1',en?'Video Studio':'استوديو تحسين الفيديو');
-  set('#localProcessingLabel',en?'● Local processing':'● المعالجة المحلية');
-  set('h2',en?'Prepare your video':'تحسين الفيديو');
-  set('.intro',en?'Choose a video, select a mode, then download the prepared file.':'اختر مقطعك، حدّد الطريقة المناسبة، ثم نزّل الملف الجاهز.');
-  const steps=document.querySelectorAll('.steps .step');
-  const stepLabels=en?['Video','Mode','Download']:['الفيديو','الطريقة','التنزيل'];
-  steps.forEach((el,i)=>{if(el.lastChild)el.lastChild.textContent=' '+(stepLabels[i]||'')});
-  set('#deviceCheck h3',en?'Device and browser check':'فحص الجهاز والمتصفح');
-  set('#deviceCheck .sub',en?'Automatic compatibility check before local processing. Results stay on your device.':'اختبار تلقائي قبل المعالجة المحلية. النتائج تُعرض على جهازك ولا تُرسل إلى أي خادم.');
-  set('.deviceDetails summary',en?'Technical details and device check':'التفاصيل الفنية وفحص الجهاز');
-  set('#copyDeviceReport',en?'Copy device report':'نسخ تقرير الجهاز');
-  set('#recheckDevice',en?'Run check again':'إعادة الفحص');
-  const deviceNote=document.querySelector('#deviceCheck .note');
-  if(deviceNote)deviceNote.textContent=en?'SharedArrayBuffer and COOP/COEP isolation are required for multi-thread processing. The report shows the actual execution mode, processing time, and whether fallback occurred. Memory figures are estimates and may be hidden by the browser.':'SharedArrayBuffer وعزل COOP/COEP من متطلبات وضع المعالجة المتوازي. يوضح التقرير وضع التنفيذ الفعلي ووقت المعالجة، وهل حدث رجوع تلقائي إلى الوضع القياسي. الذاكرة المعروضة تقديرية وقد يخفيها المتصفح.';
-  set('#studio h3',en?'Choose a video':'اختر الفيديو');
-  set('#studio .sub',en?'Select a video from your device to get started.':'اختر فيديو من جهازك للبدء.');
-  set('#drop strong',en?'Choose a video or drop it here':'اختر فيديو أو اسحب الملف هنا');
-  set('#drop small',en?'MP4 · MOV · WEBM':'MP4 · MOV · WEBM');
-  set('#videoInfo h4',en?'Video details':'تفاصيل المقطع');
-  set('#videoInfo .sub',en?'Read directly from the file on your device.':'تُقرأ مباشرة من الملف الموجود على جهازك.');
-  set('#copyInfo',en?'Copy details':'نسخ التفاصيل');
-  set('#changeFile',en?'Change video':'تغيير الفيديو');
-  const modeSection=document.querySelector('#studio + section');
-  if(modeSection){
-   set('#studio + section h3',en?'Choose a preparation mode':'اختر طريقة التجهيز');
-   set('#studio + section .sub',en?'Select the result that best suits your video.':'اختر النتيجة المناسبة لمقطعك.');
-   const modes=modeSection.querySelectorAll('.mode');
-   const modeCopy={
-    classic:en?['CLASSIC · SDR / HDR','Preserves the original video and audio streams without re-encoding. Keeps the source resolution, frame rate and original SDR/HDR stream.']:['CLASSIC · SDR / HDR','يحافظ على مساري الفيديو والصوت الأصليين دون إعادة ترميز، مع إبقاء الدقة ومعدل الإطارات ونوع SDR/HDR كما في المصدر.'],
-    '720p60':en?['LITE720p60','Copies video and audio without re-encoding. It does not resize a 4K source to 720p; compatibility depends on the source and target player.']:['LITE720p60','ينسخ الفيديو والصوت دون إعادة ترميز. لا يحوّل مصدر 4K إلى 720p؛ التوافق يعتمد على الملف والمشغّل.'],
-    'hevc-hdr':en?['MAX HDR','For verified HDR HEVC sources. Copies the original video stream without re-encoding; unavailable for SDR videos.']:['MAX HDR','لمقاطع HEVC التي ثبت أنها HDR؛ ينسخ مسار الفيديو الأصلي دون إعادة ترميز، ولا يناسب مقاطع SDR.'],
-    maxquality:en?['Anti Lag · MP4 · up to 1080p60','Creates a smaller H.264 MP4 by re-encoding. This may reduce quality compared with the original stream.']:['Anti Lag · MP4 · حتى 1080p60','ينشئ ملف H.264 أصغر بإعادة الترميز؛ وقد تقل الجودة مقارنة بمسار الفيديو الأصلي.'],
-    handbrake:en?['HandBrake · Server','Uploads your video temporarily to the server for re-encoding.']:['HandBrake · الخادم','يرفع الفيديو مؤقتاً إلى الخادم لإعادة الترميز.']
-   };
-   modes.forEach(mode=>{
-    const input=mode.querySelector('input[name="mode"]');
-    if(!input)return;
-    const value=input.value,copy=modeCopy[value];
-    if(!copy){mode.hidden=true;return;}
-    mode.hidden=false;
-    const strong=mode.querySelector('strong'),small=mode.querySelector('small');
-    if(strong)strong.textContent=copy[0];
-    if(small)small.textContent=copy[1];
-    let tag=mode.querySelector('.tag');
-    if(value==='classic'){
-     if(!tag){tag=document.createElement('span');tag.className='tag';mode.appendChild(tag)}
-     tag.textContent=en?'RECOMMENDED':'موصى به';
-    }else if(tag){tag.remove()}
-   });
-  }
-  set('#modeHint',en?'Scan the video first to check which preparation modes are compatible.':'افحص الفيديو أولاً حتى نتحقق من توافق طريقة التجهيز.');
-  set('#start',en?'Start preparation':'ابدأ التجهيز');
-  set('#cancel',en?'Cancel':'إلغاء');
-  set('#processIssue details summary',en?'Recent processing log':'سجل المعالجة الأخير');
-  set('#copyFfmpegLog',en?'Copy log':'نسخ السجل');
-  set('#result h3',en?'3 · Video ready':'3 · الفيديو جاهز');
-  set('#result h4',en?'Actual execution report':'تقرير التنفيذ الفعلي');
-  set('#download button',en?'Download video':'تنزيل الفيديو');
-  set('#again',en?'Prepare another video':'تجهيز فيديو آخر');
-  set('#coverTools h3',en?'Optional thumbnail':'صورة مصغّرة اختيارية');
-  set('#coverTools .sub',en?'Choose a frame and save it as a separate JPG image. Video data will not change.':'اختر إطاراً من الفيديو واحفظه كصورة JPG منفصلة؛ لن تتغير بيانات الفيديو.');
-  set('#thumbNo',en?'No, thanks':'لا، شكراً');
-  set('#thumbYes',en?'Yes, choose a frame':'نعم، اختر إطاراً');
-  set('#prevFrame',en?'− 0.05 sec':'− 0.05 ثانية');
-  set('#nextFrame',en?'+ 0.05 sec':'+ 0.05 ثانية');
-  set('#saveCover',en?'Download JPG':'تنزيل JPG');
-  set('footer',en?'IBRAHIM STUDIO · Video processing in your browser':'IBRAHIM STUDIO · معالجة الفيديو محلياً داخل المتصفح');
-  document.documentElement.dataset.interfaceLanguage=language;
- };
- let current='ar';
- toggle.addEventListener('click',()=>{current=current==='ar'?'en':'ar';apply(current)});
- apply(current);
-})();
-
-</script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}</script>
 </body></html>
