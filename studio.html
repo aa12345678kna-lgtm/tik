@@ -9,7 +9,7 @@
 :root{color-scheme:dark;--bg:#101114;--panel:#191b20;--line:#30333b;--text:#f5f5f6;--muted:#a6a8b1;--accent:#f07858;--green:#61d6a5}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;line-height:1.65;padding:18px;min-height:100vh}.wrap{max-width:720px;margin:auto}
 header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0 18px;border-bottom:1px solid var(--line);margin-bottom:26px}.brand{font-size:11px;letter-spacing:1.4px;color:#f5a18a;font-weight:800}.brand b{display:block;color:var(--text);font-size:16px;letter-spacing:0}.local{font-size:11px;color:#9ce6c8;border:1px solid #315b4c;background:#14231d;padding:6px 10px;border-radius:30px;white-space:nowrap}
-h1{font-size:clamp(25px,6vw,36px);line-height:1.25;margin:0 0 8px}.sub{color:var(--muted);margin:0 0 22px;font-size:14px}
+h1{font-size:clamp(25px,6vw,36px);line-height:1.25;margin:0 0 8px}.sub{color:var(--muted);margin:0 0 12px;font-size:14px}.engine-status{display:flex;align-items:center;gap:9px;color:#f2b08e;font-size:13px;margin:0 0 22px}.engine-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px #f0785822;animation:pulse 1s ease-in-out infinite alternate}@keyframes pulse{to{opacity:.35}}.engine-status.ready{color:var(--green)}.engine-status.ready .engine-dot{background:var(--green);animation:none;box-shadow:0 0 0 4px #61d6a522}.engine-status.error{color:#ff9b9b}.engine-status.error .engine-dot{background:#ff7777;animation:none}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}.step{border:1px solid var(--line);border-radius:10px;padding:10px 5px;text-align:center;color:var(--muted);font-size:12px;background:#15171b}.step.active{border-color:var(--accent);color:#fff;background:#28201e}.step.done{color:var(--green);border-color:#315b4c}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:18px;margin:14px 0}.card h2{font-size:16px;margin:0 0 6px}.hint{font-size:12px;color:var(--muted);margin:0 0 14px}
 .picker{position:relative;display:block;text-align:center;padding:32px 14px;border:1.5px dashed #555965;border-radius:12px;background:#14161a;cursor:pointer}.picker:active{border-color:var(--accent)}.plus{font-size:30px;color:var(--accent);line-height:1}.picker strong{display:block;margin:8px 0 4px}.picker small{color:var(--muted);font-size:12px}input[type=file]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
@@ -24,7 +24,7 @@ h1{font-size:clamp(25px,6vw,36px);line-height:1.25;margin:0 0 8px}.sub{color:var
 <main class="wrap">
 <header><div class="brand">IBRAHIM AL FARIS<b>استوديو تجهيز الفيديو</b></div><span class="local">● المعالجة المحلية</span></header>
 <h1>جهّز مقطعك للرفع</h1>
-<p class="sub">اختر الفيديو الأصلي، نفحصه، ثم نجهّز نسخة دون إعادة ضغط الصورة أو الصوت.</p>
+<p class="sub">اختر الفيديو الأصلي، نفحصه، ثم نجهّز نسخة دون إعادة ضغط الصورة أو الصوت.</p>\n<div class="engine-status" id="engineStatus"><span class="engine-dot"></span><span id="engineStatusText">جاري تحميل المحرك...</span></div>
 <div class="steps"><div class="step active" id="s1">1 · اختيار</div><div class="step" id="s2">2 · تجهيز</div><div class="step" id="s3">3 · حفظ</div></div>
 <section class="card" id="chooseCard">
 <h2>الفيديو الأصلي</h2><p class="hint">اختر ملف الكاميرا الأصلي، وليس نسخة أُعيد إرسالها عبر تطبيق آخر.</p>
@@ -51,7 +51,7 @@ let engine=null,file=null,previewURL=null,busy=false,resultURL=null;
 const fmt=n=>{const u=["B","KB","MB","GB"];let i=0;while(n>=1024&&i<3){n/=1024;i++}return n.toFixed(2)+" "+u[i]};
 function log(t){}
 function setStep(n){for(let i=1;i<=3;i++){$("s"+i).classList.toggle("active",i===n);$("s"+i).classList.toggle("done",i<n)}}
-function getEngine(){if(!engine){engine=new WudoohEngine();engine.onLog=log;engine.onStatus=t=>$("status").textContent=t;engine.onProgress=p=>progress(p*100)}return engine}
+function getEngine(){if(!engine){engine=new WudoohEngine();engine.onLog=log;engine.onStatus=t=>$("status").textContent=t;engine.onProgress=p=>progress(p*100)}return engine}\nfunction setEngineStatus(type,message){$("engineStatus").className="engine-status"+(type?" "+type:"");$("engineStatusText").textContent=message}\ngetEngine().load(true).then(()=>setEngineStatus("ready","المحرك جاهز")).catch(()=>setEngineStatus("error","تعذّر تحميل المحرك. تحقق من الإنترنت وأعد تحميل الصفحة."));
 function progress(v){const n=Math.max(0,Math.min(100,Number(v)||0));$("bar").style.width=n+"%";$("percent").textContent=Math.round(n)+"%"}
 function clearResult(){if(resultURL)URL.revokeObjectURL(resultURL);resultURL=null;$("result").style.display="none";$("download").removeAttribute("href")}
 function selectFile(f){if(!f||busy)return;file=f;clearResult();$("fileName").textContent=f.name;$("fileSize").textContent=fmt(f.size);if(previewURL)URL.revokeObjectURL(previewURL);previewURL=URL.createObjectURL(f);$("preview").src=previewURL;$("fileInfo").style.display="block";$("prepareCard").classList.remove("hidden");$("startBtn").disabled=false;$("status").textContent="الفيديو جاهز للفحص والتجهيز.";setStep(2)}
