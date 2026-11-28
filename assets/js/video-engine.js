@@ -9,6 +9,27 @@ const CORE_VERSION = "0.12.10";
 const CORE_CDN = "https://cdn.jsdelivr.net/npm";
 const CACHE_NAME = "ibrahim-video-engine-v1";
 
+async function readBlobBytes(blob) {
+  try {
+    return new Uint8Array(await blob.arrayBuffer());
+  } catch (arrayBufferError) {
+    // Some Android document providers expose File objects that fail arrayBuffer()
+    // after the picker returns. FileReader is a compatibility fallback.
+    try {
+      const buffer = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error || new Error("FileReader failed"));
+        reader.onabort = () => reject(new Error("قراءة الملف أُلغيت."));
+        reader.readAsArrayBuffer(blob);
+      });
+      return new Uint8Array(buffer);
+    } catch (readerError) {
+      throw new Error("تعذّرت قراءة ملف الفيديو من الجهاز. أعد اختيار الفيديو من تطبيق «الملفات» واحفظه أولاً على ذاكرة الهاتف، ثم حاول مجدداً. التفاصيل: " + (readerError?.message || arrayBufferError?.message || "تعذّرت القراءة"));
+    }
+  }
+}
+
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const extOf = (name = "") => (name.match(/\.([a-z0-9]{2,5})$/i)?.[1] || "mp4").toLowerCase();
 const safeName = (name) => name.replace(/[^\w.-]+/g, "_").replace(/^\.+/, "") || "video";
@@ -177,6 +198,8 @@ export class VideoEngine {
     await this.load();
     const ffmpeg = this.ffmpeg;
     const input = `inspect_input.${extOf(file.name)}`;
+    this.onStatus("قراءة ملف الفيديو من الجهاز...");
+    const fileBytes = await readBlobBytes(file);
     this.onStatus("قراءة معلومات الفيديو...");
     const url = URL.createObjectURL(file);
     try {
@@ -191,7 +214,7 @@ export class VideoEngine {
         video.onerror = () => reject(new Error("تعذّرت قراءة بيانات الفيديو في المتصفح."));
         video.src = url;
       });
-      await ffmpeg.writeFile(input, new Uint8Array(await file.arrayBuffer()));
+      await ffmpeg.writeFile(input, fileBytes);
       const before = this.logs.length;
       await ffmpeg.exec(["-hide_banner", "-i", input]).catch(() => 1);
       const probeText = this.logs.slice(before).join("\n");
@@ -272,7 +295,7 @@ export class VideoEngine {
       this.duration = Number(options.metadata?.duration || 0);
       this.onProgress(0, { phase: "start" });
       this.onStatus("كتابة الفيديو في ذاكرة المتصفح...");
-      await ffmpeg.writeFile(input, new Uint8Array(await file.arrayBuffer()));
+      await ffmpeg.writeFile(input, await readBlobBytes(file));
       if (this.cancelled) throw new Error("تم إلغاء المعالجة.");
       if (mode === "COMPRESS") {
         const requestedEncoder = options.codec === "libx265" ? "libx265" : "libx264";
