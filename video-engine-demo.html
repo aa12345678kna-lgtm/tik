@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b12">
+<title>VideoEngine — Ibrahim Studio</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,Tahoma,Arial,sans-serif;background:#090b12;color:#f5f6fa}
+*{box-sizing:border-box}body{margin:0;padding:24px 14px 50px;background:radial-gradient(circle at 85% 0,#291326 0,transparent 36%),#090b12}
+main{max-width:760px;margin:auto}.head{margin:12px 0 22px}.tag{color:#ff7898;font-size:12px;font-weight:800;letter-spacing:1.5px}.head h1{font-size:clamp(26px,6vw,38px);margin:8px 0}.head p,.hint{color:#aeb4c2;line-height:1.8}
+.panel{background:#111622;border:1px solid #293142;border-radius:18px;padding:18px;margin:14px 0}
+label{display:block;font-weight:700;margin:12px 0 7px}input,select,button{font:inherit}input[type=file],select{width:100%;background:#0b101a;border:1px solid #30394b;color:#fff;border-radius:11px;padding:12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button,.download{border:0;border-radius:11px;padding:12px 16px;font-weight:800;cursor:pointer;background:linear-gradient(110deg,#ff4777,#ff985f);color:#fff;text-decoration:none}
+button.secondary{background:#273247}button:disabled{opacity:.45;cursor:not-allowed}
+progress{width:100%;height:13px;accent-color:#ff668b;margin-top:12px}
+#status{color:#ffd0dc;min-height:28px;margin-top:10px}.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.stat{background:#0b101a;border:1px solid #293142;padding:10px;border-radius:10px;overflow-wrap:anywhere}.stat small{display:block;color:#9ba5b6;margin-bottom:4px}
+pre{white-space:pre-wrap;overflow:auto;max-height:260px;background:#080c13;border:1px solid #293142;border-radius:12px;padding:12px;color:#b8c4d8;direction:ltr;text-align:left;font-size:12px}
+#result{display:none}.warning{color:#ffc0a0;font-size:13px;line-height:1.7}
+@media(max-width:520px){.grid,.stats{grid-template-columns:1fr}.panel{padding:14px}}
+</style>
+</head>
+<body>
+<main>
+  <header class="head">
+    <div class="tag">IBRAHIM AL FARIS · LOCAL VIDEO ENGINE</div>
+    <h1>محرك معالجة الفيديو</h1>
+    <p>تجربة مستقلة لمحرك FFmpeg.wasm. تتم المعالجة داخل المتصفح ولا يتم رفع ملف الفيديو إلى خادم.</p>
+  </header>
+
+  <section class="panel">
+    <label for="file">اختر ملف الفيديو</label>
+    <input id="file" type="file" accept="video/*">
+    <div class="grid">
+      <div><label for="mode">وضع المعالجة</label>
+        <select id="mode">
+          <option value="MAX">MAX — الحفاظ على المصدر</option>
+          <option value="CLASSIC">CLASSIC — نسخ سريع</option>
+          <option value="COMPRESS">COMPRESS — ضغط الفيديو</option>
+        </select>
+      </div>
+      <div><label for="codec">ترميز الضغط</label>
+        <select id="codec"><option value="libx264">H.264 — توافق أعلى</option><option value="libx265">H.265 — حجم أصغر إذا كان مدعوماً</option></select>
+      </div>
+      <div><label for="crf">الجودة (CRF)</label><input id="crf" type="number" min="16" max="30" value="22"></div>
+      <div><label for="preset">سرعة الضغط</label>
+        <select id="preset"><option value="fast">Fast — متوازن</option><option value="medium">Medium — أبطأ وأكفأ</option><option value="veryfast">Very Fast — أسرع</option><option value="slow">Slow — أبطأ</option></select>
+      </div>
+    </div>
+    <p class="hint">CRF أقل = جودة أعلى وحجم أكبر غالباً. CRF أعلى = حجم أصغر وجودة أقل. ابدأ بـ 22.</p>
+    <div class="actions">
+      <button id="inspect">فحص الفيديو</button>
+      <button id="start" disabled>بدء المعالجة</button>
+      <button id="cancel" class="secondary" disabled>إلغاء</button>
+    </div>
+    <progress id="progress" max="100" value="0"></progress>
+    <div id="status" role="status">اختر فيديو للبدء.</div>
+  </section>
+
+  <section class="panel" id="metadata" hidden>
+    <h2>معلومات الفيديو</h2>
+    <div class="stats" id="metaGrid"></div>
+    <p class="warning">ملاحظة: معلومات HDR تُستنتج من بيانات الألوان التي يعرضها FFmpeg؛ وقد لا تكون بيانات كل ملف كاملة.</p>
+  </section>
+
+  <section class="panel" id="result">
+    <h2>الفيديو الناتج</h2>
+    <div class="stats" id="resultGrid"></div>
+    <div class="actions"><button id="download">تنزيل الفيديو</button></div>
+  </section>
+
+  <section class="panel">
+    <h2>سجل FFmpeg</h2>
+    <div class="actions"><button id="copyLog" class="secondary">نسخ السجل</button></div>
+    <pre id="log">لم يبدأ المحرك بعد.</pre>
+  </section>
+</main>
+
+<script type="module">
+import { VideoEngine } from "./assets/js/video-engine.js";
+
+const $ = (id) => document.getElementById(id);
+let selectedFile = null;
+let metadata = null;
+let result = null;
+
+const engine = new VideoEngine({
+  preferMultiThread: true,
+  onProgress: (value) => $("progress").value = Math.round(value * 100),
+  onStatus: (message) => $("status").textContent = message,
+  onLog: (line) => {
+    const log = $("log");
+    log.textContent += (log.textContent ? "\\n" : "") + line;
+    log.scrollTop = log.scrollHeight;
+  }
+});
+
+const fmtSize = (bytes) => {
+  if (!Number.isFinite(bytes)) return "غير متاح";
+  const units = ["B","KB","MB","GB"];
+  let n = bytes, i = 0;
+  while (n >= 1024 && i < units.length - 1) { n /= 1024; i++; }
+  return n.toFixed(2) + " " + units[i];
+};
+const addStats = (target, rows) => {
+  $(target).innerHTML = rows.map(([k,v]) => `<div class="stat"><small>${k}</small><b>${v ?? "غير متاح"}</b></div>`).join("");
+};
+
+$("file").addEventListener("change", () => {
+  selectedFile = $("file").files?.[0] || null;
+  metadata = null;
+  $("start").disabled = !selectedFile;
+  $("metadata").hidden = true;
+  $("result").style.display = "none";
+  $("progress").value = 0;
+  $("status").textContent = selectedFile ? "تم اختيار الملف. اضغط فحص الفيديو." : "اختر فيديو للبدء.";
+});
+$("mode").addEventListener("change", () => {
+  const compress = $("mode").value === "COMPRESS";
+  $("codec").disabled = !compress;
+  $("crf").disabled = !compress;
+  $("preset").disabled = !compress;
+});
+$("mode").dispatchEvent(new Event("change"));
+
+$("inspect").addEventListener("click", async () => {
+  if (!selectedFile) return;
+  $("inspect").disabled = true;
+  $("start").disabled = true;
+  $("log").textContent = "";
+  try {
+    const plan = await engine.load();
+    metadata = await engine.inspect(selectedFile);
+    addStats("metaGrid", [
+      ["الأبعاد", metadata.width + " × " + metadata.height],
+      ["المدة", metadata.duration.toFixed(2) + " ثانية"],
+      ["FPS", metadata.fps || "غير معروف"],
+      ["ترميز الفيديو", metadata.videoCodec],
+      ["الصوت", metadata.audioPresent ? "موجود" : "غير مرصود"],
+      ["HDR", metadata.hdr ? "مرصود" : "غير مرصود"],
+      ["حجم الملف", fmtSize(metadata.size)],
+      ["المحرك", plan.mode + (plan.fallback ? " · رجوع تلقائي" : "")]
+    ]);
+    $("metadata").hidden = false;
+    $("start").disabled = false;
+    $("status").textContent = "اكتمل الفحص. اختر الوضع ثم ابدأ المعالجة.";
+  } catch (error) {
+    $("status").textContent = "تعذّر فحص الملف: " + error.message;
+  } finally {
+    $("inspect").disabled = false;
+  }
+});
+
+$("start").addEventListener("click", async () => {
+  if (!selectedFile) return;
+  $("start").disabled = true;
+  $("inspect").disabled = true;
+  $("cancel").disabled = false;
+  $("progress").value = 0;
+  $("log").textContent = "";
+  try {
+    result = await engine.process(selectedFile, {
+      mode: $("mode").value,
+      codec: $("codec").value,
+      crf: Number($("crf").value),
+      preset: $("preset").value,
+      metadata
+    });
+    addStats("resultGrid", [
+      ["حجم الأصل", fmtSize(result.inputBytes)],
+      ["حجم الناتج", fmtSize(result.outputBytes)],
+      ["فرق الحجم", (result.savedBytes >= 0 ? "توفير " : "زيادة ") + fmtSize(Math.abs(result.savedBytes))],
+      ["زمن المعالجة", result.elapsedSeconds.toFixed(1) + " ثانية"],
+      ["الوضع", result.mode],
+      ["الخيوط", result.engineMode]
+    ]);
+    $("result").style.display = "block";
+    $("status").textContent = "اكتملت المعالجة. يمكنك تنزيل الملف.";
+  } catch (error) {
+    $("status").textContent = error.message;
+  } finally {
+    $("start").disabled = !selectedFile;
+    $("inspect").disabled = false;
+    $("cancel").disabled = true;
+  }
+});
+
+$("cancel").addEventListener("click", () => {
+  engine.cancel();
+  $("cancel").disabled = true;
+});
+$("download").addEventListener("click", () => result && engine.download(result));
+$("copyLog").addEventListener("click", async () => {
+  await navigator.clipboard.writeText(engine.getLog());
+  $("status").textContent = "تم نسخ سجل FFmpeg.";
+});
+window.addEventListener("pagehide", () => engine.destroy());
+</script>
+</body>
+</html>
