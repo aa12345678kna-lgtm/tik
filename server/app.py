@@ -137,6 +137,7 @@ async def execute_job(job_id: str) -> None:
                 return
             if code != 0 or not output.exists() or output.stat().st_size == 0:
                 job["status"] = "failed"
+                job["finished_at"] = time.time()
                 job["error"] = "فشل HandBrake في إنشاء ملف الناتج."
                 append_log(job, f"انتهى HandBrake برمز خروج {code}.")
                 remove_job_files(job)
@@ -167,6 +168,7 @@ async def execute_job(job_id: str) -> None:
         except Exception as exc:
             job["process"] = None
             job["status"] = "failed"
+            job["finished_at"] = time.time()
             job["error"] = str(exc)[:300]
             append_log(job, "خطأ أثناء المعالجة: " + str(exc)[:300])
             remove_job_files(job)
@@ -182,7 +184,12 @@ async def expire_jobs() -> None:
     while True:
         now = time.time()
         for job_id, job in list(jobs.items()):
-            if now - job.get("created_at", now) > JOB_TTL_SECONDS:
+            # Never expire an actively processing job. Its creation time includes
+            # upload time, and slow free instances may need longer than the TTL.
+            if job.get("status") == "processing":
+                continue
+            expiry_base = job.get("completed_at") or job.get("finished_at") or job.get("created_at", now)
+            if now - expiry_base > JOB_TTL_SECONDS:
                 proc = job.get("process")
                 if proc and proc.returncode is None:
                     proc.terminate()
@@ -322,6 +329,7 @@ async def cancel_job(job_id: str, x_job_token: str | None = Header(default=None)
     if proc and proc.returncode is None:
         proc.terminate()
     job["status"] = "cancelled"
+    job["finished_at"] = time.time()
     append_log(job, "تم طلب إلغاء المهمة.")
     remove_job_files(job)
     jobs.pop(job_id, None)
