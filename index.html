@@ -547,7 +547,7 @@ footer{line-height:2;border-top:1px solid #20242c;padding-top:18px}
 <label class="mode"><input type="radio" name="mode" value="maxquality"><strong>Anti Lag <span class="modeSuffix">MP4 · حتى 1080p60</span></strong><small>يعيد ترميز الفيديو إلى H.264 بدقة تصل إلى 1080p لتقليل حجم الملف؛ قد تتغير الجودة.</small></label>
 <label class="mode"><input type="radio" name="mode" value="handbrake"><strong>HandBrake · الخادم</strong><small>إعادة ترميز على خادم خارجي. عند اختيار هذا الوضع سيرتفع الفيديو مؤقتاً إلى الخادم.</small></label>
 </div>
-<div id="handbrakeSecurity" class="note hidden"><strong>فحص الحماية قبل رفع الفيديو</strong><div id="turnstileWidget" style="margin-top:10px"></div><span id="turnstileMessage">أكمل التحقق لتفعيل الرفع إلى الخادم.</span></div>
+<div id="handbrakeSecurity" class="note"><strong>فحص الحماية قبل رفع الفيديو</strong><div id="turnstileWidget" style="margin-top:10px"></div><span id="turnstileMessage">أكمل التحقق لتفعيل الرفع إلى الخادم.</span></div>
 <div id="modeHint" class="modeHint">افحص الفيديو أولاً حتى نتحقق من توافق طريقة التجهيز.</div><div class="actions"><button id="start" class="primary" disabled>ابدأ التجهيز</button><button id="cancel" class="danger hidden">إلغاء</button></div>
 <div id="progressWrap" class="hidden"><div class="progress"><div class="bar" id="bar"></div></div><div class="status" id="status">جارٍ التحضير...</div></div><div id="processIssue" class="processIssue hidden" role="status"><strong id="processIssueTitle"></strong><p id="processIssueMessage"></p><details><summary>سجل المعالجة الأخير</summary><pre id="ffmpegLog"></pre></details><div class="actions"><button id="copyFfmpegLog" class="quiet" type="button">نسخ السجل</button></div></div>
 </section>
@@ -567,8 +567,9 @@ footer{line-height:2;border-top:1px solid #20242c;padding-top:18px}
 <script>
 const TURNSTILE_SITE_KEY="0x4AAAAAAGW9QWK1akwI1y-7";
 let turnstileWidgetId=null,turnstileToken="";
-window.turnstileReady=()=>{if(window.turnstile&&turnstileWidgetId===null){turnstileWidgetId=window.turnstile.render("#turnstileWidget",{sitekey:TURNSTILE_SITE_KEY,callback:t=>{turnstileToken=t;document.getElementById("turnstileMessage").textContent="تم التحقق؛ يمكنك بدء الرفع.";}, "expired-callback":()=>{turnstileToken="";document.getElementById("turnstileMessage").textContent="انتهت صلاحية التحقق؛ أعد الفحص.";},"error-callback":()=>{turnstileToken="";document.getElementById("turnstileMessage").textContent="تعذّر تحميل فحص الحماية."}});}};
-const $=id=>document.getElementById(id);let file=null,objectUrl=null,outputUrl=null,ffmpeg=null,working=false,videoDuration=0,mediaInfoData=null,scanGeneration=0,mediaInfoFactoryPromise=null;
+window.turnstileReady=()=>{if(window.turnstile&&turnstileWidgetId===null){turnstileWidgetId=window.turnstile.render("#turnstileWidget",{sitekey:TURNSTILE_SITE_KEY,callback:t=>{turnstileToken=t;document.getElementById("turnstileMessage").textContent="تم التحقق؛ يمكنك بدء الرفع.";}, "expired-callback":()=>{turnstileToken="";document.getElementById("turnstileMessage").textContent="انتهت صلاحية التحقق؛ أعد الفحص.";},"error-callback":()=>{turnstileToken="";document.getElementById("turnstileMessage").textContent="تعذّر تحميل فحص الحماية."}});const selected=document.querySelector('input[name="mode"]:checked')?.value;document.getElementById("handbrakeSecurity").classList.toggle("hidden",selected!=="handbrake");}};
+const $=id=>document.getElementById(id);
+document.querySelectorAll('input[name="mode"]').forEach(el=>el.addEventListener("change",()=>{const box=document.getElementById("handbrakeSecurity");if(box)box.classList.toggle("hidden",el.value!=="handbrake");}));let file=null,objectUrl=null,outputUrl=null,ffmpeg=null,working=false,videoDuration=0,mediaInfoData=null,scanGeneration=0,mediaInfoFactoryPromise=null;
 const ENGINE_PLAN_MODULE_URL="./assets/js/engine-loader.js?v=20261128-public-labels-1";
 const HANDBRAKE_API_BASE=(window.IBRAHIM_HANDBRAKE_API||'').replace(/\/+$/,'');
 window.handbrakeJobId=null;window.handbrakeAbortController=null;window.handbrakeLogs=[];
