@@ -52,7 +52,9 @@ footer{text-align:center;color:#737d8c;font-size:11px;padding:20px 0;border-top:
 <div class="modes">
 <label class="mode"><input type="radio" name="mode" value="CLASSIC" checked><span class="tag">موصى به</span><strong>CLASSIC · نسخ سريع</strong><small>ينسخ الفيديو والصوت الأساسيين دون إعادة ترميز، مع Fast Start للملفات المدعومة.</small></label>
 <label class="mode"><input type="radio" name="mode" value="MAX"><strong>MAX · الحفاظ على المصدر</strong><small>ينسخ كل المسارات المتاحة ويحافظ على الترميز الأصلي قدر الإمكان، بما فيها HEVC وبيانات HDR الموجودة.</small></label>
-<label class="mode"><input type="radio" name="mode" value="COMPRESS"><strong>COMPRESS · ضغط الفيديو</strong><small>يعيد ترميز الفيديو لتقليل الحجم. قد تتغير الجودة أو الألوان، وقد لا يتوفر الترميز في نسخة المحرك.</small></label>
+<label class="mode"><input type="radio" name="mode" value="LITE"><strong>LITE · 720p</strong><small>يعيد ترميز الفيديو إلى 720p بإعداد سريع وحجم أقل. قد تنخفض التفاصيل.</small></label>
+<label class="mode"><input type="radio" name="mode" value="ANTILAG"><strong>ANTI LAG · 1080p</strong><small>يعيد ترميز الفيديو إلى 1080p بإعداد متوازن. ليس تحسيناً مضموناً للجودة.</small></label>
+<label class="mode"><input type="radio" name="mode" value="COMPRESS"><strong>COMPRESS · ضغط مخصص</strong><small>ضغط H.264 مع التحكم بالجودة والسرعة.</small></label>
 </div>
 <div id="compressOptions" class="fieldrow" hidden>
 <label>ترميز الضغط<select id="codec"><option value="libx264">H.264 — توافق أعلى</option><option value="libx265">H.265 — حجم أصغر إذا كان مدعوماً</option></select></label>
@@ -76,7 +78,7 @@ footer{text-align:center;color:#737d8c;font-size:11px;padding:20px 0;border-top:
 <footer>IBRAHIM AL FARIS · LOCAL VIDEO ENGINE · المعالجة داخل متصفحك</footer>
 </main>
 <script type="module">
-import { VideoEngine } from "./assets/js/video-engine.js";
+import { WudoohEngine } from "./assets/js/wudooh-engine.js";
 const $ = (id) => document.getElementById(id);
 let file = null, metadata = null, result = null, previewURL = null, engine = null, busy = false;
 const formatSize = (n) => { if(!Number.isFinite(n)) return "غير متاح"; const u=["B","KB","MB","GB"]; let i=0; while(n>=1024&&i<u.length-1){n/=1024;i++;} return n.toFixed(2)+" "+u[i]; };
@@ -84,7 +86,7 @@ const setStatus = (s) => { $("status").textContent = s; };
 const setProgress = (p) => { $("progressBar").style.width = Math.max(0,Math.min(100,p))+"%"; };
 const appendLog = (line) => { const el=$("log"); el.textContent += (el.textContent ? "\n" : "") + line; el.scrollTop=el.scrollHeight; };
 const showStats = (id, rows) => { const box=$(id); box.replaceChildren(); rows.forEach(([k,v])=>{const d=document.createElement("div");d.className="metric";const s=document.createElement("span");s.textContent=k;const b=document.createElement("b");b.textContent=v??"غير متاح";d.append(s,b);box.append(d);}); };
-function createEngine(){ if(engine) return engine; engine=new VideoEngine({preferMultiThread:true,onProgress:(p)=>setProgress(p*100),onStatus:(s)=>setStatus(s),onLog:(line)=>appendLog(line)}); return engine; }
+function createEngine(){ if(engine) return engine; engine=new WudoohEngine(); engine.onProgress=(p)=>setProgress(p*100); engine.onLog=(line)=>appendLog(line); return engine; }
 function resetResult(){ if(result?.url) URL.revokeObjectURL(result.url); result=null; $("result").style.display="none"; $("downloadBtn").removeAttribute("href"); }
 function selectFile(next){ if(!next)return; if(busy)return; file=next; metadata=null; resetResult(); $("fileName").textContent=file.name; $("fileSize").textContent=formatSize(file.size); $("uploadCard").hidden=true; $("fileCard").hidden=false; $("modeCard").hidden=true; $("metadata").hidden=true; $("step1").classList.add("done"); $("step2").classList.remove("done"); $("step2").classList.add("active"); $("step3").classList.remove("active","done"); if(previewURL)URL.revokeObjectURL(previewURL); previewURL=URL.createObjectURL(file); $("preview").src=previewURL; $("preview").hidden=false; $("log").textContent="تم اختيار الملف: "+file.name; }
 $("videoInput").addEventListener("change",e=>selectFile(e.target.files?.[0]));
@@ -98,7 +100,7 @@ $("inspectBtn").addEventListener("click",async()=>{
   setStatus("تحميل محرك الفيديو وقراءة خصائص الملف...");
   const plan=await createEngine().load();
   metadata=await engine.inspect(file);
-  showStats("metadata",[["الأبعاد",metadata.width+" × "+metadata.height],["المدة",Number(metadata.duration).toFixed(2)+" ثانية"],["معدل الإطارات",metadata.fps||"غير معروف"],["ترميز الفيديو",metadata.videoCodec],["الصوت",metadata.audioPresent?"موجود":"غير مرصود"],["HDR",metadata.hdr?"مرصود من بيانات الألوان":"لم يتم رصده"],["حجم الملف",formatSize(metadata.size)],["وضع المحرك",plan.mode]]);
+  showStats("metadata",[["الأبعاد",metadata.width+" × "+metadata.height],["المدة",Number(metadata.duration).toFixed(2)+" ثانية"],["معدل الإطارات",metadata.fps||"غير معروف"],["ترميز الفيديو",metadata.videoCodec],["الصوت","غير متاح في الفحص السريع"],["HDR","غير متاح في الفحص السريع"],["حجم الملف",formatSize(metadata.size)],["وضع المحرك",plan.mode]]);
   $("metadata").hidden=false;$("modeCard").hidden=false;$("step2").classList.add("active");setStatus("اكتمل الفحص. اختر وضع المعالجة.");
  }catch(err){setStatus("تعذّر فحص الفيديو: "+(err?.message||String(err)));appendLog("ERROR: "+(err?.stack||err));}
  finally{busy=false;$("inspectBtn").disabled=false;}
@@ -108,7 +110,7 @@ $("startBtn").addEventListener("click",async()=>{
  if(!file||busy)return; busy=true;resetResult();$("startBtn").disabled=true;$("cancelBtn").hidden=false;$("progressCard").hidden=false;$("log").textContent="";setProgress(0);$("step3").classList.add("active");
  const mode=document.querySelector('input[name="mode"]:checked').value;
  try{
-  const output=await createEngine().process(file,{mode,codec:$("codec").value,crf:Number($("crf").value),preset:$("preset").value,metadata});
+  const output=await createEngine().process(file,{mode,crf:Number($("crf").value),preset:$("preset").value,onProgress:(p)=>setProgress(p*100)});
   result=output;$("resultInfo").textContent="اكتملت المعالجة المحلية بنجاح.";
   showStats("resultStats",[["حجم الأصل",formatSize(output.inputBytes)],["حجم الناتج",formatSize(output.outputBytes)],["فرق الحجم",(output.savedBytes>=0?"توفير ":"زيادة ")+formatSize(Math.abs(output.savedBytes))],["زمن المعالجة",output.elapsedSeconds.toFixed(1)+" ثانية"],["الوضع",output.mode],["المحرك",output.engineMode]]);
   $("downloadBtn").href=output.url;$("downloadBtn").download=output.fileName;$("result").style.display="block";$("step3").classList.add("done");setProgress(100);setStatus("اكتملت المعالجة. نزّل الفيديو الناتج.");
@@ -117,7 +119,7 @@ $("startBtn").addEventListener("click",async()=>{
 });
 $("cancelBtn").addEventListener("click",()=>{if(engine&&busy){engine.cancel();setStatus("تم إرسال طلب إلغاء المعالجة.");$("cancelBtn").disabled=true;}});
 $("againBtn").addEventListener("click",()=>{if(busy)return;resetResult();file=null;metadata=null;$("videoInput").value="";$("fileCard").hidden=true;$("modeCard").hidden=true;$("uploadCard").hidden=false;$("progressCard").hidden=true;$("metadata").hidden=true;$("step1").classList.remove("done");$("step2").classList.remove("active","done");$("step3").classList.remove("active","done");$("log").textContent="اختر فيديو جديداً.";setProgress(0);if(previewURL)URL.revokeObjectURL(previewURL);previewURL=null;$("preview").removeAttribute("src");$("preview").hidden=true;});
-$("copyLogBtn").addEventListener("click",async()=>{const value=engine?.getLog()||$("log").textContent;try{await navigator.clipboard.writeText(value);setStatus("تم نسخ سجل المعالجة.");}catch{setStatus("تعذّر النسخ التلقائي؛ حدّد السجل وانسخه يدوياً.");}});
+$("copyLogBtn").addEventListener("click",async()=>{const value=engine?.getLogs()||$("log").textContent;try{await navigator.clipboard.writeText(value);setStatus("تم نسخ سجل المعالجة.");}catch{setStatus("تعذّر النسخ التلقائي؛ حدّد السجل وانسخه يدوياً.");}});
 window.addEventListener("pagehide",()=>{try{engine?.destroy();}catch{} if(previewURL)URL.revokeObjectURL(previewURL);});
 </script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}</script>
